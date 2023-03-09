@@ -41,6 +41,7 @@ extract <- function(file_name){
   # whole process is put in a loop to iterate over all the sequences in the data file.
   
   for (num_seq in 1:(length(nb_seq) - 1)){
+    print(num_seq)
     # Making a variable containing only one sequence on which we will be working in the loop. We take 
     # the data contained between two successive '//'
     dataseq <- data[nb_seq[num_seq] : nb_seq[num_seq + 1]]
