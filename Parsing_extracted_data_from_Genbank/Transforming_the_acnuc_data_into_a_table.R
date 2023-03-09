@@ -111,6 +111,7 @@ extract <- function(file_name){
 
 
 # Running the function extract for each file in the files list
-mclapply(files, extract, mc.cores = 5)
-
+for (file in files){
+  mclapply(file, extract, mc.cores = 7)
+}
 
