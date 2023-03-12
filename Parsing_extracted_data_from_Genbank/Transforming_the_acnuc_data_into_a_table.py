@@ -22,7 +22,7 @@ class Extractor:
 
     def contains_info(self, line):
 
-        if line.startswith("ID") or line.startswith('OC') or line.startswith('     ') or line.startswith('DR   PDB;'):
+        if line.startswith("ID") or line.startswith('OC') or line.startswith('     ') or line.startswith('DR   PDB;') or line.startswith('//'):
             return(True)
         
         else:
@@ -108,10 +108,13 @@ nb_rounds = 10000
 for _ in range(nb_rounds):
     for file in list_files:
         for line in data:
-            if extractor.contains_info(line):
+            if not extractor.contains_info(line):
+                continue
+            else:
                 extractor.check_parameters(line)
                 if line.startswith('//'):
                     extractor.add()
+                
 
         pd.DataFrame(extractor.end()).to_csv('_'.join(['Families', kingdom_names(file), 'Sequences_Extracted.csv']), header=False, index=False)
 
