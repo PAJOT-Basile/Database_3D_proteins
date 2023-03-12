@@ -20,27 +20,38 @@ class Extractor:
         self.temporary_sequence = ''
         self.extracted_data = np.array([['ID', 'Classification', 'Sequence', 'Folding data']])
 
+    def contains_info(self, line):
+
+        if line.startswith("ID") or line.startswith('OC') or line.startswith('     ') or line.startswith('DR   PDB;'):
+            return(True)
+        
+        else:
+            return(False)
+    
+    
     def check_parameters(self, line):
         
         # ID
         if line.startswith('ID'):
             self.id = line.split()[1]
+            pass
 
         # Classification
-        if line.startswith('OC'):
+        elif line.startswith('OC'):
             self.temporary_classification += line
             self.temporary_classification  = self.temporary_classification.replace('OC   ', ' ')        
             self.temporary_classification  = self.temporary_classification.replace('\nOC   ', ' ')
             self.temporary_classification  = self.temporary_classification.replace('\n', '')
 
         # Sequence
-        if line.startswith('     '):
+        elif line.startswith('     '):
             self.temporary_sequence += line
             self.temporary_sequence = self.temporary_sequence.replace(' ', '')
             self.temporary_sequence = self.temporary_sequence.replace('\n', '')
+            pass
 
         # Folding data
-        if line.startswith('DR   PDB;'):
+        elif line.startswith('DR   PDB;'):
             self.pdb = line.replace('DR   ', '')
             self.pdb = self.pdb.replace('\n', '')
 
@@ -86,22 +97,25 @@ def kingdom_names(file_name):
 
 start = time.time()
 
-data = open(os.path.join(data_path, list_files[2]), 'r')
+data = open(os.path.join(data_path, list_files[0]), 'r')
 
 
 extractor = Extractor()
 extractor.init()
 
-for line in data:
-    extractor.check_parameters(line)
-    if line.startswith('//'):
-        extractor.add()
+nb_rounds = 10000
 
-print(extractor.end())
+for _ in range(nb_rounds):
+    for file in list_files:
+        for line in data:
+            if extractor.contains_info(line):
+                extractor.check_parameters(line)
+                if line.startswith('//'):
+                    extractor.add()
 
-pd.DataFrame(extractor.end()).to_csv('_'.join(['Families', kingdom_names(list_files[1]), 'Sequences_Extracted.csv']), header=False, index=False)
+        pd.DataFrame(extractor.end()).to_csv('_'.join(['Families', kingdom_names(file), 'Sequences_Extracted.csv']), header=False, index=False)
 
 end = time.time()
 elapsed = end - start
 
-print(f'Running time: {elapsed:.3}.')
+print(f'Running time: {elapsed:.5}.')
