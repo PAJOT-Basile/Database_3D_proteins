@@ -95,30 +95,30 @@ def kingdom_names(file_name):
     kdname = kdname.split('.')[0]
     return(kdname)
 
-start = time.time()
 
-data = open(os.path.join(data_path, list_files[0]), 'r')
+for file in list_files:
+    start = time.time()
 
+    data = open(os.path.join(data_path, file), 'r')
 
-extractor = Extractor()
-extractor.init()
+    extractor = Extractor()
+    extractor.init()
 
-nb_rounds = 10000
+    for line in data:
+        if not extractor.contains_info(line):
+            continue
+        else:
+            extractor.check_parameters(line)
+            if line.startswith('//'):
+                extractor.add()
+            if len(extractor.extracted_data) % 10000 == 0:
+                pd.DataFrame(extractor.end()).to_csv('_'.join(['Families', str(len(extractor.extracted_data)), kingdom_names(file), 'Sequences_Extracted', '.csv']), header=False, index=False)
+                print(len(extractor.extracted_data))
+            
 
-for _ in range(nb_rounds):
-    for file in list_files:
-        for line in data:
-            if not extractor.contains_info(line):
-                continue
-            else:
-                extractor.check_parameters(line)
-                if line.startswith('//'):
-                    extractor.add()
-                
+    pd.DataFrame(extractor.end()).to_csv('_'.join(['Families', kingdom_names(file), 'Sequences_Extracted.csv']), header=False, index=False)
 
-        pd.DataFrame(extractor.end()).to_csv('_'.join(['Families', kingdom_names(file), 'Sequences_Extracted.csv']), header=False, index=False)
+    end = time.time()
+    elapsed = end - start
 
-end = time.time()
-elapsed = end - start
-
-print(f'Running time: {elapsed:.5}.')
+    print(f'Running time: {elapsed:.5}.')
