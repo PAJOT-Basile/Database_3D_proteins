@@ -30,7 +30,6 @@ class Extractor:
         self.temporary_sequence = ''
         self.extracted_data = None
         self.counter = 0
-        # self.extracted_data = np.array([['ID', 'Classification', 'Sequence', 'Folding data']])
 
     # We then define the contains info method that will be used as a quick verificaiton of the line we are on to see if it contains any 
     # useful information for us to extract. It is a way to win some time to not have to check if each line contains all the information 
@@ -77,11 +76,11 @@ class Extractor:
             self.pdb = self.pdb.replace('\n', '')
 
     # Here we define the add method. This method allows to add the data we extracted in the previous
-    # lines into an array allowing us to save it later. Each sequence information in the ACNUC file
+    # lines into a csv file allowing us to save it in the process. Each sequence information in the ACNUC file
     # starts with an ID and ends with "//". Thus, we use "//" to mark the end of the sequence information
-    # and add the extracted information to the array. The add method checks if we have extracted the
-    # information. If we did, we will add this information to the array and if we did not, we will add
-    # a np.nan to the array. 
+    # and add the extracted information to the csv file. The add method checks if we have extracted the
+    # information. If we did, we will add this information to the csv file and if we did not, we will add
+    # a np.nan to the file. 
     def add(self, file):
         
         if self.id is None:
@@ -89,7 +88,7 @@ class Extractor:
         
         if self.temporary_classification != '':
             # Here we replace all the special characters that are due to having the classificaiton on several
-            # lines to be able to have it as one string on one line that will be added to the array later.
+            # lines to be able to have it as one string on one line that will be added to the csv file later.
             self.temporary_classification = self.temporary_classification.replace('OC   ', ' ')       
             self.temporary_classification = self.temporary_classification.replace('\nOC   ', ' ')
             self.temporary_classification = self.temporary_classification.replace('\n', '')
@@ -100,7 +99,7 @@ class Extractor:
 
         if self.temporary_sequence != '':
             # Here we replace all the special characters that are due to having the sequence on several
-            # lines to be able to have it as one string on one line that will be added to the array later.
+            # lines to be able to have it as one string on one line that will be added to the csv file later.
             self.temporary_sequence = self.temporary_sequence.replace(' ', '')
             self.temporary_sequence = self.temporary_sequence.replace('\n', '')
             self.sequence = self.temporary_sequence
@@ -110,14 +109,17 @@ class Extractor:
         if self.pdb is None:
             self.pdb = np.nan
 
-        # Putting the extracted data in a single vaiable to be calles later
+        # Putting the extracted data in a single vaiable to be called later.
         self.extracted_data = [self.id, self.classification, self.sequence, self.pdb]
+
+        # If the indicator is equal to 0, it means no csv file is created and no line has yet been added to it.
+        #  Therefore, we have to create the csv file.
         if self.counter == 0:
             pd.DataFrame([['ID', 'Classification', 'Sequence', 'Folding data']]).to_csv('_'.join(['Families', kingdom_names(file), 'Sequences_Extracted.csv']), header=False, index=False, sep=";")
             self.counter = 1
 
-            
-        
+        # Once the csv file is created, we add the new line of extracted information to the csv file on standby. 
+        # This method also allows us to save some data if the program crashes.
         else:
             with open('_'.join(['Families', kingdom_names(file), 'Sequences_Extracted.csv']), 'a', newline='') as f_object:
                 writer_object = csv.writer(f_object, delimiter=";")
@@ -127,7 +129,7 @@ class Extractor:
         # We then reinitialize the variables so they do not cloud the memory.
         self.reinit()
 
-    # The reinit method is made to reinitialize the variables once they have been added to the array to not cloud the memory.
+    # The reinit method is made to reinitialize the variables once they have been added to the csv file to not cloud the memory.
     def reinit(self):
         self.id = None
         self.classification = None
@@ -173,14 +175,10 @@ for file in list_files:
             extractor.check_parameters(line)
 
             # If the line starts with "//", it means we are at the end of one sequence's information. Therefore, we add it to the
-            # array containing all the information we want to extract.
+            # csv file containing all the information we want to extract.
             if line.startswith('//'):
                 extractor.add(file)
 
-            # To be able to save some data even if the the program shuts down, we add a security save every time we add 100,000 values
-            # to the array. It is added in a temporary folder to not cloud the folder we are in.
-            # Each time we save a file, the information in the last saved file contain the information of the previously saved files
-            # in this folder.
 
     # The rest is optional. It measures the elapsed time between the beginning of the iterations and the end.
     end = time.time()
