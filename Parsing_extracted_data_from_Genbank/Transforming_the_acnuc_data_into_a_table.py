@@ -19,7 +19,7 @@ list_files = os.listdir(data_path)
 # We create a class called Extractor that will serve as a constant variable throughout the extraction loop.
 class Extractor:
 
-    # First, we define the init mehtod that will be used when we first call the extractor and when we will change from one 
+    # First, we define the init method that will be used when we first call the extractor and when we will change from one 
     # file to the next one in the iterations in the parallel folder. We initialize all the variables of the extractor we will be using.
     def init(self):
         self.id = None
