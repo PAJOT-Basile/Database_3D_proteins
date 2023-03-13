@@ -111,8 +111,10 @@ for file in list_files:
             extractor.check_parameters(line)
             if line.startswith('//'):
                 extractor.add()
-            if len(extractor.extracted_data) % 10000 == 0:
-                pd.DataFrame(extractor.end()).to_csv('_'.join(['Families', str(len(extractor.extracted_data)), kingdom_names(file), 'Sequences_Extracted', '.csv']), header=False, index=False)
+            if len(extractor.extracted_data) % 100000 == 0:
+                pd.DataFrame(extractor.end()).to_csv('_'.join([''.join(['Temporary_files/', kingdom_names(file), '/Families']), 
+                                                     str(len(extractor.extracted_data)), kingdom_names(file), 'Sequences_Extracted', '.csv']), 
+                                                     header=False, index=False)
                 print(len(extractor.extracted_data))
             
 
