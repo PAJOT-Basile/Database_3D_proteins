@@ -8,6 +8,7 @@
 import numpy as np
 import os as os
 import pandas as pd
+import csv as csv
 import time as time  # This library is optional. It is used to time several scripts to compare their speed.
 
 
@@ -27,7 +28,9 @@ class Extractor:
         self.pdb = None
         self.temporary_classification = ''
         self.temporary_sequence = ''
-        self.extracted_data = np.array([['ID', 'Classification', 'Sequence', 'Folding data']])
+        self.extracted_data = None
+        self.counter = 0
+        # self.extracted_data = np.array([['ID', 'Classification', 'Sequence', 'Folding data']])
 
     # We then define the contains info method that will be used as a quick verificaiton of the line we are on to see if it contains any 
     # useful information for us to extract. It is a way to win some time to not have to check if each line contains all the information 
@@ -79,7 +82,7 @@ class Extractor:
     # and add the extracted information to the array. The add method checks if we have extracted the
     # information. If we did, we will add this information to the array and if we did not, we will add
     # a np.nan to the array. 
-    def add(self):
+    def add(self, file):
         
         if self.id is None:
             self.id = np.nan
@@ -107,9 +110,19 @@ class Extractor:
         if self.pdb is None:
             self.pdb = np.nan
 
-        # Making a temporary variable that contains the already existing data and to which we will then append the newly-extracted data.
-        self.last_extracted_data = self.extracted_data
-        self.extracted_data =  np.append(self.last_extracted_data, np.array([[self.id, self.classification, self.sequence, self.pdb]]), axis=0)
+        # Putting the extracted data in a single vaiable to be calles later
+        self.extracted_data = [self.id, self.classification, self.sequence, self.pdb]
+        if self.counter == 0:
+            pd.DataFrame([['ID', 'Classification', 'Sequence', 'Folding data']]).to_csv('_'.join(['Families', kingdom_names(file), 'Sequences_Extracted.csv']), header=False, index=False, sep=";")
+            self.counter = 1
+
+            
+        
+        else:
+            with open('_'.join(['Families', kingdom_names(file), 'Sequences_Extracted.csv']), 'a', newline='') as f_object:
+                writer_object = csv.writer(f_object, delimiter=";")
+                writer_object.writerow(self.extracted_data)
+                f_object.close()
 
         # We then reinitialize the variables so they do not cloud the memory.
         self.reinit()
@@ -122,6 +135,7 @@ class Extractor:
         self.pdb = None
         self.temporary_classification = ''
         self.temporary_sequence = ''
+        self.extracted_data = None
 
     # The end method is used to return the extracted data when we are done extracting all the data.
     def end(self):
@@ -161,20 +175,12 @@ for file in list_files:
             # If the line starts with "//", it means we are at the end of one sequence's information. Therefore, we add it to the
             # array containing all the information we want to extract.
             if line.startswith('//'):
-                extractor.add()
+                extractor.add(file)
 
             # To be able to save some data even if the the program shuts down, we add a security save every time we add 100,000 values
             # to the array. It is added in a temporary folder to not cloud the folder we are in.
             # Each time we save a file, the information in the last saved file contain the information of the previously saved files
             # in this folder.
-            if len(extractor.extracted_data) % 100000 == 0:
-                pd.DataFrame(extractor.end()).to_csv('_'.join([''.join(['Temporary_files/', kingdom_names(file), '/Families']), 
-                                                     str(len(extractor.extracted_data)), kingdom_names(file), 'Sequences_Extracted', '.csv']), 
-                                                     header=False, index=False)
-                print(len(extractor.extracted_data))
-            
-    # At the end of the iterations over the document, a csv file is saved containing all the extracted data from the sequence file.
-    pd.DataFrame(extractor.end()).to_csv('_'.join(['Families', kingdom_names(file), 'Sequences_Extracted.csv']), header=False, index=False, sep=";")
 
     # The rest is optional. It measures the elapsed time between the beginning of the iterations and the end.
     end = time.time()
