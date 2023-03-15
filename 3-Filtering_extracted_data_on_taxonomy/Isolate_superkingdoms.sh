@@ -23,16 +23,20 @@ done
 
 
 for ORDER in ${ORDERS}; do
+	echo "Concatenating ${ORDER}"
 	if [[ "${ORDER}" = "Rest" ]]; then
 		cat ${ORDER}_* > ${ORDER}_1
 		grep -v "^ID" ${ORDER}_1* > ${ORDER}_2
+		echo "Filtering duplicates in ${ORDER}"
 		sort ${ORDER}_1 | uniq > Only_${ORDER}_Extracted_Sequences.csv
 		sed -i $"1s/^/ID;Classification;Sequence;Folding data\n/" Only_${ORDER}_Extracted_Sequences.csv
 	else
 		cat ${ORDER}_* > ${ORDER}_1
+		echo "Filtering duplicates in ${ORDER}"
 		sort ${ORDER}_1 | uniq > Only_${ORDER}_Extracted_Sequences.csv
 		sed -i $"1s/^/ID;Classification;Sequence;Folding data\n/" Only_${ORDER}_Extracted_Sequences.csv
 	fi
+	echo "Done for ${ORDER}"
 done
 
 # Removing the construction files
