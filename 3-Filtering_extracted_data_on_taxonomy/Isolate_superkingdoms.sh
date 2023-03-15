@@ -11,7 +11,7 @@ for FILE in $(ls $FOLDER | grep '.csv'); do
 
 	for NAME in ${ORDERS}; do
 	
-		echo "     ${NAME}"
+		echo "    • ${NAME}"
 	
 		if [[ "${NAME}" = "Rest" ]]; then 
 			grep -Ev 'Bacteria|Eukaryota|Archaea' ${PATH_TO_FILE} > Rest_from_Families_${ORDER}_Sequences_Extracted.csv
