@@ -7,7 +7,7 @@ for FILE in $(ls $FOLDER | grep '.csv'); do
 	
 	PATH_TO_FILE="${FOLDER}${FILE}"
 	ORDER=$(echo "${FILE}" | cut -d'_' -f2)
-	echo "Extracting ${ORDER} from:"
+	echo "Extracting from ${ORDER}:"
 
 	for NAME in ${ORDERS}; do
 	
