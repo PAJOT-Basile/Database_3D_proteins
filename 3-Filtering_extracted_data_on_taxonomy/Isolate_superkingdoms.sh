@@ -1,4 +1,4 @@
-# Variable importation 
+# Variable importation
 
 FOLDER=$1
 ORDERS="Bacteria Eukaryota Archaea Rest"
@@ -7,7 +7,7 @@ for FILE in $(ls $FOLDER | grep '.csv'); do
 	
 	PATH_TO_FILE="${FOLDER}${FILE}"
 	ORDER=$(echo "${FILE}" | cut -d'_' -f2)
-	echo $ORDER
+	echo "Extracting ${ORDER} from:"
 
 	for NAME in ${ORDERS}; do
 	
@@ -23,10 +23,17 @@ done
 
 
 for ORDER in ${ORDERS}; do
-	cat ${ORDER}_* > Only_${ORDER}_Extracted_Sequences.csv
-	sed -i $"1s/^/ID;Classification;Sequence;Folding data\n/" Only_${ORDER}_Extracted_Sequences.csv
+	if [[ "${ORDER}" = "Rest" ]]; then
+		cat ${ORDER}_* > ${ORDER}_1
+		grep -v "^ID" ${ORDER}_1* > ${ORDER}_2
+		sort ${ORDER}_1 | uniq > Only_${ORDER}_Extracted_Sequences.csv
+		sed -i $"1s/^/ID;Classification;Sequence;Folding data\n/" Only_${ORDER}_Extracted_Sequences.csv
+	else
+		cat ${ORDER}_* > ${ORDER}_1
+		sort ${ORDER}_1 | uniq > Only_${ORDER}_Extracted_Sequences.csv
+		sed -i $"1s/^/ID;Classification;Sequence;Folding data\n/" Only_${ORDER}_Extracted_Sequences.csv
+	fi
 done
 
 # Removing the construction files
 rm Bacteria* Eukaryota* Archaea* Rest*
-
