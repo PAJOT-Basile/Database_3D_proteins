@@ -1,3 +1,4 @@
+# 1-Acnuc_sequences_Genbank
 This is a storage folder. It contains the data extracted from the Acnuc database.
 
 To be used correctly, you should save the files in this folder with a name similar to this one: 
