@@ -1,3 +1,5 @@
+#! /bin/sh
+
 # Importing variables
 
 FOLDER=$1
