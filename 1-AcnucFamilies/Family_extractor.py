@@ -7,7 +7,7 @@ import shutil as shu
 
 
 # Data path
-data_path = "../0-test"
+data_path = "../1-AcnucFamilies"
 list_files = [file for file in os.listdir(data_path) if file.endswith(".fam")]
 
 
@@ -44,10 +44,11 @@ class Extractor:
                 
 
     def extract_family_name(self, archive_line, file):
-        with open("_".join([os.path.join(kingdom_names(file), archive_line), "sequences.fasta"]), "a") as f:
+        archive_line_stripped = archive_line.strip()
+        with open("_".join([os.path.join(kingdom_names(file), archive_line_stripped), "sequences.fasta"]), "a") as f:
             f.write(archive_line)
             f.close()
-        self.extracting_family = archive_line
+        self.extracting_family = archive_line_stripped
         self.extracting = True
         if self.extracting_superkingdom is None:
             self.extracting_superkingdom = [kingdom_names(file)]
@@ -95,3 +96,5 @@ for line in archive_file:
         print(line_nb)
 
     line_nb += 1
+
+    
