@@ -52,7 +52,7 @@ class Extractor:
         self.extracting = True
         if self.extracting_superkingdom is None:
             self.extracting_superkingdom = [kingdom_names(file)]
-        elif len(self.extracting_superkingdom) == 1:
+        elif len(self.extracting_superkingdom) > 0:
             self.extracting_superkingdom.append(kingdom_names(file))
     
     def extract_sequence_line(self, archive_line):
