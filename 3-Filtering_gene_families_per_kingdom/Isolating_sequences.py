@@ -67,7 +67,7 @@ for reference_file in list_reference_files:
                 if not line.startswith(">") and extractor.extracting:
                     extractor.extracting_sequence_line(line, directory, family_name)
 
-        if line_nb % 1000000 == 0:
+        if line_nb % 500000 == 0:
             print(line_nb)
 
         line_nb += 1
