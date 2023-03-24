@@ -35,11 +35,11 @@ class Extractor:
         elif len(self.extract_sequence_name) > 0:
             self.extracting_family.append(family_name)
 
-    def extracting_sequence_line(self, sequence_line, directory, family_name):
-        with open("_".join([os.path.join(directory, family_name), "sequences_filtered.fasta"])) as f:
-            f.write(sequence_line)
-            f.close()
-
+    def extracting_sequence_line(self, sequence_line, directory):
+        for family_name in self.extracting_family:
+            with open("_".join([os.path.join(directory, family_name), "sequences_filtered.fasta"])) as f:
+                f.write(sequence_line)
+                f.close()
 
 
 
