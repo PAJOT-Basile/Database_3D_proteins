@@ -7,3 +7,6 @@ Therefore, the script `Family_extractor.py` will iterate over the lines in the a
 > KINGDOM being the Super-Kingdom we are working with.
 
 It will make one file per gene family name. It will store the files from each Super-Kingdom in the corresponding folder (created when the script is started).
+
+
+Later, we will also add three files to this folder. We need to extract the `KINGDOM_sequences.mne` files from the ACNUC database. It contains all the names of the sequences that are present in each Super-Kingdom.
