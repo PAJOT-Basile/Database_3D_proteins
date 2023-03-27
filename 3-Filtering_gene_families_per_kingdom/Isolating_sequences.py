@@ -1,6 +1,5 @@
 # Libraries
 import os as os
-from pathlib import Path
 import sys as sys
 
 # Taking into account all the variables that have been passed on by the launcher.
