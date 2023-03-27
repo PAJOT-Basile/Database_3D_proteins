@@ -1,7 +1,8 @@
 #! /bin/bash
 
 DATA_PATH=$1
-LIST_ORDERS="Archaea Bacteria Eukaryota"
+NUMBER_OF_JOBS=$2
+LIST_ORDERS=$(ls -d */)
 
 for ORDER in $LIST_ORDERS; do
 
@@ -14,7 +15,7 @@ for ORDER in $LIST_ORDERS; do
 
     set -- $LIST_FAMILIES
     while (( $# )); do
-        for ((i=0; i<10; i++)); do
+        for ((i=0; i<$NUMBER_OF_JOBS; i++)); do
             [[ $1 ]] && bash Python_launcher.sh $DATA_PATH $ORDER "$1" & shift
         done
         wait
