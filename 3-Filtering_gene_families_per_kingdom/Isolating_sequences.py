@@ -1,13 +1,11 @@
 # Libraries
 import os as os
 from pathlib import Path
-import shutil as shu
+import sys as sys
 
-# Data path
-#directory_path = "../2-Extracting_families_per_kingdom"
-directory_path = "../0-test"
-list_reference_files = [file for file in os.listdir(directory_path) if file.endswith('.mne')]
-
+order = sys.argv[1]
+data_path = sys.argv[2]
+file_name_to_test = sys.argv[3]
 
 
 class Extractor:
@@ -16,65 +14,56 @@ class Extractor:
         self.extracting = False
         self.extracting_family = None
     
+
     def check_sequence(self, reference_sequence, sequence_from_family_file):
         
-        if "".join([">", sequence_from_family_file]) == reference_sequence:
+        if "".join([">", reference_sequence]) == sequence_from_family_file.replace(".", "_"):
             return(True)
         else:
             return(False)
-    
-    def extract_sequence_name(self, sequence_name, directory, family_name):
-        if not Path(directory).is_dir():
-            os.mkdir(directory)
 
-        with open("_".join([os.path.join(directory, family_name), "sequences_filtered.fasta"])) as f:
-            f.write(sequence_name)
+
+    def extract_sequence_name(self, sequence_name, directory, family_name):
+
+        with open("#".join([os.path.join(directory, "".join(["#", family_name])), "sequences_filtered.fasta"]), "a") as f:
+            f.write("".join([">", sequence_name]))
             f.close()
-            self.extracting = True
         
+        self.extracting = True
         if self.extracting_family is None:
             self.extracting_family = [family_name]
         elif len(self.extract_sequence_name) > 0:
             self.extracting_family.append(family_name)
 
-    def extracting_sequence_line(self, sequence_line, directory):
+
+    def extracting_sequence_line(self, sequence_line, directory, family_name):
         for family_name in self.extracting_family:
-            with open("_".join([os.path.join(directory, family_name), "sequences_filtered.fasta"])) as f:
+            with open("#".join([os.path.join(directory, "".join(["#", family_name])), "sequences_filtered.fasta"]), "a") as f:
                 f.write(sequence_line)
                 f.close()
-
 
 
 
 extractor = Extractor()
 extractor.init()
 
+file_to_test = open(os.path.join(data_path, order, file_name_to_test), "r")
+reference_file = open("".join([os.path.join(data_path, order), "_sequences.mne"]), "r")
+family_name = file_name_to_test.split("#")[1]
 
-# Final loop
-for reference_file in list_reference_files:
-    directory = reference_file.split("_")[0]
-    line_nb = 1
-    ref_file = open(os.path.join(directory_path, reference_file), "r")
-    print(directory)
-    for reference_line in ref_file:
-        for file in os.listdir(os.path.join(directory_path, directory)):
-            family_name = file.split("#")[1]
-            file_to_read = open(os.path.join(directory_path, directory, file), "r")
-            for line in file_to_read:
+for line in file_to_test:
 
-                if line.startswith(">") and extractor.extracting:
-                    extractor.init()
+    if line.startswith(">") and extractor.extracting:
+        for reference_line in reference_file:
+            if extractor.check_sequence(reference_line, line):
+                extractor.extract_sequence_name(reference_line, order, family_name)
+            else:
+                extractor.init()
+    
+    if line.startswith(">") and not extractor.extracting:
+        for reference_line in reference_file:
+            if extractor.check_sequence(reference_line, line):
+                extractor.extract_sequence_name(reference_line, order, family_name)
 
-                if line.startswith(">"):
-                    if extractor.check_sequence(reference_line, line):
-                        extractor.extract_sequence_name(line, directory, family_name)
-                        print(f"Match for {family_name} in {directory}.")
-                
-                if not line.startswith(">") and extractor.extracting:
-                    extractor.extracting_sequence_line(line, directory, family_name)
-                    #print(f"Extracting sequence for {family_name}.")
-
-        if line_nb % 100 == 0:
-            print(line_nb)
-
-        line_nb += 1
+    if not line.startswith(">") and extractor.extracting:
+        extractor.extracting_sequence_line(line, order, family_name)
