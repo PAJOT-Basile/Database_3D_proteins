@@ -1,9 +1,11 @@
 # 1- ACNUC Families
 
 
-This folder is a stocking folder. It contains all the names of the gene families from the three super-kingdoms (Bacteria, Eukaryota and Archaea).
-This folder is a stocking folder. The files inside must be named `FamiliesKDNAME.fam` 
+This folder is a storage folder. It contains all the names of the gene families from the three super-kingdoms (Bacteria, Eukaryota and Archaea).
+The files inside must be named `FamiliesKDNAME.fam`.
 > with KDNAME is the kingdom name of the corresponding super-kingdom.
+
+The names ".fam" files are to be extracted from the ACNUC retreival software "raa_query.win".
 
 This folder shall also contain an archive folder called "final_cluster.isoforms.hogenom7.clu.bz2". This archive file can be found at the folllowing link:
  >     ftp://pbil.univ-lyon1.fr/pub/hogenom/release_07/
