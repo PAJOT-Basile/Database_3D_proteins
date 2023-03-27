@@ -27,12 +27,12 @@ for ORDER in $LIST_ORDERS; do
     # We start the Python_launcher.sh script that takes into account the path to the data, the name of the Super-Kingdom and the name of the file to analyse.
     # We also print the file number in the list if it is a multiple of 1000 to keep an idea of where we are.
     while (( $# )); do
-        for ((i=0; i<$NUMBER_OF_JOBS; i++)); do
-            [[ $1 ]] && python3 Isolating_sequences_per_kingdom.py $DATA_PATH $ORDER "$1" & shift
-            if [[ $(File_number % 1000) -eq 0 ]]; do
+        for ((i=0; i<"${NUMBER_OF_JOBS}"; i++)); do
+            [[ $1 ]] && python3 Isolating_sequences_per_kingdom.py $ORDER $DATA_PATH "$1" & shift
+            if [[ $(expr $File_number % 1000) -eq 0 ]]; then
                 echo $File_number
             done
-            File_number=$(( File_number + 1 ))
+            let File_number++
         done
         wait
     done
