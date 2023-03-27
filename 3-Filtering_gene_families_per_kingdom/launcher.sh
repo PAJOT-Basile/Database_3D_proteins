@@ -28,7 +28,7 @@ for ORDER in $LIST_ORDERS; do
     # We also print the file number in the list if it is a multiple of 1000 to keep an idea of where we are.
     while (( $# )); do
         for ((i=0; i<$NUMBER_OF_JOBS; i++)); do
-            [[ $1 ]] && bash Python_launcher.sh $DATA_PATH $ORDER "$1" & shift
+            [[ $1 ]] && python3 Isolating_sequences_per_kingdom.py $DATA_PATH $ORDER "$1" & shift
             if [[ $(File_number % 1000) -eq 0 ]]; do
                 echo $File_number
             done
