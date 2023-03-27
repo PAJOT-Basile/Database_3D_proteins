@@ -6,14 +6,14 @@ The files we obtained in the previous folder [2-Extracting_families_per_kingdom]
 Therefore, we will iterate over each line in each file containing the sequences of each gene family and check each time if it corresponds to a sequence in the corresponding ".mne" file.
 
 Given the amount of lines to go through, we built launchers to multithread tasks. 
-The first one (`Array_maker.sh`) iterates over each file in each Super-Kingdom in the selected folder. It starts running batches of `Python_launcher.sh` files in parallel. The batch size is to be chosen. It is an argument of the file. (I chose to run with 10).
+The first one (`launcher.sh`) iterates over each file in each Super-Kingdom in the selected folder. It starts running batches of `Isolating_sequences_per_kingdom.py` files in parallel. The batch size is to be chosen. It is an argument of the file. (I chose to run with 10).
 
 To run this script, you simply write:
 `
-bash Array_maker.sh ../2-Extracting_families_per_kingdom NUMBER_OF_JOBS
+bash launcher.sh ../2-Extracting_families_per_kingdom NUMBER_OF_JOBS
 `
 > with NUMBER_OF_JOBS being the desired number of jobs that are run in parallel.
 
-Finaly, the `Python_launcher.sh` script just starts the python script called `Isolating_sequences_per_kingdom.py`.
+Finaly, the `Isolating_sequences_per_kingdom.py`.
 It takes as arguments the name of the file to analyse, the path to the ".mne" file in the previous folder and the name of the directory in which to find the file to analyse.
-It uses the same principle as the python file in the previous folder to go throuh all the sequences in the file and extract only the ones we need.
+It uses the same principle as the python file in the previous folder to go through all the sequences in the file and extract only the ones we need.
