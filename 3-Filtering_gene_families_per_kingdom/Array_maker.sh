@@ -6,7 +6,7 @@ LIST_ORDERS=$(ls -d */)
 
 for ORDER in $LIST_ORDERS; do
 
-    #mkdir $ORDER
+    mkdir $ORDER
     File_number=1
     echo $ORDER
 
