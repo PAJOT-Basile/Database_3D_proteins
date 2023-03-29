@@ -1,3 +1,5 @@
+#! /bin/sh
+
 # This script takes into account the path to the previous directory.
 DATA_PATH=$1
 
