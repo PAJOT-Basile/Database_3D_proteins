@@ -1,0 +1,29 @@
+# Libraries
+
+library(dplyr)
+library(ggplot2)
+library(stringr)
+
+Number_of_families_per_kingdom <- read.csv("../Number_of_families_per_superkingdom.csv", sep = ";", header = TRUE) %>% 
+  as.data.frame()
+
+ggplot(data = Number_of_families_per_kingdom, aes(x = Super_kingdom, y = Number_of_families)) +
+  geom_col() +
+  ggtitle("Number of families per Super-Kingdom")
+
+ggsave("Number of families per Super-Kingdom.png")
+
+Number_of_sequences_per_family_list_files <- list.files(path = "../", pattern = "_number_of_sequences_per_family.csv")
+
+for (file in Number_of_sequences_per_family_list_files){
+  
+  order <- str_split_fixed(file, "_", 6)[1]
+  Number_of_sequences_per_family <- read.csv(paste0("../", file), sep = ";", header = TRUE) %>% 
+    as.data.frame()
+  ggplot(data = Number_of_sequences_per_family, aes(x = Family_name, y = Number_of_sequences)) +
+    geom_col() +
+    ggtitle(paste("Number of sequences per family for", order))
+  
+  ggsave(paste0("Number of sequences per family for ", order, ".png"))
+  
+}
