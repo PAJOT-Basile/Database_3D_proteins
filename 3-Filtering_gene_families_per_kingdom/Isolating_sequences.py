@@ -57,7 +57,6 @@ extractor.init()
 # Open the paths to the files. The first one is the file containing all the sequences for one family and the second
 # one contains all the sequence IDs for a Super-Kingdom.
 
-#file_number = 1
 length_list_files = len(list_files)
 for name_file_to_test in tqdm.tqdm(list_files):
 
@@ -84,6 +83,3 @@ for name_file_to_test in tqdm.tqdm(list_files):
         # If the line does not start with ">" and we are extracting, we are in the middle of a sequence. Therefore, we extract the line.
         if not line.startswith(">") and extractor.extracting:
             extractor.extracting_sequence_line(line, order, family_name)
-
-    #print(f"Done with file number {file_number} out of {length_list_files}")
-    #file_number += 1
