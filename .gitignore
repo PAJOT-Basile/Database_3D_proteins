@@ -1,0 +1,16 @@
+1-AcnucFamilies/*.fam
+1-AcnucFamilies/final_clusters.isoforms.hogenom7.clu.bz2
+
+2-Extracting_families_per_kingdom/Archaea/*
+2-Extracting_families_per_kingdom/Bacteria/*
+2-Extracting_families_per_kingdom/Eukaryota/*
+2-Extracting_families_per_kingdom/Archaea*
+2-Extracting_families_per_kingdom/Bacteria*
+2-Extracting_families_per_kingdom/Eukaryota*
+
+3-Filtering_gene_families_per_kingdom/Archaea/*
+3-Filtering_gene_families_per_kingdom/Bacteria/*
+3-Filtering_gene_families_per_kingdom/Eukaryota/*
+
+999-Testing_acnuc_extractions/*
+0-tests/*
