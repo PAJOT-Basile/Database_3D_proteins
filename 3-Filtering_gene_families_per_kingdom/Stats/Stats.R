@@ -44,14 +44,11 @@ for (file in Number_of_sequences_per_family_list_files){
     mutate(id = factor(ID, levels = c("Raw data", "Filtered data"))) %>% 
     ggplot(aes(x = Family_name, y = log(Number_of_sequences))) +
     geom_col(aes(color = log(Number_of_sequences))) +
-    scale_color_gradient(low = "blue", high = "green") +
-    ggtitle(paste0("Number of sequences per family for ", 
-                  nrow(Number_of_sequences_per_family), 
-                  " original families in ", 
-                  order,
-                  "\n(",
-                  nrow(Number_of_sequences_per_family_filtered),
-                  " after filtering families with more than 100 sequences)")) +
+    scale_color_gradient(low = "blue", high = "red") +
+    ggtitle(paste0("Number of sequences per family for ", nrow(Number_of_sequences_per_family), " original families in ", order,
+                  "\n(", nrow(Number_of_sequences_per_family_filtered), " after filtering families with more than 100 sequences)"),
+            subtitle = paste0("(", round( (nrow(Number_of_sequences_per_family_filtered) / nrow(Number_of_sequences_per_family) )*100, digits = 1),
+                              "% families conserved)")) +
     facet_wrap(~id, ncol = 2)
 
   ggsave(paste0("Number of sequences per family for ", order, ".png"))
