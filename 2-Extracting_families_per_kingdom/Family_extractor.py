@@ -1,13 +1,13 @@
 # Libraries
 import bz2 as bz
 import os as os
-import pandas as pd
 from pathlib import Path
 import shutil as shu
+import sys as sys
 
 
 # Data path
-data_path = "../1-AcnucFamilies"
+data_path = sys.argv[1]
 list_files = [file for file in os.listdir(data_path) if file.endswith(".fam")]
 
 

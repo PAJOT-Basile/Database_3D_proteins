@@ -13,4 +13,6 @@ This folder shall also contain an archive folder called "final_cluster.isoforms.
       
 The archive file contains all the sequences form the HOGENOM7 database. The first step will be to extract the files for the family names of each superkingdom (Archaea, Bacteria and Eukaryota).
 
+The "List_superkingdoms.txt" file contains a list of the different kingdoms to run the analyses on.
+
 All the scripts in the following folders (follow the numbers) use the ressource in this folder as a base to run.

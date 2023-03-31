@@ -2,11 +2,11 @@
 
 # This script takes into account the path to the previous directory.
 DATA_PATH=$1
+# Make a list of the Super-Kingdoms to consider.
+LIST_ORDERS="../1-AcnucFamilies/List_superkingdoms.txt"
 
-# It then makes a list of all the directories in that folder to extract the names of all the Super-Kingdoms.
-LIST_ORDERS=$(cd $DATA_PATH | ls -d */)
 # Then, we iterate over the Super-Kingdoms to execute the "Isolating_sequences_per_kingdom.py" for each family in each Super-Kingdom.
-for ORDER in $LIST_ORDERS; do
+for ORDER in $(cat $LIST_ORDERS); do
     
     # We make a file containing all the sequences that are to be checked in the gene family files.
     cat "${DATA_PATH}${ORDER}/*" | grep "^>" | cut -d">" -f2 | sort > "${DATA_PATH}${ORDER}_sequences_in_families.txt"
