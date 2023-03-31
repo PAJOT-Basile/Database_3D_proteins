@@ -24,6 +24,6 @@ p2 <- ggplot(data = Number_of_families_per_kingdom, aes(x = Super_kingdom, y = l
 
 plot_grid(p1, p2, ncol = 2, nrow = 1, labels = c("A", "B"))
 
-ggsave("Stats/Stats per Super-Kingdom after filtration.png")
+ggsave("Stats/Stats per Super-Kingdom after filtration.png", width = 10, height = 7, dpi = 300)
 
 

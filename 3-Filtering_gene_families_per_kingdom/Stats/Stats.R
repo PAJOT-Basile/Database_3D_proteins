@@ -26,7 +26,7 @@ p2 <- ggplot(data = Number_of_families_per_kingdom, aes(x = Super_kingdom, y = l
 
 plot_grid(p1, p2, ncol = 2, nrow = 1, labels = c("A", "B"))
 
-ggsave("Stats per Super-Kingdom.png")
+ggsave("Stats per Super-Kingdom.png", width = 10, height = 7, dpi = 300)
 
 Number_of_sequences_per_family_list_files <- list.files(path = "./", pattern = "_number_of_sequences_per_family.csv")
 
