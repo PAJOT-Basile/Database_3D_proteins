@@ -3,9 +3,8 @@
 # If run before, we clean
 rm *.csv
 
-LIST_ORDERS="Archaea Bacteria Eukaryota"
-
-for ORDER in $LIST_ORDERS; do
+LIST_ORDERS="../../1-AcnucFamilies/List_superkingdoms.txt"
+cat $LIST_ORDERS | while read ORDER; do
 
     echo $ORDER
     # Getting the number of families per Super-Kingdoms

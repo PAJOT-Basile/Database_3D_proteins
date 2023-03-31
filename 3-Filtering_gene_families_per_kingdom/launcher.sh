@@ -6,7 +6,7 @@ DATA_PATH=$1
 LIST_ORDERS="../1-AcnucFamilies/List_superkingdoms.txt"
 
 # Then, we iterate over the Super-Kingdoms to execute the "Isolating_sequences_per_kingdom.py" for each family in each Super-Kingdom.
-for ORDER in $(cat $LIST_ORDERS); do
+cat $LIST_ORDERS | while read ORDER; do
     
     # We make a file containing all the sequences that are to be checked in the gene family files.
     cat "${DATA_PATH}${ORDER}/*" | grep "^>" | cut -d">" -f2 | sort > "${DATA_PATH}${ORDER}_sequences_in_families.txt"

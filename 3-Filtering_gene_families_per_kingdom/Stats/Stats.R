@@ -7,6 +7,8 @@ library(forcats)
 library(cowplot)
 
 
+num_min_seq_per_family <- 3
+
 Number_of_families_per_kingdom <- read.csv("Number_of_families_per_superkingdom.csv", sep = ";", header = TRUE) %>% 
   as.data.frame()
 
@@ -37,7 +39,7 @@ for (file in Number_of_sequences_per_family_list_files){
            ID = "Raw data")
   Number_of_sequences_per_family_filtered <- read.csv(paste0("./", file), sep = ";", header = TRUE) %>% 
     as.data.frame() %>% 
-    filter(Number_of_sequences > 100) %>% 
+    filter(Number_of_sequences > num_min_seq_per_family) %>% 
     mutate(Family_name = fct_reorder(Family_name, desc(Number_of_sequences)),
            ID = "Filtered data")
   rbind(Number_of_sequences_per_family, Number_of_sequences_per_family_filtered) %>% 
@@ -46,7 +48,7 @@ for (file in Number_of_sequences_per_family_list_files){
     geom_col(aes(color = log(Number_of_sequences))) +
     scale_color_gradient(low = "blue", high = "red") +
     ggtitle(paste0("Number of sequences per family for ", nrow(Number_of_sequences_per_family), " original families in ", order,
-                  "\n(", nrow(Number_of_sequences_per_family_filtered), " after filtering families with more than 100 sequences)"),
+                  "\n(", nrow(Number_of_sequences_per_family_filtered), " after filtering families with more than ", num_min_seq_per_family, " sequences)"),
             subtitle = paste0("(", round( (nrow(Number_of_sequences_per_family_filtered) / nrow(Number_of_sequences_per_family) )*100, digits = 1),
                               "% families conserved)")) +
     facet_wrap(~id, ncol = 2)

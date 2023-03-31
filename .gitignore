@@ -12,6 +12,10 @@
 3-Filtering_gene_families_per_kingdom/Bacteria/*
 3-Filtering_gene_families_per_kingdom/Eukaryota/*
 
+4-Filtering_on_number_of_sequences_per_family/Archaea/*
+4-Filtering_on_number_of_sequences_per_family/Bacteria/*
+4-Filtering_on_number_of_sequences_per_family/Eukaryota/*
+
 999-Testing_acnuc_extractions/*
 0-tests/*
 
