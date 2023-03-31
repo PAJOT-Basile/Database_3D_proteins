@@ -37,3 +37,7 @@ done
 
 
 IFS=$DEFAULT_IFS
+
+# Start the new stats scripts to see after filtering on the number of sequences.
+
+bash ./Stats.sh
