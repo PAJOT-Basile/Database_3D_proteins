@@ -13,3 +13,5 @@ To execute the scripts, you just need to write:
 `bash launcher.sh ../2-Extracting_families_per_kingdom`.
 
 This script will create as many folders as there are Super-Kingdoms in your analyse. These folders contain the gene family sequences that have been filtered with this script. It also creates one file per Super-Kingdom in the parallel folder [2-Extracting_families_per_kingdom](https://github.com/BasilePajot/Database_3D_proteins/tree/main/2-Extracting_families_per_kingdom) containing all the sequences IDs that we have in the gene-family files for each Super-Kingdom in this folder.
+
+In addition, the `Stats` foler conntains some basic statistical values about the number of gene families that we have, the number of sequences per family and what would happen if we chose to filter on a certain number of sequences. It also contains the scripts to do this (count the number of sequences and gene families and plots).

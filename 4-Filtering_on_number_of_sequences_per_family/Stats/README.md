@@ -1,0 +1,3 @@
+# Stats
+
+This Stats folder serves the same purpose as the one in the previous folder ([3-Filtering_gene_families_per_kingdom](https://github.com/BasilePajot/Database_3D_proteins/tree/main/3-Filtering_gene_families_per_kingdom)). It is made to remake the general count of gene families and sequences per Super-Kingdoms. The scripts work on the same principle. They are executed by the `filter.sh` script in the parent folder and create the csv files and the graph captures that are in this folder.
