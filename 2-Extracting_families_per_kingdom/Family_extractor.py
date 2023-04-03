@@ -4,6 +4,7 @@ import os as os
 from pathlib import Path
 import shutil as shu
 import sys as sys
+import tqdm as tqdm
 
 
 # Data path
@@ -12,6 +13,10 @@ list_files = [file for file in os.listdir(data_path) if file.endswith(".fam")]
 
 
 list_archive = [file for file in os.listdir(data_path) if file.endswith(".bz2")]
+
+# This is the number of lines in the archive file. You do not really need it. It is a fast way to make a progress bar appear but is not necessary. If you take 
+# it out, make sure to take out the "zip" and the counter that is used in the end loop.
+x=822419022
 
 archive_file = bz.open(os.path.join(data_path, list_archive[0]), "r")
 
@@ -65,9 +70,8 @@ class Extractor:
 extractor = Extractor()
 extractor.init()
 
-line_nb = 1
 # Final loop
-for line in archive_file:
+for line, line_nb in zip(archive_file, tqdm.tqdm(range(x))):
     archive_line = line.decode("utf-8")
 
     if archive_line.startswith('#') and extractor.extracting:
@@ -80,7 +84,6 @@ for line in archive_file:
         for file in list_files:
             
             family_names_per_kingdom = open(os.path.join(data_path, file), "r")
-            #print(f"    {kingdom_names(file)}")
             for family_name in family_names_per_kingdom:
                 if not extractor.check_family_name(family_name, archive_line, file):
                     continue
@@ -91,11 +94,6 @@ for line in archive_file:
     if not archive_line.startswith("#") and extractor.extracting :
         extractor.extract_sequence_line(archive_line)
     
-    
-    if line_nb % 1000000 == 0:
-        print(line_nb)
-
-    line_nb += 1
 
 
 
