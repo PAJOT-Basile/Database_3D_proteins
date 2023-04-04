@@ -11,4 +11,5 @@ It will make one file per gene family name. It will store the files from each Su
 
 Later, we will also add three files to this folder. We need to extract the `KINGDOM_sequences.mne` files from the ACNUC database. It contains all the names of the sequences that are present in each Super-Kingdom.
 
-To run this script, write `python3 Family_extractor.py ../1-AcnucFamilies`.
+To run this script, write `python3 Family_extractor.py ../1-AcnucFamilies`. 
+This step is a long one. It takes a lot of time (8h).
