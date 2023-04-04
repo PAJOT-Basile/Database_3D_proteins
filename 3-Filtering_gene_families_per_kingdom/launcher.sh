@@ -2,6 +2,10 @@
 
 # This script takes into account the path to the previous directory.
 DATA_PATH=$1
+
+# If run before, we clean up the working environment to not mix everything up.
+rm -R Archaea Bacteria Eukaryota
+
 # Make a list of the Super-Kingdoms to consider.
 LIST_ORDERS="../1-AcnucFamilies/List_superkingdoms.txt"
 

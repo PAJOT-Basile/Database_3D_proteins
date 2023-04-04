@@ -57,12 +57,13 @@ class Extractor:
             f.close()
 
 
-#Make the extractor object and initialise it.
+#Make the extractor object.
 extractor = Extractor()
-extractor.init()
 
 # We iterate over each file in the list of files we made earlier.
 for name_file_to_test in tqdm.tqdm(list_files):
+    # We initialise the extractor for each new file.
+    extractor.init()
 
     # Each file to test is opened. 
     file_to_test = open(os.path.join(data_path, order, name_file_to_test), "r")
