@@ -8,7 +8,7 @@ rm -R Archaea Bacteria Eukaryota
 
 # This script takes into account the path to the folder to filter and the minimal number of sequences per gene family to keep.
 DATA_PATH=$1
-LIMIT_NUMBER_SEQUENCES=$2
+LIMIT_NUMBER_SEQUENCES=$(( $2 - 1 ))
 # This file contains a list of the Super-Kingdoms we are working on. We will iterate over these orders.
 LIST_ORDERS="../1-AcnucFamilies/List_superkingdoms.txt"
 
@@ -48,4 +48,4 @@ done
 IFS=$DEFAULT_IFS
 
 # Start the new stats scripts to see the number of sequences after filtering.
-bash ./Stats.sh
+bash ../3-Filtering_gene_families_per_kingdom/Stats/Stats.sh "After"

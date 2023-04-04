@@ -50,4 +50,4 @@ sed -i $"1s/^/Sequence_name;Sequence;Length\n/" family.csv
 rm *.txt
 
 # We run the length verification script.
-python3 ./Verif_sequence_length.py family.csv
+python3 ../../5-Verification_scripts/Verif_sequence_length.py family.csv

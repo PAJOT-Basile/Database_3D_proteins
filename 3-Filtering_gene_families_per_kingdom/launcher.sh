@@ -18,4 +18,4 @@ cat $LIST_ORDERS | while read ORDER; do
     
 done
 
-bash ./Stats/Stats.sh
+bash ./Stats/Stats.sh "Before"
