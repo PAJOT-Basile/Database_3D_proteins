@@ -42,7 +42,7 @@ cat sequences.txt | while read line; do
 done
 
 # We paste the different text files containing the different informations (sequence ID, the sequences and the lengths of the sequences)
-paste sequence_names.txt sequences.txt number_AA.txt| sed "s/ //g" | sed "s/\t//g" > family.csv
+paste sequence_names.txt sequences.txt number_AA.txt| sed "s/ //g" | sed "s/\t//g" | sort > family.csv
 # We add a first header to the created csv file
 sed -i $"1s/^/Sequence_name;Sequence;Length\n/" family.csv
 

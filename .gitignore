@@ -16,6 +16,13 @@
 4-Filtering_on_number_of_sequences_per_family/Bacteria/*
 4-Filtering_on_number_of_sequences_per_family/Eukaryota/*
 
+998-Stats_on_alignment_methods/Data/*
+998-Stats_on_alignment_methods/CLUSTALO/*
+998-Stats_on_alignment_methods/CLUSTALW/*
+998-Stats_on_alignment_methods/PRANK/*
+998-Stats_on_alignment_methods/MUSCLE/*
+998-Stats_on_alignment_methods/MAFFT/*
+
 999-Testing_acnuc_extractions/*
 0-tests/*
 
