@@ -18,6 +18,7 @@ def Convert(df):
 dict=Convert(data)
 # Taking the first value of the sequence length as reference
 length_of_sequence=data["Length"][0]
+print(length_of_sequence)
 
 # We iterate over each line in the dataframe to compare the sequence length to the one chosen as reference.
 for counter, _ in tqdm.tqdm(enumerate(data.index)):
