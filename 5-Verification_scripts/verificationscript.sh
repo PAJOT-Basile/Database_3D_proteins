@@ -43,7 +43,8 @@ done
 DEFAULT_IFS=$IFS
 IFS="."
 read -a readline <<< "$FILE"
-FAM_NAME="${readline[0]}"
+FAM_NAME="${readline[1]}"
+echo $FAM_NAME
 # We paste the different text files containing the different informations (sequence ID, the sequences and the lengths of the sequences)
 paste sequence_names.txt sequences.txt number_AA.txt| sed "s/ //g" | sed "s/\t//g" | sort > ${FAM_NAME}family.csv
 # We add a first header to the created csv file
