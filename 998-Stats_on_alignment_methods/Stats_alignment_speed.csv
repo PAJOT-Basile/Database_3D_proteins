@@ -38,9 +38,9 @@ Number_sequences;Minimum_seq_length_before_alignment;Maximum_seq_length_before_a
 6500;294;571;423;;;85699.213;;;;2363;10
 7001;326;580;420;;;PROBLEM: *** buffer overflow detected ***: terminated at iteration 17;;;;;
 7248;195;391;274;;;12045.6;;;;522;13
-8003;330;576;432;;;rerun with less parallel jobs;;;;;
+8003;330;576;432;;;PROBLEM: *** buffer overflow detected ***: terminated;;;;;
 8502;380;660;462;;;PROBLEM: *** buffer overflow detected ***: terminated at iteration 12;;;;;
-8974;193;860;437;x;;;;;;;
+8974;193;860;437;x;;>176958.498;;;;;
 9525;272;456;343;;;PROBLEM: *** buffer overflow detected ***: terminated at iteration 9;;;;;
 10000;115;255;189;;;;;;;;
 11503;108;200;145;;;;;;;;
