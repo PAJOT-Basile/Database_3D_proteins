@@ -12,7 +12,7 @@ LIST_ORDERS="../1-AcnucFamilies/List_superkingdoms.txt"
 
 echo "Stats:"
 # We iterate over each order to extract several informations from the considered folder in the parent folder
-# Each extracted variable is stored in a text file before being pasted.
+# Each extracted variable is stored in a text file before being pasted
 cat $LIST_ORDERS | while read ORDER; do
 
     echo "    $ORDER"
@@ -31,7 +31,7 @@ cat $LIST_ORDERS | while read ORDER; do
     # Paste the names of each gene family with the number of sequences in the corresponding gene family
     paste  ./Stats/${ORDER}_names_of_families.txt ./Stats/${ORDER}_number_sequences_per_family.txt | sed "s/\t/; /g" > ./Stats/${ORDER}_number_of_sequences_per_family.csv
 
-    # Add a header to the text file and save the result in a csv file
+    # Add a header to the text file and save the result in a csv file.
     sed -i $"1s/^/Family_name;Number_of_sequences\n/" ./Stats/${ORDER}_number_of_sequences_per_family.csv
 
 done

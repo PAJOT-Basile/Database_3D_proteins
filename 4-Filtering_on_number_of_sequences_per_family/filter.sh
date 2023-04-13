@@ -16,7 +16,7 @@ LIST_ORDERS="../1-AcnucFamilies/List_superkingdoms.txt"
 cat $LIST_ORDERS | while read ORDER; do
 
     echo $ORDER
-    # We create a folder for each Super-Kingdom.
+    # We create a folder for each Super-Kingdom
     mkdir $ORDER
 
     # We consider the previously created csv file contining the number of sequences per gene family to filter. We iterate over the lines and test each one
@@ -44,7 +44,7 @@ cat $LIST_ORDERS | while read ORDER; do
     done
 done
 
-# We reset the default IFS
+# We reset the default IFS.
 IFS=$DEFAULT_IFS
 
 # Start the new stats scripts to see the number of sequences after filtering

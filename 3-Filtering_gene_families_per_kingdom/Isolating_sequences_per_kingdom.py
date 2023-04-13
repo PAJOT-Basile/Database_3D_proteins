@@ -18,7 +18,7 @@ file_sequences_families = [line.strip().replace(".", "_") for line in open("".jo
 # We take the intersection of the two lists. It allows to check less sequence IDs
 intersection_of_files = list(set(reference_file) & set(file_sequences_families))
 
-# We create a function that converts a list into a hash dictionnary that takes the hash of each sequence ID as a key.
+# We create a function that converts a list into a hash dictionnary that takes the hash of each sequence ID as a key
 def Convert(lst):
     res_dct = {hash(lst[i]): i for i in range(len(lst))}
     return(res_dct)
@@ -65,13 +65,13 @@ for name_file_to_test in tqdm.tqdm(list_files):
     # We initialise the extractor for each new file
     extractor.init()
 
-    # Each file to test is opened. 
+    # Each file to test is opened
     file_to_test = open(os.path.join(data_path, order, name_file_to_test), "r")
     # Each gene family name is extracted to be used to name the newly-created files containing the sequences that are present in each Super-Kingdom
     family_name = name_file_to_test.split("#")[1]
 
     # This loop iterates over each line in the gene family file. It tests several parameters. Each new sequence strats with ">". Therefore, for each
-    # line like this we will test if the sequence ID matches one from the ".mne" file
+    # line like this we will test if the sequence ID matches one from the ".mne" file.
     for line in file_to_test:
 
         # If the line starts with ">" and we are extracting, we have finished extracting one sequence and we are looking at a new one. We have to 

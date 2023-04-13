@@ -20,7 +20,7 @@ list_archive = [file for file in os.listdir(data_path) if file.endswith(".bz2")]
 # it out, make sure to take out the "zip" and the counter that is used in the end loop
 x=822419022
 
-# We open the archive file.
+# We open the archive file
 archive_file = bz.open(os.path.join(data_path, list_archive[0]), "r")
 
 # We make a "kingdom_names" function allowing us to extract the Super-Kingdom names from the file name
@@ -64,7 +64,7 @@ class Extractor:
             f.write(archive_line)
             f.close()
         # We set the "extracting_family" parameter to the name of the gene family we are extracting to be able to save this name when we will no longer
-        # be reading the corresponding line in the archive file.
+        # be reading the corresponding line in the archive file
         self.extracting_family = archive_line_stripped
         self.extracting = True
         
@@ -119,9 +119,3 @@ for line, line_nb in zip(archive_file, tqdm.tqdm(range(x))):
     # Therefore, we extract each line in the gene family using the "extract_sequence_line" method
     if not archive_line.startswith("#") and extractor.extracting :
         extractor.extract_sequence_line(archive_line)
-    
-
-
-
-
-

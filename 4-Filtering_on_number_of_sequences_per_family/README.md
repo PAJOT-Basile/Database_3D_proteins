@@ -1,4 +1,4 @@
-# 4-Filtering on number of sequences per family
+# 4-Filtering_on_number_of_sequences_per_family
 
 This folder contains the scripts and the resulting data of the filtering of gene families that have more sequences than a selected number.
 
