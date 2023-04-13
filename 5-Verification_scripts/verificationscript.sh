@@ -40,14 +40,18 @@ echo "$(tail -n+2 sequences.txt | sed 's/ //g')" > sequences.txt
 cat sequences.txt | while read line; do
 	echo ";${#line}" >> number_AA.txt
 done
-
+DEFAULT_IFS=$IFS
+IFS="."
+read -a readline <<< "$FILE"
+FAM_NAME="${readline[1]}"
+echo $FAM_NAME
 # We paste the different text files containing the different informations (sequence ID, the sequences and the lengths of the sequences)
-paste sequence_names.txt sequences.txt number_AA.txt| sed "s/ //g" | sed "s/\t//g" | sort > family.csv
+paste sequence_names.txt sequences.txt number_AA.txt| sed "s/ //g" | sed "s/\t//g" | sort > ${FAM_NAME}family.csv
 # We add a first header to the created csv file
-sed -i $"1s/^/Sequence_name;Sequence;Length\n/" family.csv
+sed -i $"1s/^/Sequence_name;Sequence;Length\n/" ${FAM_NAME}family.csv
 
 # We clean up the temporaraly used text files
 rm *.txt
 
 # We run the length verification script.
-python3 ../../5-Verification_scripts/Verif_sequence_length.py family.csv
+python3 ../../../5-Verification_scripts/Verif_sequence_length.py ${FAM_NAME}family.csv
