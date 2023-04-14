@@ -14,6 +14,7 @@ FAMILY_NAME="${readline[0]}"
 IFS=$DEFAULT_IFS
 
 # We also define two local variable that will be used in the transformation
+extracting="no"
 first_line_seq="yes"
 
 # We iterate over the lines of the file and add each line differently to a text file
