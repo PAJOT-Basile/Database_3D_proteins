@@ -3,7 +3,7 @@ import sys as sys
 import pandas as pd
 import tqdm as tqdm
 
-# This file uses the path to the file to analyse as input. It must be a csv file and have semicolons as separators
+# This file uses the path to the file to analyse as input. It must be a csv file and have semicolons as separators.
 File_path=sys.argv[1]
 
 # Read the input file
@@ -18,8 +18,9 @@ def Convert(df):
 dict=Convert(data)
 # Taking the first value of the sequence length as reference
 length_of_sequence=data["Length"][0]
+print(length_of_sequence)
 
-# We iterate over each line in the dataframe to compare the sequence length to the one chosen as reference.
+# We iterate over each line in the dataframe to compare the sequence length to the one chosen as reference
 for counter, _ in tqdm.tqdm(enumerate(data.index)):
 
     # If the length of the sequence is not the same, we print the sequence name

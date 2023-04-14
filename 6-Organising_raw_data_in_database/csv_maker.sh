@@ -1,17 +1,25 @@
 #! /bin/sh
 
-# If run before, we clean up the working environment to not mix everything up
-rm *.csv
+# We save the default IFS here for this script given we will modify it
+DEFAULT_IFS=$IFS
 
-# This script takes as argument the path to the aligned sequences to verify. We also define two local variable that will be used in the transformation
-FILE=$1
-extracting="no"
+# We take into account the path to the folder containing the file to transform from fasta to csv and the name of the fasta file
+DATA_PATH=$1
+FASTA_FILE=$2
+
+# To extract the name of the gene family, we extract cut the fasta file name using "." as a separator and take the family name
+IFS="."
+read -a readline <<< "$FASTA_FILE"
+FAMILY_NAME="${readline[0]}"
+IFS=$DEFAULT_IFS
+
+# We also define two local variable that will be used in the transformation
 first_line_seq="yes"
 
 # We iterate over the lines of the file and add each line differently to a text file
-cat $FILE | while read line; do
+cat $DATA_PATH$FASTA_FILE | while read line; do
 
-	# If the line starts with ">", we have a new sequence ID so, we extract it and add it to the file containing all the sequence IDs
+    # If the line starts with ">", we have a new sequence ID so, we extract it and add it to the file containing all the sequence IDs
 	# We also change the local variable "first_line_seq" to "yes" to sqy that we extracted the sequence ID, so the next line to extract
 	# is the first line of a sequence. Therefore, it will have special treatment
 	if [[ $line = ">"* ]]; then
@@ -24,7 +32,7 @@ cat $FILE | while read line; do
 	elif [[ $line != ">"* ]] && [[ $first_line_seq = "y"* ]]; then
 		echo $line | tr "\n" " " | sed "s/^/\n/g" >> sequences.txt
 		first_line_seq="no"
-	# If the line we are extracting is not the first line of a sequence, then we simply extract it and change the back to the line into
+	# If the line we are extracting is not the first line of a sequence, then we simply extract it and change the back to the line into.
 	# a space to paste all the bits of sequences into one line
 	elif [[ $line != ">"* ]] && [[ $first_line_seq = "n"* ]]; then
 		echo $line | tr "\n" " " >> sequences.txt
@@ -32,7 +40,7 @@ cat $FILE | while read line; do
 
 done
 
-# We take out the first line of the file given with the method used earlier, we added a back to the line at the beginning of every.
+# We take out the first line of the file given with the method used earlier, we added a back to the line at the beginning of every 
 # first sequence line. Therefore, the first line of the file is an empty line
 echo "$(tail -n+2 sequences.txt | sed 's/ //g')" > sequences.txt
 
@@ -40,18 +48,13 @@ echo "$(tail -n+2 sequences.txt | sed 's/ //g')" > sequences.txt
 cat sequences.txt | while read line; do
 	echo ";${#line}" >> number_AA.txt
 done
-DEFAULT_IFS=$IFS
-IFS="."
-read -a readline <<< "$FILE"
-FAM_NAME="${readline[1]}"
-echo $FAM_NAME
 # We paste the different text files containing the different informations (sequence ID, the sequences and the lengths of the sequences)
-paste sequence_names.txt sequences.txt number_AA.txt| sed "s/ //g" | sed "s/\t//g" | sort > ${FAM_NAME}family.csv
+paste sequence_names.txt sequences.txt number_AA.txt| sed "s/ //g" | sed "s/\t//g" | sort > $DATA_PATH${FAMILY_NAME}.csv
 # We add a first header to the created csv file
-sed -i $"1s/^/Sequence_name;Sequence;Length\n/" ${FAM_NAME}family.csv
+sed -i $"1s/^/Sequence_name;Sequence;Length\n/" $DATA_PATH${FAMILY_NAME}.csv
 
 # We clean up the temporaraly used text files
 rm *.txt
 
-# We run the length verification script
-python3 ../../../5-Verification_scripts/Verif_sequence_length.py ${FAM_NAME}family.csv
+
+IFS=$DEFAULT_IFS
