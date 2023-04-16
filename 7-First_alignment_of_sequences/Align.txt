@@ -30,7 +30,7 @@ cat ${LIST_ORDERS} | while read ORDER; do
         # On mesure la difference de temps entre avant et apres pour calculer la duree
         time_difference=$(( time_after - time_before ))
         echo $time_difference
-        # Puis on lance un script python qui va completer le fichier 
+        # Puis on lance un script python qui va completer le fichier csv.
         python3 timer.py ${DATA_PATH}${ORDER}/${FAMILY}/ $time_difference
         fi
     done

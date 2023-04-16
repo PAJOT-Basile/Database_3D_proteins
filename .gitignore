@@ -33,3 +33,5 @@ Database*
 
 *.pdf
 .Rproj.user
+
+rename.sh
