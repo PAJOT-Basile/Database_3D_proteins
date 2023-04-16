@@ -61,4 +61,3 @@ Number_sequences;Minimum_seq_length_before_alignment;Maximum_seq_length_before_a
 72241;60;629;299;;;PROBLEM: Segmentation  fault (core dumped);10591.782;;;;;;
 120475;95;530;269;;;PROBLEM: Segmentation  fault (core dumped);;;;;;;
 188341;109;443;247;;189072.908;PROBLEM: Segmentation  fault (core dumped);;;;;;;2316
->>>>>>> Stashed changes;;;;;;;;;;;;;

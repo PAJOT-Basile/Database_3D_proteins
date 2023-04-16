@@ -16,6 +16,9 @@
 4-Filtering_on_number_of_sequences_per_family/Bacteria/*
 4-Filtering_on_number_of_sequences_per_family/Eukaryota/*
 
+6-Organising_raw_data_in_database/sequence_names.txt
+6-Organising_raw_data_in_database/sequences.txt
+
 998-Stats_on_alignment_methods/Data/*
 998-Stats_on_alignment_methods/CLUSTALO/*
 998-Stats_on_alignment_methods/CLUSTALW/*
@@ -30,3 +33,5 @@ Database*
 
 *.pdf
 .Rproj.user
+
+rename.sh
