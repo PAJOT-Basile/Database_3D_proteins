@@ -33,16 +33,17 @@ function ProgressBar {
 # We iterate over each Super-Kingdoms to test the number of sequences. If there are enough, we copy the gene family file from the previous folder to this one
 cat $LIST_ORDERS | while read ORDER; do
 
-    echo $ORDER
+    printf "\n$ORDER"
     # We create a folder for each Super-Kingdom
     mkdir $ORDER
 
-    # The two following variables are used to define and use the progress bar
-    data_length=$(wc -l $DATA)
-    counter=1
-
     # We consider the previously created csv file contining the number of sequences per gene family to filter. We iterate over the lines and test each one
     FILE_TO_FILTER="${DATA_PATH}Stats/${ORDER}_number_of_sequences_per_family.csv"
+    
+    # The two following variables are used to define and use the progress bar.
+    data_length=$(wc -l $FILE_TO_FILTER)
+    counter=1
+
     cat $FILE_TO_FILTER | while read LINE; do 
         
         # We implement the progress bar to the code
@@ -69,7 +70,7 @@ cat $LIST_ORDERS | while read ORDER; do
     done
 done
 
-# We reset the default IFS.
+# We reset the default IFS
 IFS=$DEFAULT_IFS
 
 # Start the new stats scripts to see the number of sequences after filtering
