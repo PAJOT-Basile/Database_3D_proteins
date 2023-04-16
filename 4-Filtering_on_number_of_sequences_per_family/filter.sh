@@ -12,6 +12,24 @@ LIMIT_NUMBER_SEQUENCES=$(( $2 - 1 ))
 # This file contains a list of the Super-Kingdoms we are working on. We will iterate over these orders
 LIST_ORDERS="../1-AcnucFamilies/List_superkingdoms.txt"
 
+# Create a progress bar function to show how we advance in the progress as it is a long process
+function ProgressBar {
+    # The first variable calculates the percentage of advancement of the process taking into account the beginning and the end of the process to follow
+    let _progress=(${1}*100/${2}*100)/100
+    # The second variable transforms the advancement of the progress into a number between 1 and 40 to represent it using "#" in the progress bar
+    let _done=(${_progress}*4)/10
+    # The _left variable takes the complementary number to 40 to be able to fill the empty spots with "-" when the progress bar is loaded
+    let _left=40-$_done
+    # The "_fill" and "_empty" variables are used to get the number of times we will print each character
+    _fill=$(printf "%${_done}s")
+    _empty=$(printf "%${_left}s")
+    total_files=${2}
+
+    # Once all of this is done, we print the progress bar
+    printf "\rProgress : [${_fill// /#}${_empty// /-}] ${_progress}%%; doing file number ${1}/$((total_files-1))."
+
+}
+
 # We iterate over each Super-Kingdoms to test the number of sequences. If there are enough, we copy the gene family file from the previous folder to this one
 cat $LIST_ORDERS | while read ORDER; do
 
@@ -19,10 +37,17 @@ cat $LIST_ORDERS | while read ORDER; do
     # We create a folder for each Super-Kingdom
     mkdir $ORDER
 
+    # The two following variables are used to define and use the progress bar
+    data_length=$(wc -l $DATA)
+    counter=1
+
     # We consider the previously created csv file contining the number of sequences per gene family to filter. We iterate over the lines and test each one
     FILE_TO_FILTER="${DATA_PATH}Stats/${ORDER}_number_of_sequences_per_family.csv"
     cat $FILE_TO_FILTER | while read LINE; do 
         
+        # We implement the progress bar to the code
+        ProgressBar ${counter} ${data_length}
+
         # If the line starts with "Family_name", it is the header, so we continue
         if [[ $LINE = "Family_name"* ]]; then
             continue
