@@ -6,7 +6,7 @@ rm -r ../0-tests/Database/*/*/2-* ./Alignment_speeds.csv
 # We take into account the path to the parallel folder that contains the files to organise in the database
 DATA_PATH=$1
 # We take into account the method we want to use to make one script able to all the wanted alignments
-METHOD=$2
+METHOD=$(echo $2 | tr '[:lower:]' '[:upper:]')
 
 # We create a progress bar function to show how we advance in the progress as it is a long process
 function ProgressBar {
@@ -105,6 +105,9 @@ cat ${LIST_ORDERS} | while read ORDER; do
             t_coffee -in=${DATA_PATH}${ORDER}/${FAMILY}/1-Raw_data/${FAMILY}.fasta -output=${DATA_PATH}${ORDER}/${FAMILY}/2-Rough_alignment/${FAMILY}_aligned.fasta
             wait
             time_ater=$(date "+%d%H%M%S")
+        else
+            printf "Method $METHOD is not known. Please choose one of the following: MAFFT, MUSCLE, CLUSTAL_OMEGA, CLUSTALW, PRANK, T_COFFEE"
+            break 2
         fi
 
         # We measure the time difference between the beginning and the end of the alignment process
