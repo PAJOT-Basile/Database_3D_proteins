@@ -25,6 +25,7 @@
 998-Stats_on_alignment_methods/PRANK/*
 998-Stats_on_alignment_methods/MUSCLE/*
 998-Stats_on_alignment_methods/MAFFT/*
+998-Stats_on_alignment_methods/Stats_alignment_speeds.csv
 
 999-Testing_acnuc_extractions/*
 0-tests/*
