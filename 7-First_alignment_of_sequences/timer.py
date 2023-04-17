@@ -5,6 +5,7 @@ import subprocess as subprocess
 
 data_path = sys.argv[0]
 duration_time = sys.argv[1]
+method = sys.argv[2]
 
 print("Data Path:", data_path)
 family_name = data_path.split("/")[1]
@@ -72,6 +73,6 @@ sequence_length_after_alingment = subprocess.check_output("./measure_seq_length.
 sequence_length_after_alingment = head[1].split(";")[2]'''
 
 with open("./Alignment_speeds.csv", "a") as f:
-    f.write(";".join([Number_seq, Min_length, Max_length, Mean_length, normalised_time, sequence_length_after_alingment]))
+    f.write(";".join([Number_seq, Min_length, Max_length, Mean_length, normalised_time, method, sequence_length_after_alingment]))
     f.close()
 

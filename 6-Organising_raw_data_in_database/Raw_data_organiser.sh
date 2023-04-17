@@ -27,7 +27,7 @@ function ProgressBar {
 cat $LIST_ORDERS | while read ORDER; do
 
     # First, we make a folder for each Super-Kingdom. We will fill them in the following steps
-    echo $ORDER
+    printf "\n$ORDER"
     mkdir ../Database/$ORDER
 
     # We use this file we made in the previous step to extract all the family names
@@ -37,7 +37,7 @@ cat $LIST_ORDERS | while read ORDER; do
     data_length=$(wc -l $DATA)
     counter=1
 
-    # We iterate over the lines in the csv file containing all the family names
+    # We iterate over the lines in the csv file containing all the family names.
     cat $DATA | while read line; do
 
         # We implement the progress bar to the code
