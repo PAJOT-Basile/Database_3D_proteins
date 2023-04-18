@@ -7,7 +7,7 @@ import csv as csv
 
 data_path = sys.argv[1]
 order = sys.argv[2]
-method = sys.argv[3]  # Can be one of "product", "simple", "complex"
+method = sys.argv[3]  # Can be one of "simple" or "complex"
 
 
 class QualityEvaluator:
@@ -76,20 +76,17 @@ class QualityEvaluator:
                 if method == "complex":
                     self.sequence_gaps += 1
             self.nb_sites_tot += 1
+            self.sequence_lengths.append(len(self.sequence_untouched))
+
         if method == "complex":
             self.scores_file.append(self.sequence_gaps)
-            self.sequence_lengths.append(len(self.sequence_modif))
        
     
     def score_file(self, method):
-        if method == "product":
+        if method == "simple":
             return([self.family_name, self.number_sequences,
                     (self.nb_sites_tot / self.number_sequences),
-                    (self.nb_gaps / (self.nb_sites_tot * self.number_sequences))])
-        elif method == "simple":
-            return([self.family_name, self.number_sequences,
-                    (self.nb_sites_tot / self.number_sequences),
-                    (self.nb_gaps / self.nb_sites_tot )])
+                    (self.nb_gaps / (max(self.sequence_lengths) * self.number_sequences))])
         elif method == "complex":
             self.scores = 0
             for score in self.scores_file:
@@ -97,6 +94,8 @@ class QualityEvaluator:
             return([self.family_name, self.number_sequences,
                     (self.nb_sites_tot / self.number_sequences),
                     (self.scores / max(self.sequence_lengths))])
+        else:
+            print("The method you requested is not recognised. Please chose in the following: 'simple' or 'complex'.")
 
             
 
@@ -108,7 +107,7 @@ for family in tqdm.tqdm(list_families):
     qualityeval = QualityEvaluator(family_name)
     qualityeval.evaluate(os.path.join(data_path, order, family), method)
     score = qualityeval.score_file(method)
-    with open("".join(["./csvs/Evaluation_scores_", order, ".csv"]), "a") as f:
+    with open("".join(["./csvs/Evaluation_scores_", order, "_", method, ".csv"]), "a") as f:
         wr = csv.writer(f, delimiter=";")
         wr.writerows([score])
         f.close()
