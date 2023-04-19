@@ -6,7 +6,7 @@ DATA_PATH=$1
 METHOD=$2
 
 # Chose the action you want to do
-read -r -p "What do you want to do (evaluate, filter or both) ?" ACTION
+read -r -p "What do you want to do (evaluate, filter or both) ? " ACTION
 ACTION_TO_DO=$(echo $ACTION | tr "[:lower:]" "[:upper:]")
 
 if [[ $ACTION_TO_DO = "E"* ]]; then

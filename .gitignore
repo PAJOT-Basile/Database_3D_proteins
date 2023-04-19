@@ -21,8 +21,10 @@
 5-Taking_out_gaps_in_sequences/Eukaryota/*
 
 
-6-Filtering_sequences_on_their_quality/*csv
 6-Filtering_sequences_on_their_quality/csvs/*
+6-Filtering_sequences_on_their_quality/Archaea/*
+6-Filtering_sequences_on_their_quality/Bacteria/*
+6-Filtering_sequences_on_their_quality/Eukaryota/*
 
 7-Organising_raw_data_in_database/sequence*
 
