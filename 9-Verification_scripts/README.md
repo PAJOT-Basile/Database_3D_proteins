@@ -1,4 +1,4 @@
-# 5-Verification_scripts
+# 9-Verification_scripts
 
 This folder contains the scripts that allow to do some verifications on the sequences once they are aligned.
 

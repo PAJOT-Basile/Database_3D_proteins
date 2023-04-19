@@ -1,4 +1,4 @@
-# 7-First_alignment_of_sequences
+# 8-First_alignment_of_sequences
 
 This folder contains the scripts to do the first alignment of the raw data. This is a fast alignment of all the sequences. We use the _____ alignment method.
 

@@ -19,7 +19,7 @@ class QualityEvaluator:
         self.nb_sites_tot = 0
         self.family_name = family
         self.scores_file = []
-        self.sequence_lengths = []
+        self.sequence_length = None
 
         self.AA_dict = {
             "A": "Alanine",
@@ -57,17 +57,18 @@ class QualityEvaluator:
         self.init()
         for line in open(file, "r"):
 
-            if line.startswith(">") and self.extracting:
-                self.evaluate_seq(method)
-                self.init()
+            if self.extracting:
+                if line.startswith(">"):
+                    self.evaluate_seq(method)
+                    self.init()
+                elif not line.startswith(">"):
+                    self.sequence_untouched += line.replace("\n", "")
+                    self.sequence_modif += line.replace("\n", "").replace("-", "")
 
-            elif line.startswith(">") and not self.extracting:
+            if line.startswith(">") and not self.extracting:
                 self.extracting = True
                 self.number_sequences += 1
-            
-            elif not line.startswith(">") and self.extracting:
-                self.sequence_untouched += line.replace("\n", "")
-                self.sequence_modif += line.replace("\n", "").replace("-", "")
+                            
 
     def evaluate_seq(self, method):
         for site in self.sequence_untouched:
@@ -76,7 +77,8 @@ class QualityEvaluator:
                 if method == "complex":
                     self.sequence_gaps += 1
             self.nb_sites_tot += 1
-            self.sequence_lengths.append(len(self.sequence_untouched))
+        if self.sequence_length is None:
+            self.sequence_length = len(self.sequence_untouched)
 
         if method == "complex":
             self.scores_file.append(self.sequence_gaps)
@@ -86,14 +88,14 @@ class QualityEvaluator:
         if method == "simple":
             return([self.family_name, self.number_sequences,
                     (self.nb_sites_tot / self.number_sequences),
-                    (self.nb_gaps / (max(self.sequence_lengths) * self.number_sequences))])
+                    (self.nb_gaps / (self.sequence_length * self.number_sequences))])
         elif method == "complex":
             self.scores = 0
             for score in self.scores_file:
                 self.scores += score
             return([self.family_name, self.number_sequences,
                     (self.nb_sites_tot / self.number_sequences),
-                    (self.scores / max(self.sequence_lengths))])
+                    (self.scores / self.sequence_length)])
         else:
             print("The method you requested is not recognised. Please chose in the following: 'simple' or 'complex'.")
 
@@ -103,7 +105,7 @@ class QualityEvaluator:
 
 list_families = [family for family in os.listdir(os.path.join(data_path, order))]
 for family in tqdm.tqdm(list_families):
-    family_name = family.split("#")[1]
+    family_name = family.split(".")[0]
     qualityeval = QualityEvaluator(family_name)
     qualityeval.evaluate(os.path.join(data_path, order, family), method)
     score = qualityeval.score_file(method)

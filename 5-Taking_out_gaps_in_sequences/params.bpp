@@ -1,6 +1,5 @@
-# Global variables:
-#DATA =~/Desktop/CLU_009164_0_0
-
+# This file is a parameter file that is taken into account in the bppseqman program.
+# You can find a list of the parameters you can choose in the manual: https://bioweb.pasteur.fr/docs/modules/bppsuite/0.8.0/
 # ---------------
 # Input sequences
 # ---------------
@@ -9,9 +8,7 @@
 # [DNA|RNA|Protein|Generic]
 alphabet=Protein
 
-# The sequence file to use (sequences must be aligned!)
-input.sequence.file=/home/bpajot/Desktop/CLU_009164_0_0.fasta
-
+# The sequence file to use will be given in the script (sequences must be aligned!)
 # The file format:
 input.sequence.format=Fasta()
 
@@ -19,13 +16,12 @@ input.sequence.format=Fasta()
 # Output sequences
 # ----------------
 
-output.sequence.file=/home/bpajot/Desktop/CLU_009164_0_0.fas
-
+# The output sequence file will be given in the script
 # The file format:
 output.sequence.format=Fasta()
 
 # -----------------------
 # Sequences manipulations
 # -----------------------
-#For example (see manual for a detailed list of available options):
-sequence.manip = CoerceToAlignment,KeepComplete(maxGapAllowed=99.3%)
+# For example (see manual for a detailed list of available options):
+# These parameters will be given in the script
