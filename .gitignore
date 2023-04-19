@@ -16,7 +16,15 @@
 4-Filtering_on_number_of_sequences_per_family/Bacteria/*
 4-Filtering_on_number_of_sequences_per_family/Eukaryota/*
 
-6-Organising_raw_data_in_database/sequence*
+5-Taking_out_gaps_in_sequences/Archaea/*
+5-Taking_out_gaps_in_sequences/Bacteria/*
+5-Taking_out_gaps_in_sequences/Eukaryota/*
+
+
+6-Filtering_sequences_on_their_quality/*csv
+6-Filtering_sequences_on_their_quality/csvs/*
+
+7-Organising_raw_data_in_database/sequence*
 
 998-Stats_on_alignment_methods/Data/*
 998-Stats_on_alignment_methods/CLUSTALO/*

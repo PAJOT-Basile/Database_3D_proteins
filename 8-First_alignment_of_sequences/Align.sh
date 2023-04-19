@@ -22,7 +22,7 @@ function ProgressBar {
     total_files=${2}
 
     # Once all of this is done, we print the progress bar
-    printf "\rProgress : [${_fill// /#}${_empty// /-}] ${_progress}%%; doing file number ${1}/$((total_files-1))."
+    printf "\rAligning : [${_fill// /#}${_empty// / }] ${_progress}%%; doing file number ${1}/$((total_files-1))."
 
 }
 
