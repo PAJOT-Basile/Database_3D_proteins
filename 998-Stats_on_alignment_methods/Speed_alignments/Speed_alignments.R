@@ -6,14 +6,14 @@ data <- read.csv("../Stats_alignment_speed.csv", header = TRUE, sep = ";") %>%
   mutate_at(vars(c(Clustalo_user, Clustalo_real, Clustalw, Muscle, Mafft, Prank, T.coffee)), as.numeric) %>% 
   mutate(Length_range = Maximum_seq_length_before_alignment - Minimum_seq_length_before_alignment)
 
-ggplot(data, aes(x = log(Number_sequences))) +
-  geom_smooth(aes(y = Mafft, color = "Mafft"))+
-  geom_smooth(aes(y = Muscle, color = "Muscle")) +
-  geom_smooth(aes(y = Clustalw, color = "ClustalW")) +
-  geom_smooth(aes(y = Clustalo_real, color = "Clustal Omega")) +
+ggplot(data, aes(x = log10(Number_sequences))) +
+  geom_smooth(aes(y = log10(Mafft), color = "Mafft"))+
+  geom_smooth(aes(y = log10(Muscle), color = "Muscle")) +
+  geom_smooth(aes(y = log10(Clustalw), color = "ClustalW")) +
+  geom_smooth(aes(y = log10(Clustalo_real), color = "Clustal Omega")) +
   labs(title = "Alignment time depending on the number of sequences",
-       x = "Number of sequences)",
-       y = "Alignment time) (s)") +
+       x = "Log(Number of sequences)",
+       y = "Log(Alignment time) (s)") +
   scale_color_manual(values = c("blue", "red", "forestgreen", "darkorchid4"))
 
 ggplot(data %>% 
