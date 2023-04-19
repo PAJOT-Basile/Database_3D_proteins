@@ -8,13 +8,16 @@ METHOD=$2
 # Chose the action you want to do
 read -r -p "What do you want to do (evaluate, filter or both) ?" ACTION
 ACTION_TO_DO=$(echo $ACTION | tr "[:lower:]" "[:upper:]")
+
 if [[ $ACTION_TO_DO = "E"* ]]; then
-    $EVALUATION="TRUE"
+    EVALUATION="TRUE"
+    FILTER="FALSE"
 elif [[ $ACTION_TO_DO = "F"* ]]; then
-    $FILTER="TRUE"
+    FILTER="TRUE"
+    EVALUATION="FALSE"
 elif [[ $ACTION_TO_DO = "B"* ]]; then
-    $EVALUATION="TRUE"
-    $FILTER="TRUE"
+    EVALUATION="TRUE"
+    FILTER="TRUE"
 fi
 
 # Importing the list of the order to iterate over
@@ -71,8 +74,15 @@ function Filter() {
         echo $ORDER
         mkdir $ORDER
 
+            # The two following variables are used to define and use the progress bar
+        data_length=$(wc -l ./csvs/Evaluation_scores_${ORDER}_$METHOD.csv)
+        counter=1
+
         # Iterate over the csv to take the family name and copy the according file
         cat ./csvs/Evaluation_scores_${ORDER}_$METHOD.csv | while read line; do
+
+            # We implement the progress bar to the code
+            ProgressBar ${counter} ${data_length}
 
             if [[ $line = "Family_name"* ]]; then
                 continue
@@ -87,14 +97,36 @@ function Filter() {
     done
 }
 
+# Create a progress bar function to show how we advance in the progress as it is a long process
+function ProgressBar {
+    # The first variable is the total number of files to iterate over
+    total_files=${2}
+    # The second variable calculates the percentage of advancement of the process taking into account the beginning and the end of the process to follow
+    let _progress=(${1}*100/$((total_files-1))*100)/100
+    # The third variable transforms the advancement of the progress into a number between 1 and 40 to represent it using "#" in the progress bar
+    let _done=(${_progress}*4)/10
+    # The _left variable takes the complementary number to 40 to be able to fill the empty spots with "-" when the progress bar is loaded
+    let _left=40-$_done
+    # The "_fill" and "_empty" variables are used to get the number of times we will print each character
+    _fill=$(printf "%${_done}s")
+    _empty=$(printf "%${_left}s")
+    
+
+    # Once all of this is done, we print the progress bar
+    printf "\rFiltering : [${_fill// /#}${_empty// / }] ${_progress}%%; doing file number ${1}/$((total_files-1))"
+
+}
+
 
 # If we evaluate, then we evaluate and are asked if we want to filter and if yes, we start filtering
 if [[ $EVALUATION = "T"* ]]; then
     Evaluate ${DATA_PATH} ${LIST_ORDERS} ${METHOD}
-    read -r -p "Do you want to filer the sequences right now (yes or no)? " QUESTION_Q
-    QUESTION=$(echo $QUESTION_Q | tr "[:lower:]" "[:upper:]")
-    if [[ $QUESTION = "Y"* ]]; then
-        FILTER="TRUE"
+    if [[ $FILTER != "T"* ]]; then
+        read -r -p "Do you want to filer the sequences right now (yes or no)? " QUESTION_Q
+        QUESTION=$(echo $QUESTION_Q | tr "[:lower:]" "[:upper:]")
+        if [[ $QUESTION = "Y"* ]]; then
+            FILTER="TRUE"
+        fi
     fi
 fi
 if [[ $FILTER = "T"* ]]; then
