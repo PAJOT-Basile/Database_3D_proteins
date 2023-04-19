@@ -1,0 +1,31 @@
+# Global variables:
+#DATA =~/Desktop/CLU_009164_0_0
+
+# ---------------
+# Input sequences
+# ---------------
+
+# The alphabet to use:
+# [DNA|RNA|Protein|Generic]
+alphabet=Protein
+
+# The sequence file to use (sequences must be aligned!)
+input.sequence.file=/home/bpajot/Desktop/CLU_009164_0_0.fasta
+
+# The file format:
+input.sequence.format=Fasta()
+
+# ----------------
+# Output sequences
+# ----------------
+
+output.sequence.file=/home/bpajot/Desktop/CLU_009164_0_0.fas
+
+# The file format:
+output.sequence.format=Fasta()
+
+# -----------------------
+# Sequences manipulations
+# -----------------------
+#For example (see manual for a detailed list of available options):
+sequence.manip = CoerceToAlignment,KeepComplete(maxGapAllowed=99.3%)
