@@ -1,32 +1,37 @@
-1-AcnucFamilies/*.fam
-1-AcnucFamilies/final_clusters.isoforms.hogenom7.clu.bz2
+01-AcnucFamilies/*.fam
+01-AcnucFamilies/final_clusters.isoforms.hogenom7.clu.bz2
 
-2-Extracting_families_per_kingdom/Archaea/*
-2-Extracting_families_per_kingdom/Bacteria/*
-2-Extracting_families_per_kingdom/Eukaryota/*
-2-Extracting_families_per_kingdom/Archaea*
-2-Extracting_families_per_kingdom/Bacteria*
-2-Extracting_families_per_kingdom/Eukaryota*
+02-Extracting_families_per_kingdom/Archaea/*
+02-Extracting_families_per_kingdom/Bacteria/*
+02-Extracting_families_per_kingdom/Eukaryota/*
+02-Extracting_families_per_kingdom/Archaea*
+02-Extracting_families_per_kingdom/Bacteria*
+02-Extracting_families_per_kingdom/Eukaryota*
 
-3-Filtering_gene_families_per_kingdom/Archaea/*
-3-Filtering_gene_families_per_kingdom/Bacteria/*
-3-Filtering_gene_families_per_kingdom/Eukaryota/*
+03-Filtering_gene_families_per_kingdom/Archaea/*
+03-Filtering_gene_families_per_kingdom/Bacteria/*
+03-Filtering_gene_families_per_kingdom/Eukaryota/*
 
-4-Filtering_on_number_of_sequences_per_family/Archaea/*
-4-Filtering_on_number_of_sequences_per_family/Bacteria/*
-4-Filtering_on_number_of_sequences_per_family/Eukaryota/*
+04-Filtering_on_number_of_sequences_per_family/Archaea/*
+04-Filtering_on_number_of_sequences_per_family/Bacteria/*
+04-Filtering_on_number_of_sequences_per_family/Eukaryota/*
 
-5-Taking_out_gaps_in_sequences/Archaea/*
-5-Taking_out_gaps_in_sequences/Bacteria/*
-5-Taking_out_gaps_in_sequences/Eukaryota/*
+05-Taking_out_gaps_in_sequences/Archaea/*
+05-Taking_out_gaps_in_sequences/Bacteria/*
+05-Taking_out_gaps_in_sequences/Eukaryota/*
 
 
-6-Filtering_sequences_on_their_quality/csvs/*
-6-Filtering_sequences_on_their_quality/Archaea/*
-6-Filtering_sequences_on_their_quality/Bacteria/*
-6-Filtering_sequences_on_their_quality/Eukaryota/*
+06-Filtering_sequences_on_their_quality/csvs/*
+06-Filtering_sequences_on_their_quality/Archaea/*
+06-Filtering_sequences_on_their_quality/Bacteria/*
+06-Filtering_sequences_on_their_quality/Eukaryota/*
 
-7-Organising_raw_data_in_database/sequence*
+07-Optimising_alignment_to_reduce_number_of_sequences/Archaea/*
+07-Optimising_alignment_to_reduce_number_of_sequences/Bacteria/*
+07-Optimising_alignment_to_reduce_number_of_sequences/Eukaryota/*
+07-Optimising_alignment_to_reduce_number_of_sequences/logs/*
+
+08-Organising_raw_data_in_database/sequence*
 
 998-Stats_on_alignment_methods/Data/*
 998-Stats_on_alignment_methods/CLUSTALO/*
