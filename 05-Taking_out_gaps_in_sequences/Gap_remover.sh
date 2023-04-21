@@ -39,7 +39,7 @@ cat $LIST_ORDERS | while read ORDER; do
         # The first one is the path to the input sequence file. It has to be the absolute path to the file.
         # The second one is the absolute path to the output file. We save it in the corresponding Super-Kingdom folder
         # The last parameter is the manipulations to execute on the sequences. See bpp manual for more info: https://bioweb.pasteur.fr/docs/modules/bppsuite/0.8.0/
-        ~/Downloads/bppSuite/bppseqman param=./params.bpp\
+        ~/Downloads/bppSuite/bppseqman param=$HERE/params.bpp\
             input.sequence.file="$HERE/$ORDER/$FAMILY_NAME.fasta"\
             output.sequence.file=$HERE/$ORDER/${FAMILY_NAME}_out.fasta\
             sequence.manip=CoerceToAlignment,KeepComplete\(maxGapAllowed=$THRESH%\)
