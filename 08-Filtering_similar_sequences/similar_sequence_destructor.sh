@@ -82,3 +82,9 @@ cat $LIST_ORDERS | while read ORDER; do
         sem --jobs -2 SSeqDest ${DATA_PATH} ${ORDER} ${FAMILY}
     done  
 done
+
+# Add an exaple file that is used in the README of the project
+if [ ! -d "${DATA_PATH}Archaea/Example/04-Similar_sequences_removed" ]; then
+    mkdir ${DATA_PATH}Archaea/Example/04-Similar_sequences_removed
+    touch ${DATA_PATH}Archaea/Example/04-Similar_sequences_removed/Example_tree.tree
+    touch ${DATA_PATH}Archaea/Example/04-Similar_sequences_removed/Example.fasta

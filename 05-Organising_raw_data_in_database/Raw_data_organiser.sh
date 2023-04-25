@@ -82,3 +82,10 @@ cat $LIST_ORDERS | while read ORDER; do
     done
 done
 printf "\nDone!\n"
+
+# Add an example folder used in the README of the project
+if [ ! -d "../Database/Archaea/Example" ]; then
+    mkdir ../Database/Archaea/Example
+    if [ ! -d "../Database/Archaea/Example/01-Raw_data" ]; then
+        mkdir "../Database/Archaea/Example/01-Raw_data"
+        touch "../Database/Archaea/Example/01-Raw_data/Example.fasta"

@@ -166,3 +166,9 @@ fi
 
 # We print the end of the file
 printf "\nDone !\n"
+
+# Add an exaple file that is used in the README of the project
+if [! -d "${DATA_PATH}Archaea/Example/03-Better_quality"]; then
+    mkdir ${DATA_PATH}Archaea/Example/03-Better_quality
+    touch ${DATA_PATH}Archaea/Example/03-Better_quality/Example.fasta
+fi

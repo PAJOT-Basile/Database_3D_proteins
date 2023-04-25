@@ -51,3 +51,9 @@ cat $LIST_ORDERS | while read ORDER; do
         mv $OUTPUT_PATH $INPUT_PATH
     done
 done
+
+# Add an exaple file that is used in the README of the project
+if [ ! -d "${DATA_PATH}Archaea/Example/02-Gaps_removed"]; then
+    mkdir "${DATA_PATH}Archaea/Example/02-Gaps_removed"
+    touch "${DATA_PATH}Archaea/Example/02-Gaps_removed/Example.fasta"
+fi
