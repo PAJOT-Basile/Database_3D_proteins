@@ -16,22 +16,17 @@
 04-Filtering_on_number_of_sequences_per_family/Bacteria/*
 04-Filtering_on_number_of_sequences_per_family/Eukaryota/*
 
-05-Taking_out_gaps_in_sequences/Archaea/*
-05-Taking_out_gaps_in_sequences/Bacteria/*
-05-Taking_out_gaps_in_sequences/Eukaryota/*
+07-Filtering_sequences_on_their_quality/csvs/*
 
+08-Filtering_similar_sequences/Archaea/*
+08-Filtering_similar_sequences/Bacteria/*
+08-Filtering_similar_sequences/Trees/*
 
-06-Filtering_sequences_on_their_quality/csvs/*
-06-Filtering_sequences_on_their_quality/Archaea/*
-06-Filtering_sequences_on_their_quality/Bacteria/*
-06-Filtering_sequences_on_their_quality/Eukaryota/*
+09-Optimising_alignment_to_reduce_number_of_sequences/Archaea/*
+09-Optimising_alignment_to_reduce_number_of_sequences/Bacteria/*
+09-Optimising_alignment_to_reduce_number_of_sequences/Eukaryota/*
+09-Optimising_alignment_to_reduce_number_of_sequences/logs/*
 
-07-Optimising_alignment_to_reduce_number_of_sequences/Archaea/*
-07-Optimising_alignment_to_reduce_number_of_sequences/Bacteria/*
-07-Optimising_alignment_to_reduce_number_of_sequences/Eukaryota/*
-07-Optimising_alignment_to_reduce_number_of_sequences/logs/*
-
-08-Organising_raw_data_in_database/sequence*
 
 998-Stats_on_alignment_methods/Data/*
 998-Stats_on_alignment_methods/CLUSTALO/*

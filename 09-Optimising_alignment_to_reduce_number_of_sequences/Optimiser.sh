@@ -35,7 +35,7 @@ function ProgressBar {
     
 
     # Once all of this is done, we print the progress bar
-    printf "\rFiltering : |${_fill// /█}${_empty// / }| ${_progress}%%; doing file number ${1}/${total_files})"
+    printf "\rFiltering : |${_fill// /█}${_empty// / }| ${_progress}%%; doing file number ${1}/${total_files}"
 
 }
 
@@ -63,8 +63,7 @@ cat $LIST_ORDERS | while read ORDER; do
         FAMILY_NAME=$(echo $FILE | cut -d"." -f1)
         if [[ $FAMILY_NAME = "CLU_071589_0_1"* ]]; then
             continue
-        fi
-        if [[ $NUM_SEQ -gt $THRESHOLD ]]; then
+        elif [[ $NUM_SEQ -gt $THRESHOLD ]]; then
             printf "\n"
             ~/Downloads/physamp/bppalnoptim param=$HERE/params.bpp \
                     input.sequence.file=$HERE/$ORDER/$FILE \
@@ -72,19 +71,21 @@ cat $LIST_ORDERS | while read ORDER; do
                     method=Diagnostic \
                     comparison=MaxSites
             wait
-            cat ./logs/${ORDER}_${FAMILY_NAME}.out | while read line; do
+            OPTIM_THRESH=0
+            while read line; do
 
                 if [[ $line = "Iteration"* ]]; then
                     continue
                 else
                     NB_SEQ_AFTER_IT=$(echo $line | cut -d" " -f4)
                     if [[ $NB_SEQ_AFTER_IT -lt $THRESHOLD ]]; then
-                        OPTIM_THRESH=$((NB_SEQ_AFTER_IT-1))
-                        break 1
+                         let OPTIM_THRESH=$(( NB_SEQ_AFTER_IT - 1 ))
+                        break
                     fi
                 fi
-            done
+            done < ./logs/${ORDER}_${FAMILY_NAME}.out
 
+            echo $OPTIM_THRESH
             ~/Downloads/physamp/bppalnoptim param=$HERE/params.bpp \
                     input.sequence.file=$HERE/$ORDER/$FILE \
                     output.sequence.file=$HERE/$ORDER/${FAMILY_NAME}_out.fasta \
@@ -96,3 +97,6 @@ cat $LIST_ORDERS | while read ORDER; do
         ((counter+=1))
     done
 done
+
+
+rm bppalnoptim.log

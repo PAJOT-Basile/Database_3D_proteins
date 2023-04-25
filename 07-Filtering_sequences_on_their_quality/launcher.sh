@@ -1,6 +1,6 @@
 #! /bin/sh
 
-# This script takes into account the path to the parallel folder and the method to calculate the gap score
+# This script takes into account the path to the database and the method to calculate the gap score
 # If the method is not given, the default value is "simple"
 DATA_PATH=$1
 METHOD=${2:-"simple"}
@@ -51,7 +51,7 @@ function Evaluate() {
     cat $LIST_ORDERS | while read ORDER; do
 
         # If the script was run before, we remove the evaluation outputs (the csv and the graph)
-        rm -r csvs/*${ORDER}_$METHOD.csv ./*${ORDER}_$METHOD.png
+        rm -r ./csvs/*${ORDER}_$METHOD.csv ./*${ORDER}_$METHOD.png
 
         echo $ORDER
 
@@ -88,12 +88,7 @@ function Filter() {
     # If it is lower, the corresponding gene family file is copied in the local folder.
     cat $LIST_ORDERS | while read ORDER; do
 
-        # If the script was run before, we clean up the folder containing the gene family files
-        rm -r ./$ORDER
         printf "\n$ORDER\n"
-
-        # We create a new Super-Kingdom folder where all the filtered gene family files will be stored
-        mkdir $ORDER
 
         # The two following variables are used to define and use the progress bar
         data_length=$(wc -l ./csvs/Evaluation_scores_${ORDER}_$METHOD.csv)
@@ -114,8 +109,14 @@ function Filter() {
             else
                 GAP_SCORE=$(echo "$line" | cut -d";" -f4 | sed "s/\r//g")
                 FAMILY_NAME=$(echo "$line" | cut -d";" -f1)
+
                 if [ 1 -eq $(echo "${GAP_SCORE} < ${THRESHOLD}" | bc) ]; then
-                    cp $DATA_PATH$ORDER/$FAMILY_NAME.fasta ./$ORDER/$FAMILY_NAME.fasta
+
+                    # If the script was run before, we clean up the folder containing the gene family files and create a new one
+                    rm -r $DATA_PATH$ORDER/$FAMILY_NAME/03-Better_quality
+                    mkdir $DATA_PATH$ORDER/$FAMILY_NAME/03-Better_quality
+
+                    cp $DATA_PATH$ORDER/$FAMILY_NAME/02-Gaps_removed/$FAMILY_NAME.fasta $DATA_PATH$ORDER/$FAMILY_NAME/03-Better_quality/$FAMILY_NAME.fasta
                 fi
             fi
             ((counter+=1))
@@ -129,9 +130,9 @@ function ProgressBar {
     total_files=${2}
     # The second variable calculates the percentage of advancement of the process taking into account the beginning and the end of the process to follow
     let _progress=(${1}*100/$((total_files-1))*100)/100
-    # The third variable transforms the advancement of the progress into a number between 1 and 40 to represent it using "#" in the progress bar.
+    # The third variable transforms the advancement of the progress into a number between 1 and 40 to represent it using "#" in the progress bar
     let _done=(${_progress}*10)/10
-    # The _left variable takes the complementary number to 40 to be able to fill the empty spots with "-" when the progress bar is loaded
+    # The _left variable takes the complementary number to 40 to be able to fill the empty spots with "-" when the progress bar is loaded.
     let _left=100-$_done
     # The "_fill" and "_empty" variables are used to get the number of times we will print each character
     _fill=$(printf "%${_done}s")

@@ -121,18 +121,15 @@ class QualityEvaluator:
 
             
 
-# We make a list of all the gene family files in the parallel folder and iterate over these files.
+# We make a list of all the gene family folders in the database and iterate over these folders.
 list_families = [family for family in os.listdir(os.path.join(data_path, order))]
-for family in tqdm.tqdm(list_families):
-
-    # We exxtract the family name from the gene family filename
-    family_name = family.split(".")[0]
+for family_name in tqdm.tqdm(list_families):
 
     # We define and initialise the quality evaluator
     qualityeval = QualityEvaluator(family_name)
 
-    # We evaluate the file we are iterating over
-    qualityeval.evaluate(os.path.join(data_path, order, family), method)
+    # We evaluate the files contained in the gene family folders we are iterating over
+    qualityeval.evaluate(os.path.join(data_path, order, family_name, "02-Gaps_removed", "".join([family_name, ".fasta"])), method)
     
     # We get the score from said file
     score = qualityeval.score_file(method)
