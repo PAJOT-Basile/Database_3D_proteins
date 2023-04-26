@@ -9,7 +9,8 @@ Each folder has a README.md file presenting a detailed explanation of the files 
 
 Here is how the repository is organised and the steps that were followed during the project.
 
-"Database_3D_proteins
+```
+Database_3D_proteins
 ├── 01-AcnucFamilies
 │   ├── FamiliesArchaea.fam
 │   ├── FamiliesBacteria.fam
@@ -33,7 +34,6 @@ Here is how the repository is organised and the steps that were followed during 
 │   └── Stats
 │       ├── README.md
 │       ├── Stats.R
-│       ├── Stats.Rproj
 │       └── Stats.sh
 ├── 04-Filtering_on_number_of_sequences_per_family
 │   ├── Archaea
@@ -43,8 +43,7 @@ Here is how the repository is organised and the steps that were followed during 
 │   ├── README.md
 │   └── Stats
 │       ├── README.md
-│       ├── Stats.R
-│       └── Stats.Rproj
+│       └── Stats.R
 ├── 05-Organising_raw_data_in_database
 │   ├── csv_maker.sh
 │   ├── Raw_data_organiser.sh
@@ -62,11 +61,9 @@ Here is how the repository is organised and the steps that were followed during 
 ├── 08-Filtering_similar_sequences
 │   ├── Archaea
 │   ├── Bacteria
+│   ├── Fasttree_maker.sh
 │   ├── README.md
-│   ├── similar_sequence_destructor.sh
-│   └── Trees
-│       ├── Archaea
-│       └── Bacteria
+│   └── similar_sequence_destructor.sh
 ├── 09-Optimising_alignment_to_reduce_number_of_sequences
 │   ├── Archaea
 │   ├── Bacteria
@@ -94,11 +91,11 @@ Here is how the repository is organised and the steps that were followed during 
 │   │       ├── 03-Better_quality
 │   │       │   └── Example.fasta
 │   │       └── 04-Similar_sequences_removed
-│   │           ├── Example.fasta
-│   │           └── Example_tree.tree
+│   │           └── Example.fasta
 │   ├── Bacteria
 │   └── Eukaryota
-└── README.md"
+└── README.md
+```
 
 All the folders that have the name Archaea Bacteria or Eukaryota are built in the same way inside the considered directory. Every time the three Super-Kingdoms are in the same folder, they are composed of a list of fasta files containing all the sequences for the different gene families in said Super-Kingdom.
 The only exception is the Database folder. In this folder, the Super-Kingdoms have one subdirectory for each gene family divided into several sub-directories, all looking like the `Example` folder in the Archaea Super-Kingdom.
