@@ -39,22 +39,8 @@ SSeqDest(){
             NB_SEQ=$(grep -c "^>" $DATA_PATH$ORDER/$FAMILY_NAME/03-Better_quality/$FAMILY_NAME.fasta)
             if [[ $NB_SEQ -gt $THRESH_NB_SEQ ]]; then
 
-                # The physam program takes only absolute paths so the three next variables are made to get the absolute path to the input and output
-                # files used in the physam program
-                INPUT_SEQ_PATH=$(readlink -f $DATA_PATH$ORDER/$FAMILY_NAME/03-Better_quality/$FAMILY_NAME.fasta)
-                INPUT_TREE_PATH=$(readlink -f $DATA_PATH$ORDER/$FAMILY_NAME/04-Similar_sequences_removed/$FAMILY_NAME.tree)
-                OUTPUT_PATH=$(echo $(readlink -f $DATA_PATH$ORDER/$FAMILY_NAME/04-Similar_sequences_removed)/$FAMILY_NAME.fasta)
-                
-                # We use the physam program to take out identical sequences in the gene family files and wait for it to have finished
-                ~/Downloads/physamp/bppphysamp alphabet=Protein \
-                            input.sequence.format=Fasta\(\) \
-                            input.sequence.file=$INPUT_SEQ_PATH \
-                            input.method=tree \
-                            input.tree.file=$INPUT_TREE_PATH \
-                            output.sequence.format=Fasta\(\) \
-                            output.sequence.file=$OUTPUT_PATH \
-                            deletion_method=threshold \
-                            threshold=0.01
+                # We make a basic fast tree to use later as input for the physam program and wait for the tree to be done before keeping going on
+                fasttree $DATA_PATH$ORDER/$FAMILY_NAME/03-Better_quality/$FAMILY_NAME.fasta > $DATA_PATH$ORDER/$FAMILY_NAME/04-Similar_sequences_removed/$FAMILY_NAME.tree
                 wait
             else
                 # If the number of sequences is under the selected threshold, we just copy the gene family file

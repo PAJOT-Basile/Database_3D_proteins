@@ -13,7 +13,8 @@ data <- read.csv(paste0("./csvs/Evaluation_scores_", order, "_", method, ".csv")
     mutate(Family_name = fct_reorder(Family_name, desc(Gap_score)),
            Number_sequences = as.numeric(Number_sequences),
            Number_sites = as.numeric(Number_sites),
-           Gap_score = as.numeric(Gap_score))
+           Gap_score = as.numeric(Gap_score)) %>%
+    filter(Family_name != Example)
 
 # We make a first plot that gives the distribution of the gap score in the Super-Kingdom
 plot1 <- ggplot(data, aes(x = Family_name, y = Gap_score)) +

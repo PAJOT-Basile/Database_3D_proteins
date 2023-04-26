@@ -1,4 +1,4 @@
-# 01-ACNUCFamilies
+# 01-AnucFamilies
 
 
 This folder is a storage folder. It contains all the names of the gene families from the three super-kingdoms (Bacteria, Eukaryota and Archaea).
