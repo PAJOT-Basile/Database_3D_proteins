@@ -9,7 +9,7 @@ Each folder has a README.md file presenting a detailed explanation of the files 
 
 Here is how the repository is organised and the steps that were followed during the project.
 
-Database_3D_proteins
+"Database_3D_proteins
 ├── 01-AcnucFamilies
 │   ├── FamiliesArchaea.fam
 │   ├── FamiliesBacteria.fam
@@ -98,7 +98,7 @@ Database_3D_proteins
 │   │           └── Example_tree.tree
 │   ├── Bacteria
 │   └── Eukaryota
-└── README.md
+└── README.md"
 
 All the folders that have the name Archaea Bacteria or Eukaryota are built in the same way inside the considered directory. Every time the three Super-Kingdoms are in the same folder, they are composed of a list of fasta files containing all the sequences for the different gene families in said Super-Kingdom.
 The only exception is the Database folder. In this folder, the Super-Kingdoms have one subdirectory for each gene family divided into several sub-directories, all looking like the `Example` folder in the Archaea Super-Kingdom.
