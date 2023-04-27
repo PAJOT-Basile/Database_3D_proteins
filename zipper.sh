@@ -9,7 +9,7 @@ function ProgressBar {
     # The first variable is the total number of files to iterate over
     total_files=${2}
     # The second variable calculates the percentage of advancement of the process taking into account the beginning and the end of the process to follow
-    let _progress=(${1}*100/$((total_files-1))*100)/100
+    let _progress=(${1}*100/$((total_files))*100)/100
     # The third variable transforms the advancement of the progress into a number between 1 and 40 to represent it using "#" in the progress bar
     let _done=(${_progress}*10)/10
     # The _left variable takes the complementary number to 40 to be able to fill the empty spots with "-" when the progress bar is loaded.
@@ -20,7 +20,7 @@ function ProgressBar {
     
 
     # Once all of this is done, we print the progress bar
-    printf "\rFiltering : |${_fill// /█}${_empty// / }| ${_progress}%%; doing file number ${1}/$((total_files-1))"
+    printf "\rCopying : |${_fill// /█}${_empty// / }| ${_progress}%%; doing file number ${1}/$((total_files))"
 
 }
 
@@ -32,6 +32,7 @@ cat $LIST_ORDERS | while read order; do
     # The two following variables are used to define and use the progress bar
     data_length=$(ls $DATA_PATH$order | wc -l)
     counter=1
+    mkdir Database${order}04/
 
     for fam in $list_fam; do
 
@@ -40,12 +41,11 @@ cat $LIST_ORDERS | while read order; do
 
         if [ -d "$DATA_PATH$order/$fam/04-Similar_sequences_removed" ]; then
             
-            mkdir -p Database${order}03/$fam/03-Better_quality
-            cp $DATA_PATH/${order}/${fam}/03-Better_quality/* Database${order}03/$fam/03-Better_quality
-
-            mkdir Database${order}03/$fam/04-Similar_sequences_removed
-            cp $DATA_PATH/${order}/${fam}/04-Similar_sequences_removed/* Database${order}03/$fam/04-Similar_sequences_removed
+            mkdir -p Database${order}04/$fam/04-Similar_sequences_removed/
+            cp $DATA_PATH/${order}/${fam}/04-Similar_sequences_removed/* Database${order}04/$fam/04-Similar_sequences_removed/
         fi
         ((counter+=1))
     done
 done
+
+printf "\nDone\n"
