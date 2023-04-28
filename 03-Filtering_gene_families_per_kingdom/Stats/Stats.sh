@@ -23,7 +23,7 @@ cat $LIST_ORDERS | while read ORDER; do
     # Count the number of sequences per Super-Kingdom
     cat ${ORDER}/* | grep -c ">" >> ./Stats/Number_sequences.txt
 
-    # Frist extract all the names of the gene families
+    # First extract all the names of the gene families
     grep -c "^>" ${ORDER}/* | cut -d":" -f1 | cut -d"#" -f2 > ./Stats/${ORDER}_names_of_families.txt
     # Then extract the number of sequences in each gene family file
     grep -c "^>" ${ORDER}/* | cut -d":" -f2 > ./Stats/${ORDER}_number_sequences_per_family.txt
@@ -48,7 +48,7 @@ rm ./Stats/*.txt
 if [[ $TIME_TO_FILTRATION == "Before" ]]; then
 
     # Run the R script to create graphs
-    Rscript ../3-Filtering_gene_families_per_kingdom/Stats/Stats.R
+    Rscript ../03-Filtering_gene_families_per_kingdom/Stats/Stats.R
 else
-    Rscript ../4-Filtering_on_number_of_sequences_per_family/Stats/Stats.R
+    Rscript ../04-Filtering_on_number_of_sequences_per_family/Stats/Stats.R
 fi
