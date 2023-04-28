@@ -32,8 +32,8 @@ SSeqDest(){
     FAMILY_NAME=$(echo $FAMILY_PATH | cut -d"/" -f2)
     echo $FAMILY_NAME
 
-    # The gene family folders that have a "03-Better_quality" folder are the ones that have passed the gap score filtering. Therefore, 
-    # we will apply the analysis to these gene families.
+    # The gene family folders that have a "03-Better_quality" folder are the ones that have passed the gap score filtering. Therefore, we will apply 
+    # the analysis to these gene families.
     if [ -d "$DATA_PATH$FAMILY_PATH/03-Better_quality/" ]; then
 
             # We count the number of sequences in the file to compare it to the threshold
@@ -41,8 +41,8 @@ SSeqDest(){
             if [[ $NB_SEQ -gt $THRESH_NB_SEQ ]]; then
 
 
-                # The PhySamp program takes only absolute paths so the three next variables are made to get the absolute path to the 
-                # input and output files used in the PhySamp program
+                # The PhySamp program takes only absolute paths so the three next variables are made to get the absolute path to the input and output
+                # files used in the PhySamp program
                 INPUT_SEQ_PATH=$(readlink -f $DATA_PATH$FAMILY_PATH/03-Better_quality/$FAMILY_NAME.fasta)
                 INPUT_TREE_PATH=$(readlink -f $DATA_PATH$FAMILY_PATH/04-Similar_sequences_removed/$FAMILY_NAME.tree)
                 OUTPUT_PATH=$(echo $(readlink -f $DATA_PATH$FAMILY_PATH/04-Similar_sequences_removed)/$FAMILY_NAME.fasta)

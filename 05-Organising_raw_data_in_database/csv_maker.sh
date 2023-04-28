@@ -56,5 +56,5 @@ sed -i $"1s/^/Sequence_name;Sequence;Length\n/" $DATA_PATH${FAMILY_NAME}.csv
 # We clean up the temporaraly used text files
 rm *.txt
 
-
+# We restore the IFS to the default value
 IFS=$DEFAULT_IFS

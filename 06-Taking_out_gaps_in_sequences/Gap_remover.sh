@@ -29,8 +29,8 @@ cat $LIST_ORDERS | while read ORDER; do
         # We count how many sequences we have in the gene family file
         NSEQ=$(grep -c "^>" $DATA_PATH$ORDER/$FAMILY_NAME/02-Gaps_removed/$FAMILY_NAME.fasta)
 
-        # We use the number of sequences to define a threshold value. This threshold values gives the limit percentage of gaps to leave in the gene
-        # family file. It has to be a percentage
+        # We use the number of sequences to define a threshold value. This threshold values gives the limit percentage of gaps to leave in 
+        # the gene family file. It has to be a percentage
         THRESHOLD=$(echo 0$(echo "scale=7;1-1/$NSEQ" | bc))
         THRESH=$(echo "scale=7;$THRESHOLD*100" | bc)
 
@@ -41,7 +41,8 @@ cat $LIST_ORDERS | while read ORDER; do
         # We execute the bppseqman program that takes into account a parameters file called params.bpp and several other informations
         # The first one is the path to the input sequence file. It has to be the absolute path to the file.
         # The second one is the absolute path to the output file. We save it in the corresponding Super-Kingdom folder
-        # The last parameter is the manipulations to execute on the sequences. See bpp manual for more info: https://bioweb.pasteur.fr/docs/modules/bppsuite/0.8.0/
+        # The last parameter is the manipulations to execute on the sequences. See bpp manual for more info: 
+        # https://bioweb.pasteur.fr/docs/modules/bppsuite/0.8.0/
         ~/Downloads/bppSuite/bppseqman param=$HERE/params.bpp\
             input.sequence.file="$INPUT_PATH"\
             output.sequence.file=$OUTPUT_PATH\

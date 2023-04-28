@@ -5,7 +5,7 @@ library(stringr)
 library(forcats)
 library(cowplot)
 
-# Import the number of families per Super-Kingdom
+# Import the number of families per Super-Kingdom.
 Number_of_families_per_kingdom <- read.csv("./Stats/Number_of_families_per_superkingdom.csv", sep = ";", header = TRUE) %>% 
   as.data.frame()
 
@@ -36,7 +36,7 @@ Number_of_sequences_per_family_list_files <- list.files(path = "./Stats/", patte
 # We will iterate over each Super-Kingdom to do the same process and the same graphs
 for (file in Number_of_sequences_per_family_list_files){
   
-  # Extract the name of the Super-Kingdom
+  # Extract the name of the Super-Kingdom.
   order <- str_split_fixed(file, "_", 6)[1]
 
   # Import the csv file containing the number of sequences per gene family and plot the distribution
@@ -48,7 +48,7 @@ for (file in Number_of_sequences_per_family_list_files){
     scale_color_gradient(low = "blue", high = "red") +
     labs(title = paste("Number of sequences per family for", order))
 
-  # Finaly, we save the plot.
+  # Finaly, we save the plot
   ggsave(paste0("./Stats/Number of sequences per family for ", order, ".png"))
   
 }

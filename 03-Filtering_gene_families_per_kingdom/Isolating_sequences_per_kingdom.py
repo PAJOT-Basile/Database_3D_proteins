@@ -12,7 +12,8 @@ list_files = [file for file in os.listdir(os.path.join(data_path, order)) if fil
 
 # We open the reference file (file that contains all the sequence IDs from the considered Super-Kingdom) and making a list out of the lines
 reference_file = [line.strip() for line in open("".join([os.path.join(data_path, order), "_sequences.mne"]), "r")]
-# In the same way, we make a list out of the file we created in the launcher. It contains all the sequence IDs that are to be checked in this script
+# In the same way, we make a list out of the file we created in the launcher. It contains all the sequence IDs that are to be checked in this 
+# script
 file_sequences_families = [line.strip().replace(".", "_") for line in open("".join([os.path.join(data_path, order), "_sequences_in_families.txt"]), "r")]
 
 # We take the intersection of the two lists. It allows to check less sequence IDs
@@ -67,21 +68,22 @@ for name_file_to_test in tqdm.tqdm(list_files):
 
     # Each file to test is opened
     file_to_test = open(os.path.join(data_path, order, name_file_to_test), "r")
-    # Each gene family name is extracted to be used to name the newly-created files containing the sequences that are present in each Super-Kingdom
+    # Each gene family name is extracted to be used to name the newly-created files containing the sequences that are present in each 
+    # Super-Kingdom.
     family_name = name_file_to_test.split("#")[1]
 
-    # This loop iterates over each line in the gene family file. It tests several parameters. Each new sequence strats with ">". Therefore, for each
-    # line like this we will test if the sequence ID matches one from the ".mne" file.
+    # This loop iterates over each line in the gene family file. It tests several parameters. Each new sequence strats with ">". Therefore, 
+    # for each line like this we will test if the sequence ID matches one from the ".mne" file
     for line in file_to_test:
 
-        # If the line starts with ">" and we are extracting, we have finished extracting one sequence and we are looking at a new one. We have to 
-        # test if the we want to extract the sequence. If the test is positive, we keep going. If not, we re-initailise the extractor and keep moving
-        # forward in the file
+        # If the line starts with ">" and we are extracting, we have finished extracting one sequence and we are looking at a new one. We have 
+        # to test if the we want to extract the sequence. If the test is positive, we keep going. If not, we re-initailise the extractor and 
+        # keep moving forward in the file
         if line.startswith(">") and extractor.extracting:
             extractor.init()
         
-        # If the line starts with ">", and we are not extracting, it means that we have a sequence ID to test. If the test is positive, we extract the
-        # sequence name. If not, we continue
+        # If the line starts with ">", and we are not extracting, it means that we have a sequence ID to test. If the test is positive, we 
+        # extract the sequence name. If not, we continue
         if line.startswith(">") and not extractor.extracting:
             if extractor.check_sequence(line, hash_dict):
                 extractor.extract_sequence_name(line, order, family_name)

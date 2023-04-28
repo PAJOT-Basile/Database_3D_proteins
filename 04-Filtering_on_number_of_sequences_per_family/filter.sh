@@ -16,9 +16,11 @@ LIST_ORDERS="../01-AcnucFamilies/List_superkingdoms.txt"
 function ProgressBar {
     # The first variable is the total number of files to iterate over
     total_files=${2}
-    # The first variable calculates the percentage of advancement of the process taking into account the beginning and the end of the process to follow
+    # The first variable calculates the percentage of advancement of the process taking into account the beginning and the end of the 
+    # process to follow
     let _progress=(${1}*100/$((total_files-1))*100)/100
-    # The second variable transforms the advancement of the progress into a number between 1 and 40 to represent it using "#" in the progress bar
+    # The second variable transforms the advancement of the progress into a number between 1 and 40 to represent it using "#" in the 
+    # progress bar
     let _done=(${_progress}*10)/10
     # The _left variable takes the complementary number to 40 to be able to fill the empty spots with "-" when the progress bar is loaded
     let _left=100-$_done
@@ -31,17 +33,19 @@ function ProgressBar {
 
 }
 
-# We iterate over each Super-Kingdoms to test the number of sequences. If there are enough, we copy the gene family file from the previous folder to this one
+# We iterate over each Super-Kingdoms to test the number of sequences. If there are enough, we copy the gene family file from the previous 
+# folder to this one
 cat $LIST_ORDERS | while read ORDER; do
 
     printf "\n$ORDER\n"
     # We create a folder for each Super-Kingdom
     mkdir $ORDER
 
-    # We consider the previously created csv file contining the number of sequences per gene family to filter. We iterate over the lines and test each one
+    # We consider the previously created csv file contining the number of sequences per gene family to filter. We iterate over the lines 
+    # and test each one
     FILE_TO_FILTER="${DATA_PATH}Stats/${ORDER}_number_of_sequences_per_family.csv"
     
-    # The two following variables are used to define and use the progress bar.
+    # The two following variables are used to define and use the progress bar
     data_length=$(cat $FILE_TO_FILTER | wc -l)
     counter=1
 
@@ -60,7 +64,7 @@ cat $LIST_ORDERS | while read ORDER; do
             FAM_NAME="${readline[0]}"
             NUM_SEQ="${readline[1]}"
 
-            # If the line number is greater than the selected number, we copy the corresponding file
+            # If the line number is greater than the selected number, we copy the corresponding file.
             if [[ $(($NUM_SEQ)) -gt $LIMIT_NUMBER_SEQUENCES ]]; then
                 cp ${DATA_PATH}${ORDER}/\#${FAM_NAME}\#sequences_filtered.fasta ./${ORDER}
             else

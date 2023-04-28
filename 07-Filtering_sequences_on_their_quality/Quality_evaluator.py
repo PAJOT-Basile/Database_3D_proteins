@@ -5,8 +5,8 @@ import tqdm as tqdm
 import csv as csv
 import decimal as dec
 
-# This script takes into account the path to the parallel folder to analyse, the name of the Super-Kingdom to analyse and the gap score calculation method
-# The calculation method can be one of "simple" or "complex"
+# This script takes into account the path to the parallel folder to analyse, the name of the Super-Kingdom to analyse and the gap score
+# calculation method. The calculation method can be one of "simple" or "complex"
 data_path = sys.argv[1]
 order = sys.argv[2]
 method = sys.argv[3]
@@ -68,9 +68,9 @@ class QualityEvaluator:
         # This line contains a sequence name. Therefore, we will start extracting the sequence at the next line so we set the "extracting"
         # parameter to "True" and add one to the sequence counter. The second case is if the "extracting" parameter is set to "True"
         # If this is the case, we have two more cases. The line does not start with ">", which means we are reading part of a 
-        # sequence, therefore we extract it (an additional modification phase is done if we chose the complex method) to only count amino acids
-        # The final case is if the "extracting" parameter is set to "True" and the line starts with ">". It means we are looking at a new sequence name,
-        # so we evaluate the previous sequence and re-initialise the quality evaluator 
+        # sequence, therefore we extract it (an additional modification phase is done if we chose the complex method) to only count amino 
+        # acids. The final case is if the "extracting" parameter is set to "True" and the line starts with ">". It means we are looking at 
+        # a new sequence name, so we evaluate the previous sequence and re-initialise the quality evaluator 
         for line in open(file, "r"):
 
             if self.extracting:

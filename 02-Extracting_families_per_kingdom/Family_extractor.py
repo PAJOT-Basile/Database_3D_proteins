@@ -16,8 +16,8 @@ list_files = [file for file in os.listdir(data_path) if file.endswith(".fam")]
 # In the same way, we make a list of the archive files to be able to extract only the one archive file name from the parallel folder
 list_archive = [file for file in os.listdir(data_path) if file.endswith(".bz2")]
 
-# This is the number of lines in the archive file. You do not really need it. It is a fast way to make a progress bar appear but is not necessary. If you take 
-# it out, make sure to take out the "zip" and the counter that is used in the end loop
+# This is the number of lines in the archive file. You do not really need it. It is a fast way to make a progress bar appear but is 
+# not necessary. If you take it out, make sure to take out the "zip" and the counter that is used in the end loop
 x=822419022
 
 # We open the archive file
@@ -28,8 +28,8 @@ def kingdom_names(file_name):
     kdname = file_name.split(".")[0]
     return(kdname.split("s")[1])
 
-# We iterate over the list of files in the parallel folder to make a new directory for each Super-Kingdom. If the script was run before, it removes the previously
-# created files
+# We iterate over the list of files in the parallel folder to make a new directory for each Super-Kingdom. If the script was run before,
+# it removes the previously created files
 for file in list_files:
     # If run before, we clean up the working environment to not mix everything up
     if Path(kingdom_names(file)).is_dir():
@@ -41,8 +41,8 @@ for file in list_files:
 # We define the "Extractor" class that will be used to extract all the needed sequences and create new files with the extracted data
 class Extractor:
 
-    # Initialise method. It will be used to re-initialise the extractor once the sequence is done being extracted. We define several local variables that
-    # will help us while iterating over the lines in the archive file to know which lines to take and which not to take
+    # Initialise method. It will be used to re-initialise the extractor once the sequence is done being extracted. We define several 
+    # local variables that will help us while iterating over the lines in the archive file to know which lines to take and which not to take
     def init(self):
         self.extracting = False
         self.extracting_family = None
@@ -63,18 +63,19 @@ class Extractor:
         with open("#".join([os.path.join(kingdom_names(file), archive_line_stripped), "sequences.fasta"]), "a") as f:
             f.write(archive_line)
             f.close()
-        # We set the "extracting_family" parameter to the name of the gene family we are extracting to be able to save this name when we will no longer
-        # be reading the corresponding line in the archive file
+        # We set the "extracting_family" parameter to the name of the gene family we are extracting to be able to save this name when 
+        # we will no longer be reading the corresponding line in the archive file
         self.extracting_family = archive_line_stripped
         self.extracting = True
         
-        # We commit to memory the Super-Kingdoms that are being extracted to be able to iterate over them if some gene families are in several Super-Kingdoms
+        # We commit to memory the Super-Kingdoms that are being extracted to be able to iterate over them if some gene families are in 
+        # several Super-Kingdoms
         if self.extracting_superkingdom is None:
             self.extracting_superkingdom = [kingdom_names(file)]
         elif len(self.extracting_superkingdom) > 0:
             self.extracting_superkingdom.append(kingdom_names(file))
     
-    # The "extract_sequence_line" method is used to extract the lines in the considered gene family (sequence IDs and sequences)
+    # The "extract_sequence_line" method is used to extract the lines in the considered gene family (sequence IDs and sequences).
     def extract_sequence_line(self, archive_line):
             for kingdom_to_add_line_to in self.extracting_superkingdom:
                 with open("#".join([os.path.join(kingdom_to_add_line_to, self.extracting_family), "sequences.fasta"]), "a") as f:
@@ -82,7 +83,7 @@ class Extractor:
                     f.close()
 
 
-# we make the Extrator object and intitialise it.
+# we make the Extrator object and intitialise it
 extractor = Extractor()
 extractor.init()
 
@@ -105,9 +106,9 @@ for line, line_nb in zip(archive_file, tqdm.tqdm(range(x))):
             # We open the corresponding "fam" file
             family_names_per_kingdom = open(os.path.join(data_path, file), "r")
             
-            # We iterate over each line of the opened "fam" file to test if the gene family name is one we need to extract thanks to the "check_family_name"
-            # method. If we have a gene family name we have to extract, we use the "extract_family_name" method and exit the loop in the "fam" file 
-            # (each gene family is only present once in each "fam" file)
+            # We iterate over each line of the opened "fam" file to test if the gene family name is one we need to extract thanks 
+            # to the "check_family_name" method. If we have a gene family name we have to extract, we use the "extract_family_name" 
+            # method and exit the loop in the "fam" file (each gene family is only present once in each "fam" file)
             for family_name in family_names_per_kingdom:
                 if not extractor.check_family_name(family_name, archive_line, file):
                     continue

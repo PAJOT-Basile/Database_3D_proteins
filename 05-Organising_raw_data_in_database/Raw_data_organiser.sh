@@ -15,7 +15,8 @@ LIST_ORDERS="../01-AcnucFamilies/List_superkingdoms.txt"
 function ProgressBar {
     # The first variable is the total number of files to iterate over
     total_files=${2}
-    # The second variable calculates the percentage of advancement of the process taking into account the beginning and the end of the process to follow
+    # The second variable calculates the percentage of advancement of the process taking into account the beginning and the end of the process
+    # to follow
     let _progress=(${1}*100/$((total_files-1))*100)/100
     # The third variable transforms the advancement of the progress into a number between 1 and 40 to represent it using "#" in the progress bar
     let _done=(${_progress}*10)/10
@@ -39,7 +40,7 @@ cat $LIST_ORDERS | while read ORDER; do
         mkdir ../Database/$ORDER
     fi
 
-    # We use this file we made in the previous step to extract all the family names.
+    # We use this file we made in the previous step to extract all the family names
     DATA="$DATA_PATH/Stats/${ORDER}_number_of_sequences_per_family.csv"
 
     # The two following variables are used to define and use the progress bar
@@ -56,10 +57,10 @@ cat $LIST_ORDERS | while read ORDER; do
         if [[ $line = "Family_name"* ]]; then 
             continue
 
-        # Otherwise, we extract the family name from the line and create two new directories in the order folder if they do not exist. If they do,
-        # we erase them and start over. One is the one where all the information about one family will be stored and is named after the family 
-        # The other one only contains the raw data (fasta file and a csv file that we make containing the name of the sequence, the sequence and 
-        # the length of this sequence)
+        # Otherwise, we extract the family name from the line and create two new directories in the order folder if they do not exist
+        # If they do, we erase them and start over. One is the one where all the information about one family will be stored and is 
+        # named after the family. The other one only contains the raw data (fasta file and a csv file that we make containing the name 
+        # of the sequence, the sequence and the length of this sequence)
         else
             FAMILY_NAME=$(echo $line | cut -d";" -f1)
             if [ ! -d "../Database/$ORDER/$FAMILY_NAME" ]; then
@@ -71,7 +72,7 @@ cat $LIST_ORDERS | while read ORDER; do
             fi
             mkdir ../Database/$ORDER/$FAMILY_NAME/01-Raw_data
 
-            # Once these directories are created, we copy the fasta file from the parallel folder where we stored it previously in the according 
+            # Once these directories are created, we copy the fasta file from the parallel folder where we stored it previously in the according. 
             # folder in the database
             cp $DATA_PATH/$ORDER/#$FAMILY_NAME#sequences_filtered.fasta ../Database/$ORDER/$FAMILY_NAME/01-Raw_data/$FAMILY_NAME.fasta
 
