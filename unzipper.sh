@@ -1,6 +1,7 @@
 #! /bin/sh
 
 DATA_PATH=$1
+order=$2
 
 LIST_ORDERS="./01-AcnucFamilies/List_superkingdoms.txt"
 
@@ -24,23 +25,17 @@ function ProgressBar {
 
 }
 
-cat $LIST_ORDERS | while read order; do
+data_length=$(ls $DATA_PATH | wc -l)
+counter=1
+for fam in $(ls $DATA_PATH); do
 
-    printf "\n$order\n"
-    list_fam=$(ls "Database${order}04/")
-    data_length=$(ls Database${order}04/ | wc -l)
-    counter=1
 
-    for fam in $list_fam; do
-
-        ProgressBar ${counter} ${data_length}
-        if [ $fam = "Exam"* ]; then
-            continue
-        else
-            mkdir -p $DATA_PATH/${order}/${fam}
-            cp -r Database${order}04/${fam}/* $DATA_PATH/${order}/${fam}/
-        fi
-        ((counter+=1))
-    done
+    ProgressBar ${counter} ${data_length}
+    if [ $fam = "Exam"* ]; then
+        continue
+    else
+        cp $DATA_PATH${fam}/04-Similar_sequences_removed/$fam.fasta Database/${order}/${fam}/04-Similar_sequences_removed/
+    fi
+    ((counter+=1))
 done
 printf "\nDone\n"

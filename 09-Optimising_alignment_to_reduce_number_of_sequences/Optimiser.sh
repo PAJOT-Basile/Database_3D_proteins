@@ -18,56 +18,25 @@ else
     MIN_NB_SITES=$3
 fi
 
-HERE=$(pwd)
-# Create a progress bar function to show how we advance in the progress as it is a long process
-function ProgressBar {
-    # The first variable is the total number of files to iterate over
-    total_files=${2}
-    # The second variable calculates the percentage of advancement of the process taking into account the beginning and the end of the process to follow
-    let _progress=(${1}*100/${total_files}*100)/100
-    # The third variable transforms the advancement of the progress into a number between 1 and 40 to represent it using "#" in the progress bar.
-    let _done=(${_progress}*10)/10
-    # The _left variable takes the complementary number to 40 to be able to fill the empty spots with "-" when the progress bar is loaded
-    let _left=100-$_done
-    # The "_fill" and "_empty" variables are used to get the number of times we will print each character
-    _fill=$(printf "%${_done}s")
-    _empty=$(printf "%${_left}s")
-    
+Optimiser(){
+    DATA_PATH=$1
+    ORDER=$2
+    FAMILY=$3
+    THRESHOLD=$4
+    MIN_NB_SITES=${5:-0.9}
 
-    # Once all of this is done, we print the progress bar
-    printf "\rFiltering : |${_fill// /█}${_empty// / }| ${_progress}%%; doing file number ${1}/${total_files}"
+    if [ -f "$DATA_PATH$ORDER/$FAMILY/04-Similar_sequences_removed/$FAMILY.fasta" ]; then
 
-}
+        mkdir $DATA_PATH$ORDER/$FAMILY/05-Optimised_alignment
+        NUM_SEQ=$(grep -c ">" $DATA_PATH$ORDER/$FAMILY/04-Similar_sequences_removed/$FAMILY.fasta)
 
-rm -r ./logs
-mkdir ./logs
-
-LIST_ORDERS="../01-AcnucFamilies/List_superkingdoms.txt"
-cat $LIST_ORDERS | while read ORDER; do
-
-    printf "\n$ORDER\n"
-
-    rm -r $ORDER
-    mkdir ./$ORDER
-    LIST_FILES=$(ls $DATA_PATH$ORDER)
-
-    # The two following variables are used to define and use the progress bar
-    data_length=$(ls $DATA_PATH$ORDER | wc -l)
-    counter=1
-    for FILE in $LIST_FILES; do
-        # We implement a progress bar to the code to follow the progress
-        ProgressBar ${counter} ${data_length}
-
-        NUM_SEQ=$(grep -c ">" $DATA_PATH$ORDER/$FILE)
-        cp $DATA_PATH$ORDER/$FILE ./$ORDER/$FILE
-        FAMILY_NAME=$(echo $FILE | cut -d"." -f1)
-        if [[ $FAMILY_NAME = "CLU_071589_0_1"* ]]; then
-            continue
-        elif [[ $NUM_SEQ -gt $THRESHOLD ]]; then
+        if [[ $NUM_SEQ -gt $THRESHOLD ]]; then
             printf "\n"
-            ~/Downloads/physamp/bppalnoptim param=$HERE/params.bpp \
-                    input.sequence.file=$HERE/$ORDER/$FILE \
-                    output.log=$HERE/logs/${ORDER}_${FAMILY_NAME}.out \
+            INPUT_FILE=$(readlink -f $DATA_PATH$ORDER/$FAMILY/04-Similar_sequences_removed/$FAMILY.fasta)
+            OUTPUT_FILE=$(echo $(readlink -f $DATA_PATH$ORDER/$FAMILY/05-Optimised_alignment)/$FAMILY.fasta)
+            ~/Downloads/physamp/bppalnoptim param=$PWD/params.bpp \
+                    input.sequence.file=$INPUT_FILE \
+                    output.log=$PWD/logs/${ORDER}_${FAMILY}.out \
                     method=Diagnostic \
                     comparison=MaxSites
             wait
@@ -83,18 +52,33 @@ cat $LIST_ORDERS | while read ORDER; do
                         break
                     fi
                 fi
-            done < ./logs/${ORDER}_${FAMILY_NAME}.out
+            done < ./logs/${ORDER}_${FAMILY}.out
 
             echo $OPTIM_THRESH
-            ~/Downloads/physamp/bppalnoptim param=$HERE/params.bpp \
-                    input.sequence.file=$HERE/$ORDER/$FILE \
-                    output.sequence.file=$HERE/$ORDER/${FAMILY_NAME}_out.fasta \
-                    method=Auto\(min_nb_sequences=$OPTIM_THRESH,min_relative_nb_sites=${MIN_NB_SITES:-0.9}\) \
+            ~/Downloads/physamp/bppalnoptim param=$PWD/params.bpp \
+                    input.sequence.file=$INPUT_FILE \
+                    output.sequence.file=$OUTPUT_FILE \
+                    method=Auto\(min_nb_sequences=$OPTIM_THRESH,min_relative_nb_sites=${MIN_NB_SITES}\) \
                     comparison=MaxSites
             wait
-            mv ./$ORDER/${FAMILY_NAME}_out.fasta ./$ORDER/$FILE
+        else
+            cp $DATA_PATH$ORDER/$FAMILY/04-Similar_sequences_removed/$FAMILY.fasta $DATA_PATH$ORDER/$FAMILY/05-Optimised_alignment
         fi
-        ((counter+=1))
+    fi
+}
+
+export -f Optimiser
+
+rm -r ./logs
+mkdir ./logs
+
+LIST_ORDERS="../01-AcnucFamilies/List_superkingdoms.txt"
+cat $LIST_ORDERS | while read ORDER; do
+
+    LIST_FAMILIES=$(ls $DATA_PATH$ORDER)
+    for FAMILY in $LIST_FAMILIES; do
+        # We implement a progress bar to the code to follow the progress
+        sem --jobs -0 Optimiser ${DATA_PATH} ${ORDER} ${FAMILY} ${THRESHOLD} ${MIN_NB_SITES}
     done
 done
 

@@ -32,7 +32,7 @@ cat $LIST_ORDERS | while read order; do
     # The two following variables are used to define and use the progress bar
     data_length=$(ls $DATA_PATH$order | wc -l)
     counter=1
-    mkdir Database${order}04/
+    mkdir Database${order}03/
 
     for fam in $list_fam; do
 
@@ -41,8 +41,10 @@ cat $LIST_ORDERS | while read order; do
 
         if [ -d "$DATA_PATH$order/$fam/04-Similar_sequences_removed" ]; then
             
-            mkdir -p Database${order}04/$fam/04-Similar_sequences_removed/
-            cp $DATA_PATH/${order}/${fam}/04-Similar_sequences_removed/* Database${order}04/$fam/04-Similar_sequences_removed/
+            mkdir -p Database${order}03/$fam/04-Similar_sequences_removed/
+            mkdir Database${order}03/$fam/03-Better_quality/
+            cp $DATA_PATH/${order}/${fam}/04-Similar_sequences_removed/* Database${order}03/$fam/04-Similar_sequences_removed/
+            cp $DATA_PATH/${order}/${fam}/03-Better_quality/* Database${order}03/$fam/03-Better_quality/
         fi
         ((counter+=1))
     done

@@ -18,9 +18,11 @@ To run this, type:
 bash List_maker.sh ../Database/
 ```
 
-Finaly, the last step is to run the `Similar_sequence_destructor.sh` script on the cluster. It iterates over the files in the `List_gene_families.txt` file to use as input for the PhySamp program. As this script uses slurm arrays, and the maximum array size is 2000, 2000 jobs were started and at the end of this process, the `List_gene_families.txt` file was ;odified to remove the first 2000 lines. The `Similar_sequence_destructor.sh` script was run until no more sequences were left in the `List_gene_families.txt` file.
+Finaly, the last step is to run the `Similar_sequence_destructor.sh` script on the cluster. It iterates over the files in the `List_gene_families.txt` file to use as input for the PhySamp program. As this script uses slurm arrays, and the maximum array size is 2000, 2000 jobs were started and at the end of this process, the `List_gene_families.txt` file was modified to remove the first 2000 lines. The `Similar_sequence_destructor.sh` script was run until no more sequences were left in the `List_gene_families.txt` file.
 
 To run this script on the cluster, type:
 ```{bash}
 sbatch ./Similar_sequence_destructor.sh ../Database/
 ```
+
+At the end of this step, the files that do not have a fasta file are the ones for which the sequences in the file are too similar. Even with the selected threshold value for the Physamp program is at 10(^-10), some of these files still do not give any result.

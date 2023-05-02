@@ -4,7 +4,7 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --ntasks=1
 #SBATCH --array=1-2000%15
-#SBATCH --output=./logs/output_order.%a.out
+#SBATCH --output=./logs/run1/slurm_%j_%a.out
 
 # This script takes into accout the path to the database
 DATA_PATH=$1
