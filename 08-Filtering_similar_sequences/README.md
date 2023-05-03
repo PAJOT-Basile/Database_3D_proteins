@@ -25,4 +25,6 @@ To run this script on the cluster, type:
 sbatch ./Similar_sequence_destructor.sh ../Database/
 ```
 
-At the end of this step, the files that do not have a fasta file are the ones for which the sequences in the file are too similar. Even with the selected threshold value for the Physamp program is at 10(^-10), some of these files still do not give any result.
+At the end of this step, the files that do not have a fasta file are the ones for which the sequences in the file are too similar. Even with the selected threshold value for the Physamp program is at 10(^-10), some of these files still do not give any result. Therefore, these files are removed for the next steps.
+
+Some statistical analyses files have been added to this directory, but they are the same as the ones in the previous directories. They are just modified to work in this folder.

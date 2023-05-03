@@ -19,12 +19,12 @@
 07-Filtering_sequences_on_their_quality/csvs/*
 
 08-Filtering_similar_sequences/List_gene_families.txt
-08-Filtering_similar_sequences/Statistics/*
+08-Filtering_similar_sequences/Stats/*csv
+08-Filtering_similar_sequences/csvs/*
+08-Filtering_similar_sequences/logs/*
 
-09-Optimising_alignment_to_reduce_number_of_sequences/Archaea/*
-09-Optimising_alignment_to_reduce_number_of_sequences/Bacteria/*
-09-Optimising_alignment_to_reduce_number_of_sequences/Eukaryota/*
-09-Optimising_alignment_to_reduce_number_of_sequences/logs/*
+09-Optimising_alignment_to_reduce_number_of_sequences/Stats/*csv
+09-Optimising_alignment_to_reduce_number_of_sequences/csvs/*
 
 
 998-Stats_on_alignment_methods/Data/*
