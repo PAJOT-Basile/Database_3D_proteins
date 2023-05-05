@@ -1,13 +1,17 @@
 #! /bin/sh
 
-# This script takes into account the path to the database and the method to calculate the gap score
-# If the method is not given, the default value is "simple"
+# This script takes into account the path to the database
 DATA_PATH=$1
-METHOD=${2:-"simple"}
 
 # Say what action you want the script to run. Either, you evaluate the data, you filter it after the evaluation process or you do both
-read -r -p "What do you want to do (evaluate, filter or both) ? " ACTION
+if [ -z "$2" ]; then
+    read -r -p "What do you want to do (evaluate, filter or both) ? " ACTION
+else
+    ACTION=$3
+fi
 ACTION_TO_DO=$(echo $ACTION | tr "[:lower:]" "[:upper:]")
+# We take into account the method to calculate the gap score. If the method is not given, the default value is "simple"
+METHOD=${3:-"simple"}
 
 # Depending on the answer, we attribute values to the "EVALUATION" and "FILTER" variables which will be used later
 if [[ $ACTION_TO_DO = "E"* ]]; then
@@ -54,7 +58,7 @@ function Evaluate() {
         # If the script was run before, we remove the evaluation outputs (the csv and the graph)
         rm -r ./csvs/*${ORDER}_$METHOD.csv ./*${ORDER}_$METHOD.png
 
-        echo $ORDER
+        echo "Evaluating $ORDER"
 
         # We create the csv file where the gap scores will be stored. We also add a header to this csv file
         echo "Family_name;Number_sequences;Number_sites;Gap_score" >> ./csvs/Evaluation_scores_${ORDER}_$METHOD.csv

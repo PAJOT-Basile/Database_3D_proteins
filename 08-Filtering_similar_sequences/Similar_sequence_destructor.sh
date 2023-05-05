@@ -9,11 +9,6 @@
 # This script takes into accout the path to the database
 DATA_PATH=$1
 
-# The second argument is a threshold value. If it is not needed, the default value is 0. It can be used to filter the files that have 
-# more than the selected threshold to not load all the files into the physamp program. If it is not needed, the default value is 0, 
-# therefore taking all the files
-THRESH_NB_SEQ=${2:-0}
-
 # This file contains a list of all the gene families and the Super-Kingdom they are a part of. We will iterate over it using a slurm array
 LIST_FAMILIES="List_gene_families.txt"
 
@@ -36,32 +31,24 @@ SSeqDest(){
     # we will apply the analysis to these gene families.
     if [ -d "$DATA_PATH$FAMILY_PATH/03-Better_quality/" ]; then
 
-            # We count the number of sequences in the file to compare it to the threshold
-            NB_SEQ=$(grep -c "^>" $DATA_PATH$FAMILY_PATH/03-Better_quality/$FAMILY_NAME.fasta)
-            if [[ $NB_SEQ -gt $THRESH_NB_SEQ ]]; then
 
-
-                # The PhySamp program takes only absolute paths so the three next variables are made to get the absolute path to the 
-                # input and output files used in the PhySamp program
-                INPUT_SEQ_PATH=$(readlink -f $DATA_PATH$FAMILY_PATH/03-Better_quality/$FAMILY_NAME.fasta)
-                INPUT_TREE_PATH=$(readlink -f $DATA_PATH$FAMILY_PATH/04-Similar_sequences_removed/$FAMILY_NAME.tree)
-                OUTPUT_PATH=$(echo $(readlink -f $DATA_PATH$FAMILY_PATH/04-Similar_sequences_removed)/$FAMILY_NAME.fasta)
-                
-                # We use the PhySamp program to take out identical sequences in the gene family files and wait for it to have finished
-                /scratch/users/basile.pajot/Downloads/physamp/bppphysamp alphabet=Protein \
-                            input.sequence.format=Fasta\(\) \
-                            input.sequence.file=$INPUT_SEQ_PATH \
-                            input.method=tree \
-                            input.tree.file=$INPUT_TREE_PATH \
-                            output.sequence.format=Fasta\(\) \
-                            output.sequence.file=$OUTPUT_PATH \
-                            deletion_method=threshold \
-                            threshold=0.01
-                wait
-            else
-                # If the number of sequences is under the selected threshold, we just copy the gene family file
-                cp $DATA_PATH/$FAMILY_NAME/03-Better_quality/$FAMILY_NAME.fasta $DATA_PATH$FAMILY_PATH/04-Similar_sequences_removed/$FAMILY_NAME.fasta
-            fi
+            # The PhySamp program takes only absolute paths so the three next variables are made to get the absolute path to the 
+            # input and output files used in the PhySamp program
+            INPUT_SEQ_PATH=$(readlink -f $DATA_PATH$FAMILY_PATH/03-Better_quality/$FAMILY_NAME.fasta)
+            INPUT_TREE_PATH=$(readlink -f $DATA_PATH$FAMILY_PATH/04-Similar_sequences_removed/$FAMILY_NAME.tree)
+            OUTPUT_PATH=$(echo $(readlink -f $DATA_PATH$FAMILY_PATH/04-Similar_sequences_removed)/$FAMILY_NAME.fasta)
+            
+            # We use the PhySamp program to take out identical sequences in the gene family files and wait for it to have finished
+            /scratch/users/basile.pajot/Downloads/physamp/bppphysamp alphabet=Protein \
+                        input.sequence.format=Fasta\(\) \
+                        input.sequence.file=$INPUT_SEQ_PATH \
+                        input.method=tree \
+                        input.tree.file=$INPUT_TREE_PATH \
+                        output.sequence.format=Fasta\(\) \
+                        output.sequence.file=$OUTPUT_PATH \
+                        deletion_method=threshold \
+                        threshold=0.01
+            wait
         fi
 }
 

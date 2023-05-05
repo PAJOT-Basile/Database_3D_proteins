@@ -1,11 +1,11 @@
 # 09-Optimising_alignment_to_reduce_number_of_sequences
 
-This folder contains the script to optimise the alignments produced at the end of the previous step ([08-Filtering_similar_sequences](../08-Filtering_similar_sequences/)). To do so, it iterates over the gene families that have passed the previous step and optimises their alignment using the [BppAlnOptim program](https://jydu.github.io/physamp/).
+This folder contains the script to optimise the alignments produced at the end of the previous step ([08-Filtering_similar_sequences](../08-Filtering_similar_sequences/README.md)). To do so, it iterates over the gene families that have passed the previous step and optimises their alignment using the [BppAlnOptim program](https://jydu.github.io/physamp/).
 
 The `Optimiser.sh` script iterates over each gene family in every Super-Kingdom to use the BppAlnOptim program. Therefore, it optimises the files having more sequences than a user-defined threshold value. The folders having less sequences are just copied. If this threshold value is not given here, the script will ask for it. Here, we used 200 sequences as a filtering threshold.
 Another parameter that can be added when the script is called is the wanted proportion of covered sites to conserve in the optimised alignment. If it is not given by the user, the script will ask for it and if no value is given, it will by default chose to conserve 90% of covered sites.
 
-Once this is done, several scripts are run to do some statistical analyses. As for the previous step ([08-Filtering_similar_sequences](https://github.com/BasilePajot/Database_3D_proteins/tree/main/08-Filtering_similar_sequences)), the scripts used here produce the same outputs as the ones that have the same names in the previous folders, but are modified to this folder.
+Once this is done, several scripts are run to do some statistical analyses. As for the previous step ([08-Filtering_similar_sequences](../08-Filtering_similar_sequences/README.md)), the scripts used here produce the same outputs as the ones that have the same names in the previous folders, but are modified to this folder.
 
 To start all this cascade of scripts, place your working directory in this folder and write: 
 ```

@@ -10,6 +10,9 @@ if [ -z "$2" ]; then
     read -r -p "Please give a threshold value to use. 
     This value will be used to stop the optimisation process of files containing more sequences than the chosen threshold value.
     What threshold value should be used ? " THRESHOLD
+    if [[ $THRESHOLD = "" ]]; then
+        THRESHOLD=100
+    fi
 else
     THRESHOLD=$2
 fi
@@ -20,12 +23,12 @@ if [ -z "$3" ]; then
     read -r -p "Proportion of covered sites in the total alignment sites.
     It will stop the optimisation process when the number of sites matching the requested coverage is at least the given proportion of total alignment sites.
     The default value is set to 90%. 
-    What proportion of covered sites do you want ? (Number between 0 and 1) " MIN_NB_SITES
-    if [[ $MIN_NB_SITES = "" ]]; then
-        MIN_NB_SITES=0.9
+    What proportion of covered sites do you want ? (Number between 0 and 1) " MIN_SITE_COVERAGE
+    if [[ $MIN_SITE_COVERAGE = "" ]]; then
+        MIN_SITE_COVERAGE=0.9
     fi
 else
-    MIN_NB_SITES=$3
+    MIN_SITE_COVERAGE=$3
 fi
 
 # We make an Optimiser function that takes in input the path to the database, the name of the Super-Kingdom, the gene family name, the filtering 
@@ -39,13 +42,16 @@ Optimiser(){
     ORDER=$2
     FAMILY=$3
     THRESHOLD=$4
-    MIN_NB_SITES=${5}
+    MIN_SITE_COVERAGE=${5}
 
     # If the file of the considered gene family to optimise exists, we continue. For the gene families that do not have this file, one of the 
     # previous steps did not produce any output file so the analysis will not be prolonged
     if [ -f "$DATA_PATH$ORDER/$FAMILY/04-Similar_sequences_removed/$FAMILY.fasta" ]; then
 
-        # We create a new folder to store the optimised fasta file for each gene family
+        # We create a new folder to store the optimised fasta file for each gene family after cleaning it up if it already exists
+        if [ -d "$DATA_PATH$ORDER/$FAMILY/05-Optimised_alignment/" ]; then
+            rm -r $DATA_PATH$ORDER/$FAMILY/05-Optimised_alignment/
+        fi
         mkdir $DATA_PATH$ORDER/$FAMILY/05-Optimised_alignment
 
         # We count the number of sequences in the file to optimise. If it has more sequences than the chosen threshold, we continue the optimisation
@@ -62,7 +68,8 @@ Optimiser(){
             ~/Downloads/physamp/bppalnoptim param=$PWD/params.bpp \
                     input.sequence.file=$INPUT_FILE \
                     output.sequence.file=$OUTPUT_FILE \
-                    method=Auto\(min_nb_sequences=$THRESHOLD,min_relative_nb_sites=${MIN_NB_SITES}\) \
+                    threshold=$MIN_SITE_COVERAGE \
+                    method=Auto\(min_nb_sequences=$THRESHOLD\) \
                     comparison=MaxSites
             wait
         else
@@ -82,13 +89,14 @@ cat $LIST_ORDERS | while read ORDER; do
     # execute the Optimiser function.
     LIST_FAMILIES=$(ls $DATA_PATH$ORDER)
     for FAMILY in $LIST_FAMILIES; do
-        sem --jobs -0 Optimiser ${DATA_PATH} ${ORDER} ${FAMILY} ${THRESHOLD} ${MIN_NB_SITES}
+        sem --jobs -0 Optimiser ${DATA_PATH} ${ORDER} ${FAMILY} ${THRESHOLD} ${MIN_SITE_COVERAGE}
     done
 done
 
 # We remove the unwanted output of the BppAlnOptim program
 rm bppalnoptim.log
 
-# Finaly, we run the Stats.sh script and the launcher.sh script from the previous steps. These scripts are slightly modified in this folder
+# Finaly, we run the Stats.sh script, the launcher.sh script and the See_distribution_nb_seq_family.R script from the previous steps. These scripts are slightly modified in this folder
 bash ./Stats.sh "After" ../Database/
-bash ./launcher.sh ../Database/
+bash ./launcher.sh ../Database/ Evaluate
+Rscript ./See_distribution_nb_seq_family.R "simple"

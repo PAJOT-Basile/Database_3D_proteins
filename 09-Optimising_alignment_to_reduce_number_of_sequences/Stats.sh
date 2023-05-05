@@ -55,7 +55,7 @@ rm ./Stats/*.txt
 if [[ $TIME_TO_FILTRATION == "Before" ]]; then
 
     # Run the R script to create graphs
-    Rscript ../../03-Filtering_gene_families_per_kingdom/Stats/Stats.R
+    Rscript ../03-Filtering_gene_families_per_kingdom/Stats/Stats.R
 else
-    Rscript ../../04-Filtering_on_number_of_sequences_per_family/Stats/Stats.R
+    Rscript ../04-Filtering_on_number_of_sequences_per_family/Stats/Stats.R
 fi

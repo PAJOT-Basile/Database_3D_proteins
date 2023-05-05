@@ -27,7 +27,7 @@ function ProgressBar {
 
 cat $LIST_ORDERS | while read order; do
 
-    echo $order
+    printf "\n$order\n"
     list_fam=$(ls $DATA_PATH$order)
     # The two following variables are used to define and use the progress bar
     data_length=$(ls $DATA_PATH$order | wc -l)
@@ -37,14 +37,19 @@ cat $LIST_ORDERS | while read order; do
     for fam in $list_fam; do
 
         ProgressBar ${counter} ${data_length}
-
-
-        if [ -d "$DATA_PATH$order/$fam/04-Similar_sequences_removed" ]; then
-            
-            mkdir -p Database${order}03/$fam/04-Similar_sequences_removed/
-            mkdir Database${order}03/$fam/03-Better_quality/
-            cp $DATA_PATH/${order}/${fam}/04-Similar_sequences_removed/* Database${order}03/$fam/04-Similar_sequences_removed/
-            cp $DATA_PATH/${order}/${fam}/03-Better_quality/* Database${order}03/$fam/03-Better_quality/
+        if [[ $fam = "Example" ]]; then
+            ((counter+=1))
+            continue
+        fi
+        
+        if [ -d "$DATA_PATH$order/$fam/03-Better_quality" ]; then
+            NSEQ=$(grep -c "^>" $DATA_PATH$order/$fam/03-Better_quality/$fam.fasta)
+            if [ "$NSEQ" -le "200" ]; then
+                mkdir -p Database${order}03/$fam/03-Better_quality/
+                mkdir Database${order}03/$fam/04-Similar_sequences_removed/
+                cp $DATA_PATH/${order}/${fam}/03-Better_quality/* Database${order}03/$fam/03-Better_quality/
+                cp $DATA_PATH/${order}/${fam}/04-Similar_sequences_removed/*tree Database${order}03/$fam/04-Similar_sequences_removed/
+            fi
         fi
         ((counter+=1))
     done

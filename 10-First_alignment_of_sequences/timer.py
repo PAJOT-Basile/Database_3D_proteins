@@ -3,13 +3,12 @@ import os as os
 import sys as sys
 import subprocess as subprocess
 
-data_path = sys.argv[0]
-duration_time = sys.argv[1]
-method = sys.argv[2]
+data_path = sys.argv[1]
+duration_time = int(sys.argv[2])
+method = sys.argv[3]
 
-print("Data Path:", data_path)
-family_name = data_path.split("/")[1]
-print(family_name)
+order = data_path.split("/")[2]
+family_name = data_path.split("/")[3]
 
 
 class TimeConverter:
@@ -38,7 +37,7 @@ class TimeConverter:
 
 # Measure the sequence lengths before alignment and add 4 params: Num_seq; Min_length; Max_length; Mean_length
 list_seq_lengths=[]
-for line in open("".join([os.path.join(data_path, family_name), ".csv"], "r")):
+for line in open("".join([os.path.join(data_path, family_name), ".csv"]), "r"):
     if line.startswith("Sequence_name"):
         continue
     else:
@@ -64,15 +63,11 @@ else:
     converter.days(duration_time)
 
 normalised_time = converter.duration
+thing_to_do = "".join(["head -n2 ", ''.join([data_path, family_name, '.csv ']), "| tail -n1 | cut -d';' -f3"])
+sequence_length_after_alingment = str(os.popen(thing_to_do).read())
 
-sequence_length_after_alingment = subprocess.check_output("./measure_seq_length.sh {data_path}/2-Rough_alignment/{family_name}_aligned.fasta")
-
-'''with open("{data_path}/2-Rough_alignment/{family_name}.csv") as f:
-    head = [next(f) for _ in range(1)]
-
-sequence_length_after_alingment = head[1].split(";")[2]'''
 
 with open("./Alignment_speeds.csv", "a") as f:
-    f.write(";".join([Number_seq, Min_length, Max_length, Mean_length, normalised_time, method, sequence_length_after_alingment]))
+    f.write(";".join([order, family_name, str(Number_seq), str(Min_length), str(Max_length), str(Mean_length), str(normalised_time), method, str(sequence_length_after_alingment)]))
     f.close()
 

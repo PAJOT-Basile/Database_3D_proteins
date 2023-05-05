@@ -1,120 +1,135 @@
 #! /bin/sh
 
-# We clean up everything if it has been run before
-rm -r ../0-tests/Database/*/*/2-* ./Alignment_speeds.csv
+#SBATCH --time=24:00:00
+#SBATCH --mem=20G
+#SBATCH --cpus-per-task=1
+#SBATCH --ntasks=1
+#SBATCH --array=1-2000%15
+#SBATCH --output=./logs/run1/slurm_%j_%a.out
 
-# We take into account the path to the parallel folder that contains the files to organise in the database
+
+# We take into account the path to the database
 DATA_PATH=$1
 # We take into account the method we want to use to make one script able to all the wanted alignments
-METHOD=$(echo $2 | tr '[:lower:]' '[:upper:]')
+if [ -z "$2" ]; then
+    read -r -p "Please indicate the alignment method to use. It shall be one of MAFFT, MUSCLE, CLUSTAL_OMEGA, CLUSTALW, PRANK, T_COFFEE.
+    " METHOD
+else
+    METHOD=$(echo $2 | tr '[:lower:]' '[:upper:]')
+fi
 
-# We create a progress bar function to show how we advance in the progress as it is a long process
-function ProgressBar {
-    # The first variable calculates the percentage of advancement of the process taking into account the beginning and the end of the process to follow
-    let _progress=(${1}*100/${2}*100)/100
-    # The second variable transforms the advancement of the progress into a number between 1 and 40 to represent it using "#" in the progress bar
-    let _done=(${_progress}*10)/10
-    # The _left variable takes the complementary number to 40 to be able to fill the empty spots with "-" when the progress bar is loaded
-    let _left=100-$_done
-    # The "_fill" and "_empty" variables are used to get the number of times we will print each character
-    _fill=$(printf "%${_done}s")
-    _empty=$(printf "%${_left}s")
-    total_files=${2}
+# We will filter the files that have less than the sected threshold of sequences. This value can be chosen by the user
+THRESH_SEQ=${3:-3}
 
-    # Once all of this is done, we print the progress bar
-    printf "\rAligning : |${_fill// /█}${_empty// / }| ${_progress}%%; doing file number ${1}/$((total_files-1))."
 
+
+Align(){
+
+    DATA_PATH=$1
+    ORDER=$2
+    FAMILY=$3
+    METHOD=$4
+    THRESH_SEQ=$5
+
+
+    # Clean up the created directory if run before
+    if [ -d "${DATA_PATH}${ORDER}/${FAMILY}/06-${METHOD}_alignment" ]; then
+        rm -r ${DATA_PATH}${ORDER}/${FAMILY}/06-${METHOD}_alignment
+    fi
+
+    # If the previous folder exists, we execute the following 
+    if [ -d "${DATA_PATH}${ORDER}/${FAMILY}/05-Optimised_alignment" ]; then
+
+        # We measure the number of sequences in the considered file and compare it to the selected threshold
+        NSEQ=$(grep -c "^>" ${DATA_PATH}${ORDER}/${FAMILY}/05-Optimised_alignment/${FAMILY}.fasta)
+        if [[ $NSEQ -gt $THRESH_SEQ ]]; then
+            # We create a directory where the aligned sequences will be stored
+            mkdir ${DATA_PATH}${ORDER}/${FAMILY}/06-${METHOD}_alignment
+
+            # We create a csv file containing all the parameters of the alignment. The number of sequences, the sequence lengths, the time it took to
+            # align all these sequences and the sequence length after the alignment. If the following csv file exists, we continue. Otherwise,
+            # we create it and add a header
+            if [ ! -f "./Alignment_speeds.csv" ]; then
+                echo "Order;Family_name;Number_sequences;Minimum_seq_length;Maximum_seq_length;Mean_seq_length;Time;Method;Seq_length_after_alignment" >> ./Alignment_speeds.csv
+            fi
+
+            # Here, we select the alignment method asked in the command line. Each time, we measure the time before and after the alignment to calculate the
+            # time it took to align the sequences. We also wait for each alignment process to finish before we keep on going
+
+            # Mafft
+            if [[ $METHOD = "MAFFT" ]]; then
+                # We store the date in a varible to count the elapsed time for the alignment process
+                time_before=$(date "+%d%H%M%S")
+                # We start the alignment on the appropriate fasta file using the right method in the database and add the output to the newly created folder
+                # We wait for the alignment process to be done before carrying on.
+                mafft ${DATA_PATH}${ORDER}/${FAMILY}/05-Optimised_alignment/${FAMILY}.fasta > ${DATA_PATH}${ORDER}/${FAMILY}/06-${METHOD}_alignment/${FAMILY}.fasta
+                wait
+                # We measure the time after the process to know how long it took to align the data
+                time_after=$(date "+%d%H%M%S")
+            
+            # Muscle
+            elif [[ $METHOD = "MUSCLE" ]]; then
+                time_before=$(date "+%d%H%M%S")
+                muscle -in ${DATA_PATH}${ORDER}/${FAMILY}/05-Optimised_alignment/${FAMILY}.fasta -out ${DATA_PATH}${ORDER}/${FAMILY}/06-${METHOD}_alignment/${FAMILY}.fasta
+                wait
+                time_after=$(date "+%d%H%M%S")
+
+            # Clustal Omega
+            elif [[ $METHOD = "CLUSTAL_OMEGA" ]]; then
+                time_before=$(date "+%d%H%M%S")
+                clustalo --in=${DATA_PATH}${ORDER}/${FAMILY}/05-Optimised_alignment/${FAMILY}.fasta --out=${DATA_PATH}${ORDER}/${FAMILY}/06-${METHOD}_alignment/${FAMILY}.fasta
+                wait
+                time_after=$(date "+%d%H%M%S")
+
+            # ClustalW
+            elif [[ $METHOD = "CLUSTALW" ]]; then
+                time_before=$(date "+%d%H%M%S")
+                clustalw -INFILE=${DATA_PATH}${ORDER}/${FAMILY}/05-Optimised_alignment/${FAMILY}.fasta -OUTFILE=${DATA_PATH}${ORDER}/${FAMILY}/06-${METHOD}_alignment/${FAMILY}.fasta -OUTPUT=FASTA
+                wait
+                time_after=$(date "+%d%H%M%S")
+
+            # Prank
+            elif [[ $METHOD = "PRANK" ]]; then
+                time_before=$(date "+%d%H%M%S")
+                prank -d=${DATA_PATH}${ORDER}/${FAMILY}/05-Optimised_alignment/${FAMILY}.fasta -o=${DATA_PATH}${ORDER}/${FAMILY}/06-${METHOD}_alignment/${FAMILY}.fasta
+                wait
+                time_after=$(date "+%d%H%M%S")
+
+            # T-coffee
+            elif [[ $METHOD = "T_COFFEE" ]]; then
+                time_before=$(date "+%d%H%M%S")
+                t_coffee -in=${DATA_PATH}${ORDER}/${FAMILY}/05-Optimised_alignment/${FAMILY}.fasta -output=${DATA_PATH}${ORDER}/${FAMILY}/06-${METHOD}_alignment/${FAMILY}.fasta
+                wait
+                time_after=$(date "+%d%H%M%S")
+            else
+                printf "Method $METHOD is not known. Please choose one of the following: MAFFT, MUSCLE, CLUSTAL_OMEGA, CLUSTALW, PRANK, T_COFFEE"
+                break 2
+            fi
+
+            # We measure the time difference between the beginning and the end of the alignment process
+            time_difference=$(echo "$time_after-$time_before" | bc)
+            # We create a csv file from the aligned sequence file
+            bash ./csv_maker.sh ${DATA_PATH} ${ORDER} ${FAMILY} 06-${METHOD}_alignment
+            # We run the "timer.py" python script that will analyse the time difference and complete the csv file created earlier 
+            python3 timer.py ${DATA_PATH}${ORDER}/${FAMILY}/06-${METHOD}_alignment/ $time_difference $METHOD
+            ((counter+=1))
+        else
+            continue
+        fi
+    fi
 }
 
-# This file contains a list of the Super-Kingdoms we are working on. We will iterate over these orders
-LIST_ORDERS="../01-AcnucFamilies/List_superkingdoms.txt"
-cat ${LIST_ORDERS} | while read ORDER; do
-    
-    printf "\n$ORDER"
 
-    # We make a list of the gene families we are going to be iterating over 
-    LIST_FAMILIES=$(ls ${DATA_PATH}${ORDER}/)
 
-    # The two following variables are used to define and use the progress bar
-    data_length=$(wc -l $LIST_FAMILIES)
-    counter=1
 
-    # We iterate over each gene family folder in the database
-    for FAMILY in ${LIST_FAMILIES}; do
 
-        # We implement the progress bar to the code
-        ProgressBar ${counter} ${data_length}
+# This file contains a list of all the gene families and the Super-Kingdom they are a part of. We will iterate over it using a slurm array
+LIST_FAMILIES="List_gene_families.txt"
 
-        # We create a directory where the aligned sequences will be stored
-        mkdir ${DATA_PATH}${ORDER}/${FAMILY}/2-Rough_alignment
+FAMILY_PATH=$(cat $LIST_FAMILIES | head -n $SLURM_ARRAY_TASK_ID | tail -n1)
+echo $FAMILY_PATH
+ORDER=$(echo $FAMILY_PATH | cut -d"/" -f1)
+FAMILY=$(echo $FAMILY_PATH | cut -d"/" -f2)
+echo $FAMILY
 
-        # We create a csv file containing all the parameters of the alignment. The number of sequences, the sequence lengths, the time it took to
-        # align all these sequences and the sequence length after the alignment. If the following csv file exists, we continue. Otherwise,
-        # we create it and add a header
-        if test -f "./Alignment_speeds.csv"; then
-            continue
-        else
-            echo "Number_sequences;Minimum_seq_length;Maximum_seq_length;Mean_seq_length;Time;Method;Seq_length_after_alignment" >> ./Alignment_speeds.csv
-        fi
-
-        # Here, we select the alignment method asked in the command line. Each time, we measure the time before and after the alignment to calculate the
-        # time it took to align the sequences. We also wait for each alignment process to finish before we keep on going
-
-        # Mafft
-        if [[ $METHOD = "MAFFT" ]]; then
-            # We store the date in a varible to count the elapsed time for the alignment process
-            time_before=$(date "+%d%H%M%S")
-            # We start the alignment on the appropriate fasta file using the right method in the database and add the output to the newly created folder
-            # We wait for the alignment process to be done before carrying on.
-            mafft ${DATA_PATH}${ORDER}/${FAMILY}/1-Raw_data/${FAMILY}.fasta > ${DATA_PATH}${ORDER}/${FAMILY}/2-Rough_alignment/${FAMILY}_aligned.fasta
-            wait
-            # We measure the time after the process to know how long it took to align the data
-            time_ater=$(date "+%d%H%M%S")
-        
-        # Muscle
-        elif [[ $METHOD = "MUSCLE" ]]; then
-            time_before=$(date "+%d%H%M%S")
-            muscle -in ${DATA_PATH}${ORDER}/${FAMILY}/1-Raw_data/${FAMILY}.fasta -out ${DATA_PATH}${ORDER}/${FAMILY}/2-Rough_alignment/${FAMILY}_aligned.fasta
-            wait
-            time_ater=$(date "+%d%H%M%S")
-
-        # Clustal Omega
-        elif [[ $METHOD = "CLUSTAL_OMEGA" ]]; then
-            time_before=$(date "+%d%H%M%S")
-            clustalo --in=${DATA_PATH}${ORDER}/${FAMILY}/1-Raw_data/${FAMILY}.fasta --out=${DATA_PATH}${ORDER}/${FAMILY}/2-Rough_alignment/${FAMILY}_aligned.fasta
-            wait
-            time_ater=$(date "+%d%H%M%S")
-
-        # ClustalW
-        elif [[ $METHOD = "CLUSTALW" ]]; then
-            time_before=$(date "+%d%H%M%S")
-            clustalw -INFILE=${DATA_PATH}${ORDER}/${FAMILY}/1-Raw_data/${FAMILY}.fasta -OUTFILE=${DATA_PATH}${ORDER}/${FAMILY}/2-Rough_alignment/${FAMILY}_aligned.fasta -OUTPUT=FASTA
-            wait
-            time_ater=$(date "+%d%H%M%S")
-
-        # Prank
-        elif [[ $METHOD = "PRANK" ]]; then
-            time_before=$(date "+%d%H%M%S")
-            prank -d=${DATA_PATH}${ORDER}/${FAMILY}/1-Raw_data/${FAMILY}.fasta -o=${DATA_PATH}${ORDER}/${FAMILY}/2-Rough_alignment/${FAMILY}_aligned.fasta
-            wait
-            time_ater=$(date "+%d%H%M%S")
-
-        # T-coffee
-        elif [[ $METHOD = "T_COFFEE" ]]; then
-            time_before=$(date "+%d%H%M%S")
-            t_coffee -in=${DATA_PATH}${ORDER}/${FAMILY}/1-Raw_data/${FAMILY}.fasta -output=${DATA_PATH}${ORDER}/${FAMILY}/2-Rough_alignment/${FAMILY}_aligned.fasta
-            wait
-            time_ater=$(date "+%d%H%M%S")
-        else
-            printf "Method $METHOD is not known. Please choose one of the following: MAFFT, MUSCLE, CLUSTAL_OMEGA, CLUSTALW, PRANK, T_COFFEE"
-            break 2
-        fi
-
-        # We measure the time difference between the beginning and the end of the alignment process
-        time_difference=$(( time_after - time_before ))
-        
-        # We run the "timer.py" python script that will analyse the time difference and complete the csv file created earlier 
-        python3 timer.py ${DATA_PATH}${ORDER}/${FAMILY}/ $time_difference $METHOD
-        ((counter+=1))
-    done
-done
+Align ${DATA_PATH} ${ORDER} ${FAMILY} ${METHOD} ${THRESH_SEQ}
