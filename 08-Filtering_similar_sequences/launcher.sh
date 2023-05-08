@@ -29,7 +29,7 @@ elif [[ $ACTION_TO_DO = "B"* ]]; then
 fi
 
 # This file contains a list of the Super-Kingdoms we are working on. We will iterate over these orders
-LIST_ORDERS="../../01-AcnucFamilies/List_superkingdoms.txt"
+LIST_ORDERS="../01-AcnucFamilies/List_superkingdoms.txt"
 
 
 # We make an evaluate function. It iterates over the Super-Kingdoms to calculate the gap score per gene family file and appends it to 

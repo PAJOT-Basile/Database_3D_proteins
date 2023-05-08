@@ -8,7 +8,7 @@ rm ./Stats/*.csv
 TIME_TO_FILTRATION=$1
 DATA_PATH=$2
 # This file contains a list of the Super-Kingdoms we are working on. We will iterate over these orders
-LIST_ORDERS="../../01-AcnucFamilies/List_superkingdoms.txt"
+LIST_ORDERS="../01-AcnucFamilies/List_superkingdoms.txt"
 mkdir Stats
 
 echo "Stats:"

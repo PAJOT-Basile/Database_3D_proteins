@@ -32,7 +32,7 @@ cat $LIST_ORDERS | while read order; do
     # The two following variables are used to define and use the progress bar
     data_length=$(ls $DATA_PATH$order | wc -l)
     counter=1
-    mkdir Database${order}03/
+    mkdir Database${order}05/
 
     for fam in $list_fam; do
 
@@ -42,14 +42,11 @@ cat $LIST_ORDERS | while read order; do
             continue
         fi
         
-        if [ -d "$DATA_PATH$order/$fam/03-Better_quality" ]; then
-            NSEQ=$(grep -c "^>" $DATA_PATH$order/$fam/03-Better_quality/$fam.fasta)
-            if [ "$NSEQ" -le "200" ]; then
-                mkdir -p Database${order}03/$fam/03-Better_quality/
-                mkdir Database${order}03/$fam/04-Similar_sequences_removed/
-                cp $DATA_PATH/${order}/${fam}/03-Better_quality/* Database${order}03/$fam/03-Better_quality/
-                cp $DATA_PATH/${order}/${fam}/04-Similar_sequences_removed/*tree Database${order}03/$fam/04-Similar_sequences_removed/
-            fi
+        if [ -d "$DATA_PATH$order/$fam/05-Optimised_alignment" ]; then
+
+            mkdir -p Database${order}05/$fam/05-Optimised_alignment/
+            cp $DATA_PATH/${order}/${fam}/05-Optimised_alignment/* Database${order}05/$fam/05-Optimised_alignment/
+
         fi
         ((counter+=1))
     done

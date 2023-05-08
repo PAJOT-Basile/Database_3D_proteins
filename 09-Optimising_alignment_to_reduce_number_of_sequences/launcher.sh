@@ -7,7 +7,7 @@ DATA_PATH=$1
 if [ -z "$2" ]; then
     read -r -p "What do you want to do (evaluate, filter or both) ? " ACTION
 else
-    ACTION=$3
+    ACTION=$2
 fi
 ACTION_TO_DO=$(echo $ACTION | tr "[:lower:]" "[:upper:]")
 # We take into account the method to calculate the gap score. If the method is not given, the default value is "simple"
@@ -72,105 +72,9 @@ function Evaluate() {
     done
 }
 
-# We make a filter function. It iterates over the Super-Kingdoms to copy gene family files that have a lower gap score than the defined threshold
-# into this folder
-function Filter() {
-
-    # This function takes as input the path to the parallel folder, the list of Super-Kingdoms, the gap score calculation method and the
-    # threshold value to filter on. If the threshold value is not given, we ask for it
-    DATA_PATH=$1
-    LIST_ORDERS=$2
-    METHOD=$3
-    if [ -z "$4" ]; then
-        read -r -p "Here, you have to chose a threshold value for the gap score. This value will be used to filter the family gene files 
-        evaluated previously to select only some of them that are clean enough to keep going. This value has to be between 0 and 1 and the 
-        decimal shall be indicated with a dot.
-        Given the graphs that were written using this program, what threshold gap score should be used to filter the data ? " THRESHOLD
-    else
-        THRESHOLD=$4
-    fi
-    
-    # We iterate over the Super-Kingdoms. For each Super-Kingdom, we compare the value of gap score for each gene family file to the chosen.
-    # threshold. If it is lower, the corresponding gene family file is copied in the local folder
-    cat $LIST_ORDERS | while read ORDER; do
-
-        printf "\n$ORDER\n"
-
-        # The two following variables are used to define and use the progress bar
-        data_length=$(wc -l ./csvs/Evaluation_scores_${ORDER}_$METHOD.csv)
-        counter=1
-
-        # We iterate over the csv file created in the evaluation phase to extract the gap score and the gene family name to compare the gap 
-        # score to the threshold and copy the according file if needed
-        cat ./csvs/Evaluation_scores_${ORDER}_$METHOD.csv | while read line; do
-
-            # We implement a progress bar to the code to follow the progress
-            ProgressBar ${counter} ${data_length}
-
-            # If the line in the csv file starts with "Family_name", it is the header, not containing any gap score so we continue
-            # In the other cases, we extract the gap score, the family name and compare the gap score to the threshold. If it is lower than 
-            # the threshold, we copy the according gene family file in the right Super-Kingdom folder in this folder
-            if [[ $line = "Family_name"* ]]; then
-                continue
-            else
-                GAP_SCORE=$(echo "$line" | cut -d";" -f4 | sed "s/\r//g")
-                FAMILY_NAME=$(echo "$line" | cut -d";" -f1)
-
-                if [ 1 -eq $(echo "${GAP_SCORE} < ${THRESHOLD}" | bc) ]; then
-
-                    # If the script was run before, we clean up the folder containing the gene family files and create a new one
-                    rm -r $DATA_PATH$ORDER/$FAMILY_NAME/03-Better_quality
-                    mkdir $DATA_PATH$ORDER/$FAMILY_NAME/03-Better_quality
-
-                    cp $DATA_PATH$ORDER/$FAMILY_NAME/02-Gaps_removed/$FAMILY_NAME.fasta $DATA_PATH$ORDER/$FAMILY_NAME/03-Better_quality/$FAMILY_NAME.fasta
-                fi
-            fi
-            ((counter+=1))
-        done
-    done
-}
-
-# Create a progress bar function to show how we advance in the progress as it is a long process
-function ProgressBar {
-    # The first variable is the total number of files to iterate over
-    total_files=${2}
-    # The second variable calculates the percentage of advancement of the process taking into account the beginning and the end of the 
-    # process to follow.
-    let _progress=(${1}*100/$((total_files-1))*100)/100
-    # The third variable transforms the advancement of the progress into a number between 1 and 40 to represent it using "#" in the progress 
-    # bar
-    let _done=(${_progress}*10)/10
-    # The _left variable takes the complementary number to 40 to be able to fill the empty spots with "-" when the progress bar is loaded
-    let _left=100-$_done
-    # The "_fill" and "_empty" variables are used to get the number of times we will print each character
-    _fill=$(printf "%${_done}s")
-    _empty=$(printf "%${_left}s")
-    
-
-    # Once all of this is done, we print the progress bar
-    printf "\rFiltering : |${_fill// /█}${_empty// / }| ${_progress}%%; doing file number ${1}/$((total_files-1))"
-
-}
-
-
 # If the "EVALUATION" variable is set to "TRUE", then, we evaluate the file. At the end of the evaluation process for all Super-Kingdoms,
 # as the process is long, and you may have decided on a gap score threshold during the loading time, we ask if you wish to filter the gene 
 # family files right away. If it is the case, we set the "FILTER" parameter to "TRUE" and otherwise, the code ends
 if [[ $EVALUATION = "T"* ]]; then
     Evaluate ${DATA_PATH} ${LIST_ORDERS} ${METHOD}
-    if [[ $FILTER != "T"* ]]; then
-        read -r -p "Do you want to filer the sequences right now (yes or no)? " QUESTION_Q
-        QUESTION=$(echo $QUESTION_Q | tr "[:lower:]" "[:upper:]")
-        if [[ $QUESTION = "Y"* ]]; then
-            FILTER="TRUE"
-        fi
-    fi
 fi
-
-# If the "FILTER" parameter is set to "TRUE", then, we filter the files in all Super-Kingdoms
-if [[ $FILTER = "T"* ]]; then
-    Filter ${DATA_PATH} ${LIST_ORDERS} ${METHOD} ${THRESHOLD}
-fi
-
-# We print the end of the file
-printf "\nDone !\n"

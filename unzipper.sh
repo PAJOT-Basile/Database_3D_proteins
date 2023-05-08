@@ -24,18 +24,19 @@ function ProgressBar {
     printf "\rCopying : |${_fill// /█}${_empty// / }| ${_progress}%%; doing file number ${1}/$((total_files))"
 
 }
+for order in $(ls $DATA_PATH); do
+    data_length=$(ls $DATA_PATH$order | wc -l)
+    counter=1
+    for fam in $(ls $DATA_PATH$order); do
 
-data_length=$(ls $DATA_PATH | wc -l)
-counter=1
-for fam in $(ls $DATA_PATH); do
 
-
-    ProgressBar ${counter} ${data_length}
-    if [ $fam = "Exam"* ]; then
-        continue
-    else
-        cp $DATA_PATH${fam}/04-Similar_sequences_removed/$fam.fasta Database/${order}/${fam}/04-Similar_sequences_removed/
-    fi
-    ((counter+=1))
+        ProgressBar ${counter} ${data_length}
+        if [ $fam = "Exam"* ]; then
+            continue
+        else
+            cp $DATA_PATH$order/${fam}/04-Similar_sequences_removed/$fam.fasta Database/${order}/${fam}/04-Similar_sequences_removed/
+        fi
+        ((counter+=1))
+    done
 done
 printf "\nDone\n"

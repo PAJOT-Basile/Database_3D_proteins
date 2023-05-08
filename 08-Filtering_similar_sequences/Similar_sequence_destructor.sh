@@ -28,9 +28,8 @@ SSeqDest(){
     echo $FAMILY_NAME
 
     # The gene family folders that have a "03-Better_quality" folder are the ones that have passed the gap score filtering. Therefore, 
-    # we will apply the analysis to these gene families.
+    # we will apply the analysis to these gene families
     if [ -d "$DATA_PATH$FAMILY_PATH/03-Better_quality/" ]; then
-
 
             # The PhySamp program takes only absolute paths so the three next variables are made to get the absolute path to the 
             # input and output files used in the PhySamp program
@@ -38,7 +37,7 @@ SSeqDest(){
             INPUT_TREE_PATH=$(readlink -f $DATA_PATH$FAMILY_PATH/04-Similar_sequences_removed/$FAMILY_NAME.tree)
             OUTPUT_PATH=$(echo $(readlink -f $DATA_PATH$FAMILY_PATH/04-Similar_sequences_removed)/$FAMILY_NAME.fasta)
             
-            # We use the PhySamp program to take out identical sequences in the gene family files and wait for it to have finished
+            # We use the PhySamp program to take out identical sequences in the gene family files and wait for it to have finished.
             /scratch/users/basile.pajot/Downloads/physamp/bppphysamp alphabet=Protein \
                         input.sequence.format=Fasta\(\) \
                         input.sequence.file=$INPUT_SEQ_PATH \

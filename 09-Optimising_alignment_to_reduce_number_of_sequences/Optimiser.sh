@@ -96,7 +96,8 @@ done
 # We remove the unwanted output of the BppAlnOptim program
 rm bppalnoptim.log
 
-# Finaly, we run the Stats.sh script, the launcher.sh script and the See_distribution_nb_seq_family.R script from the previous steps. These scripts are slightly modified in this folder
+# Finaly, we run the Stats.sh script, the launcher.sh script and the See_distribution_nb_seq_family.R script from the previous steps
+# These scripts are slightly modified in this folder
 bash ./Stats.sh "After" ../Database/
 bash ./launcher.sh ../Database/ Evaluate
 Rscript ./See_distribution_nb_seq_family.R "simple"
