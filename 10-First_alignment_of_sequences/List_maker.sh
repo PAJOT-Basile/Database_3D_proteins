@@ -10,6 +10,6 @@ for order in $list_orders; do
     # In each directory, we make a list of the order families and copy each name with the Super-Kingdom in the text file
     list_families=$(ls $DATA_PATH/$order*/)
     for family in $list_families; do
-        echo "$order/$family" >> List_gene_families.txt
+        echo "$order/$family" >> List_gene_families.xtxt
     done
 done
