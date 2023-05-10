@@ -69,6 +69,7 @@ Optimiser(){
                     input.sequence.file=$INPUT_FILE \
                     output.sequence.file=$OUTPUT_FILE \
                     threshold=$MIN_SITE_COVERAGE \
+                    filter_unresolved=yes \
                     method=Auto\(min_nb_sequences=$THRESHOLD\) \
                     comparison=MaxSites
             wait
