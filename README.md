@@ -8,14 +8,9 @@ The different steps are depicted in the different folders of this repository. Th
 Each folder has a README.md file presenting a detailed explanation of the files in this folder, what they do and how to execute them. However, this file should give you an overview of the way the repository is built and the organisation of the final database through example files.
 
 Here is how the repository is organised and the steps that were followed during the project.
-
 ```
-Database_3D_proteins
+../Database_3D_proteins
 ├── 01-AcnucFamilies
-│   ├── FamiliesArchaea.fam
-│   ├── FamiliesBacteria.fam
-│   ├── FamiliesEukaryota.fam
-│   ├── final_clusters.isoforms.hogenom7.clu.bz2
 │   ├── List_superkingdoms.txt
 │   └── README.md
 ├── 02-Extracting_families_per_kingdom
@@ -32,8 +27,13 @@ Database_3D_proteins
 │   ├── launcher.sh
 │   ├── README.md
 │   └── Stats
+│       ├── Number of sequences per family for Archaea.png
+│       ├── Number of sequences per family for Bacteria.png
+│       ├── Number of sequences per family for Eukaryota.png
 │       ├── README.md
+│       ├── Stats per Super-Kingdom.png
 │       ├── Stats.R
+│       ├── Stats.Rproj
 │       └── Stats.sh
 ├── 04-Filtering_on_number_of_sequences_per_family
 │   ├── Archaea
@@ -42,8 +42,14 @@ Database_3D_proteins
 │   ├── filter.sh
 │   ├── README.md
 │   └── Stats
+│       ├── Number of sequences per family for Archaea.png
+│       ├── Number of sequences per family for Bacteria.png
+│       ├── Number of sequences per family for Eukaryota.png
 │       ├── README.md
-│       └── Stats.R
+│       ├── Stats per Super-Kingdom after filtration.png
+│       ├── Stats per Super-Kingdom.png
+│       ├── Stats.R
+│       └── Stats.Rproj
 ├── 05-Organising_raw_data_in_database
 │   ├── csv_maker.sh
 │   ├── Raw_data_organiser.sh
@@ -54,30 +60,67 @@ Database_3D_proteins
 │   └── README.md
 ├── 07-Filtering_sequences_on_their_quality
 │   ├── csvs
+│   ├── Distribution gap score Archaea_simple.png
+│   ├── Distribution gap score Bacteria_simple.png
+│   ├── Distribution gap score Eukaryota_simple.png
 │   ├── distribution.R
+│   ├── Gap_score = f(Number_sequences) Archaea.png
+│   ├── Gap_score = f(Number_sequences) Bacteria.png
+│   ├── Gap_score = f(Number_sequences) Eukaryota.png
 │   ├── launcher.sh
 │   ├── Quality_evaluator.py
 │   └── README.md
 ├── 08-Filtering_similar_sequences
-│   ├── Archaea
-│   ├── Bacteria
+│   ├── csvs
+│   ├── Distribution gap score Archaea_simple.png
+│   ├── Distribution gap score Bacteria_simple.png
+│   ├── Distribution gap score Eukaryota_simple.png
+│   ├── Distribution number of sequences per superkingdom.png
+│   ├── distribution.R
 │   ├── Fasttree_maker.sh
-│   ├── README.md
-│   └── similar_sequence_destructor.sh
-├── 09-Optimising_alignment_to_reduce_number_of_sequences
-│   ├── Archaea
-│   ├── Bacteria
-│   ├── bppalnoptim.log
+│   ├── launcher.sh
+│   ├── List_gene_families.txt
+│   ├── List_maker.sh
 │   ├── logs
+│   ├── Quality_evaluator.py
+│   ├── README.md
+│   ├── See_distribution_nb_seq_family.R
+│   ├── Similar_sequence_destructor.sh
+│   ├── Stats
+│   │   ├── Number of sequences per family for Archaea.png
+│   │   ├── Number of sequences per family for Bacteria.png
+│   │   ├── Number of sequences per family for Eukaryota.png
+│   │   └── Stats per Super-Kingdom.png
+│   └── Stats.sh
+├── 09-Optimising_alignment_to_reduce_number_of_sequences
+│   ├── csvs
+│   ├── Distribution gap score Archaea_simple.png
+│   ├── Distribution gap score Bacteria_simple.png
+│   ├── Distribution gap score Eukaryota_simple.png
+│   ├── Distribution number of sequences per superkingdom.png
+│   ├── distribution.R
+│   ├── launcher.sh
 │   ├── Optimiser.sh
 │   ├── params.bpp
-│   └── README.md
+│   ├── Quality_evaluator.py
+│   ├── README.md
+│   ├── See_distribution_nb_seq_family.R
+│   ├── Stats
+│   │   ├── Number of sequences per family for Archaea.png
+│   │   ├── Number of sequences per family for Bacteria.png
+│   │   ├── Number of sequences per family for Eukaryota.png
+│   │   └── Stats per Super-Kingdom.png
+│   └── Stats.sh
 ├── 10-First_alignment_of_sequences
 │   ├── Align.sh
-│   ├── measure_seq_length.sh
+│   ├── csv_maker.sh
+│   ├── List_maker.sh
 │   ├── README.md
 │   └── timer.py
-├── 11-Verification_scripts
+├── 11-Take_consensus
+│   ├── Consensus.sh
+│   └── README.md
+├── 12-Verification_scripts
 │   ├── README.md
 │   ├── verificationscript.sh
 │   └── Verif_sequence_length.py
@@ -85,16 +128,14 @@ Database_3D_proteins
 │   ├── Archaea
 │   │   └── Example
 │   │       ├── 01-Raw_data
-│   │       │   └── Example.fasta
 │   │       ├── 02-Gaps_removed
-│   │       │   └── Example.fasta
 │   │       ├── 03-Better_quality
-│   │       │   └── Example.fasta
-│   │       └── 04-Similar_sequences_removed
-│   │           └── Example.fasta
+│   │       ├── 04-Similar_sequences_removed
+│   │       └── 05-Optimised_alignment
 │   ├── Bacteria
 │   └── Eukaryota
 └── README.md
+
 ```
 
 All the folders that have the name Archaea Bacteria or Eukaryota are built in the same way inside the considered directory. Every time the three Super-Kingdoms are in the same folder, they are composed of a list of fasta files containing all the sequences for the different gene families in said Super-Kingdom.
@@ -139,4 +180,18 @@ This step also generates the `03-Better_quality` folder in the database. It only
 
 This folder contains the scripts allowing to make a Fast Tree of each gene family file and filter the sequences in said file to take out the sequences that are identical. We use a program to remove phylogenetically identical sequences.
 This step is run first on a local machine, then on a cluster to accelerate the process.
-This step creates the `04-Similar_sequences_removed` in the database. It contains a tree file and a fasta file of the output of the filtering program.
+This step creates the `04-Similar_sequences_removed` folder in the database. It contains a tree file and a fasta file of the output of the filtering program.
+
+## [09-Optimising_alignment_to_reduce_number_of_sequences](./09-Optimising_alignment_to_reduce_number_of_sequences/README.md)
+
+In this folder, we iterate over the sequence files for each gene family that has a filtered sequence file from the previous step and we take out sequences that are phylogenetically redundant. The optimisation stops when the number of sequences in the considered file is smaller than the user-selected threshold number of sequences or when the proportion of sites matching the requested coverage is at least the user-selected coverage threshold value. 
+This step creates the `05-Optimised_alignment` folder in teh database. It contains an optimisation-output fasta file.
+
+## [10-First_alignment_of_sequences](./10-First_alignment_of_sequences/README.md)
+
+This folder contains the scripts allowing to align the optimised sequences from each gene family.
+The alignment method can be chosen by the user. For now, only three alignment methods are used in this folder, but other ones may be implemented later. 
+The files are aligned using two different methods to later use the consensus of these methods to do a phylogenetic tree of the sequences in each gene family. To do this, we use the same script but with different arguments. It therefore creates two new folders in the database: `06-Muscle_alignment` that we can find in each gene family. The other folder in the gene families can either be `06-Prank_alignment` or `06-Mafft_alignment`. The reason for this is that the Prank method does not work for every file. Therefore, in cases of malfunction, we use the Mafft method instead on these files.
+This step is run on a cluster to accelerate the process.
+
+## [11-Take_consensus](./11-Take_consensus/README.md)

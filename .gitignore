@@ -26,16 +26,6 @@
 09-Optimising_alignment_to_reduce_number_of_sequences/Stats/*csv
 09-Optimising_alignment_to_reduce_number_of_sequences/csvs/*
 
-
-998-Stats_on_alignment_methods/Data/*
-998-Stats_on_alignment_methods/CLUSTALO/*
-998-Stats_on_alignment_methods/CLUSTALW/*
-998-Stats_on_alignment_methods/PRANK/*
-998-Stats_on_alignment_methods/MUSCLE/*
-998-Stats_on_alignment_methods/MAFFT/*
-998-Stats_on_alignment_methods/Stats_alignment_speeds.csv
-
-999-Testing_acnuc_extractions/*
 0-tests/*
 
 Database*
@@ -46,4 +36,3 @@ Database*
 rename.sh
 code_tree_readme.txt
 Cluster_Got/*
-exec.sh

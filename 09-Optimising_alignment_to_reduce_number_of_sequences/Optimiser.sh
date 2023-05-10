@@ -33,7 +33,7 @@ fi
 
 # We make an Optimiser function that takes in input the path to the database, the name of the Super-Kingdom, the gene family name, the filtering 
 # threshold value and the minimum coverage percentage to keep in the optimisation process and returns the optimised fasta file for each gene family
-# in a newly created folder. This optimisation process is done using the BppAlnOptim program that rmoves phyllogenetically selected sequences in the 
+# in a newly created folder. This optimisation process is done using the BppAlnOptim program that removes phyllogenetically selected sequences in the 
 # alignment to get rid of sequences that do not bring any information to the alignment
 Optimiser(){
 
