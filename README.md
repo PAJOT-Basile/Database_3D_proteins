@@ -9,7 +9,7 @@ Each folder has a README.md file presenting a detailed explanation of the files 
 
 Here is how the repository is organised and the steps that were followed during the project.
 ```
-../Database_3D_proteins
+Database_3D_proteins
 ├── 01-AcnucFamilies
 │   ├── List_superkingdoms.txt
 │   └── README.md

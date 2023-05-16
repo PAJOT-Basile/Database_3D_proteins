@@ -25,6 +25,8 @@ function ProgressBar {
 
 }
 for order in $(ls $DATA_PATH); do
+
+    printf "\n$order\n"
     data_length=$(ls $DATA_PATH$order | wc -l)
     counter=1
     for fam in $(ls $DATA_PATH$order); do
@@ -34,7 +36,7 @@ for order in $(ls $DATA_PATH); do
         if [ $fam = "Exam"* ]; then
             continue
         else
-            cp $DATA_PATH$order/${fam}/04-Similar_sequences_removed/$fam.fasta Database/${order}/${fam}/04-Similar_sequences_removed/
+            cp -r $DATA_PATH$order/${fam}/06-* Database/${order}/${fam}/
         fi
         ((counter+=1))
     done
