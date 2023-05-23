@@ -26,6 +26,14 @@
 09-Optimising_alignment_to_reduce_number_of_sequences/Stats/*csv
 09-Optimising_alignment_to_reduce_number_of_sequences/csvs/*
 
+10-First_alignment_of_sequences/logs*
+10-First_alignment_of_sequences/.Rhistory
+
+
+
+16-Getting_pdb_info_Acnuc/*csv
+16-Getting_pdb_info_Acnuc/*dat
+
 0-tests/*
 
 Database*

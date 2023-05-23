@@ -13,7 +13,6 @@ PATH_FILE=$(echo "$DATA_PATH$ORDER/$FAMILY_NAME/$FILE_TO_DO/$FAMILY_NAME")
 first_line_seq="yes"
 
 # We iterate over the lines of the file and add each line differently to a text file
-# If the used method is "PRANK", the output file is named differently, so we separate this case
 if [[ "$METHOD" = "PRANK" ]]; then
 	cat $PATH_FILE.fasta.best.fas | while read line; do
 
@@ -30,7 +29,7 @@ if [[ "$METHOD" = "PRANK" ]]; then
 		elif [[ $line != ">"* ]] && [[ $first_line_seq = "y"* ]]; then
 			echo $line | tr "\n" " " | sed "s/^/\n/g" >> ${ORDER}_${FAMILY_NAME}_sequences.txt
 			first_line_seq="no"
-		# If the line we are extracting is not the first line of a sequence, then we simply extract it and change the back to the line into
+		# If the line we are extracting is not the first line of a sequence, then we simply extract it and change the back to the line into.
 		# a space to paste all the bits of sequences into one line
 		elif [[ $line != ">"* ]] && [[ $first_line_seq = "n"* ]]; then
 			echo $line | tr "\n" " " >> ${ORDER}_${FAMILY_NAME}_sequences.txt
@@ -53,7 +52,7 @@ cat $PATH_FILE.fasta | while read line; do
 		elif [[ $line != ">"* ]] && [[ $first_line_seq = "y"* ]]; then
 			echo $line | tr "\n" " " | sed "s/^/\n/g" >> ${ORDER}_${FAMILY_NAME}_sequences.txt
 			first_line_seq="no"
-		# If the line we are extracting is not the first line of a sequence, then we simply extract it and change the back to the line into
+		# If the line we are extracting is not the first line of a sequence, then we simply extract it and change the back to the line into.
 		# a space to paste all the bits of sequences into one line
 		elif [[ $line != ">"* ]] && [[ $first_line_seq = "n"* ]]; then
 			echo $line | tr "\n" " " >> ${ORDER}_${FAMILY_NAME}_sequences.txt
@@ -62,7 +61,7 @@ cat $PATH_FILE.fasta | while read line; do
 	done
 fi
 
-# We take out the first line of the file given with the method used earlier, we added a back to the line at the beginning of every.
+# We take out the first line of the file given with the method used earlier, we added a back to the line at the beginning of every 
 # first sequence line. Therefore, the first line of the file is an empty line
 echo "$(tail -n+2 ${ORDER}_${FAMILY_NAME}_sequences.txt | sed 's/ //g')" > ${ORDER}_${FAMILY_NAME}_sequences.txt
 

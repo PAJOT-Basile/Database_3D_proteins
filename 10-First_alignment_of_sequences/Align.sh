@@ -1,11 +1,11 @@
 #! /bin/sh
 
-#SBATCH --time=24:00:00
+#SBATCH --time=48:00:00
 #SBATCH --mem=20G
 #SBATCH --cpus-per-task=1
 #SBATCH --ntasks=1
-#SBATCH --array=1-2000%15
-#SBATCH --output=./logs/run3/slurm_%j_%a.out
+#SBATCH --array=1-3%3
+#SBATCH --output=./logs/Prank/run9/slurm_%j_%a.out
 
 
 # We take into account the path to the database
@@ -20,16 +20,13 @@ fi
 
 # We will filter the files that have less than the sected threshold of sequences. This value can be chosen by the user
 THRESH_SEQ=${3:-2}
-
-# We transform the method variable for naming purposes
 method_lower=$(echo $METHOD | tr '[:upper:]' '[:lower:]')
 method=$(echo ${method_lower^})
 
-# We make the Align function that takes into account the path to the database, the name of the Super-Kingdom and gene family, the alignment method 
-# and the threshold number of sequences to filter on 
+
+
 Align(){
 
-    # Variable input
     DATA_PATH=$1
     ORDER=$2
     FAMILY=$3
@@ -68,14 +65,14 @@ Align(){
                 # We store the date in a varible to count the elapsed time for the alignment process
                 time_before=$(date "+%d%H%M%S")
                 # We start the alignment on the appropriate fasta file using the right method in the database and add the output to the newly created folder
-                # We wait for the alignment process to be done before carrying on
+                # We wait for the alignment process to be done before carrying on.
                 mafft ${DATA_PATH}${ORDER}/${FAMILY}/05-Optimised_alignment/${FAMILY}.fasta > \
                 ${DATA_PATH}${ORDER}/${FAMILY}/06-${method}_alignment/${FAMILY}.fasta
                 wait
                 # We measure the time after the process to know how long it took to align the data
                 time_after=$(date "+%d%H%M%S")
             
-            # Muscle.
+            # Muscle
             elif [[ $METHOD = "MUSCLE" ]]; then
                 module load muscle
                 time_before=$(date "+%d%H%M%S")
@@ -110,17 +107,19 @@ Align(){
     fi
 }
 
+
+
+
+
 # This file contains a list of all the gene families and the Super-Kingdom they are a part of. We will iterate over it using a slurm array
 LIST_FAMILIES="List_gene_families.xtxt"
 
-# We take into account the path to the gene family once in the database and extract the name of the order and gene family
 FAMILY_PATH=$(cat $LIST_FAMILIES | head -n $SLURM_ARRAY_TASK_ID | tail -n1)
 echo $FAMILY_PATH
 ORDER=$(echo $FAMILY_PATH | cut -d"/" -f1)
 FAMILY=$(echo $FAMILY_PATH | cut -d"/" -f2)
 echo $FAMILY
 
-# We run the Align function for the previously selected parameters
 Align ${DATA_PATH} ${ORDER} ${FAMILY} ${METHOD} ${THRESH_SEQ}
 
 echo "Done!"

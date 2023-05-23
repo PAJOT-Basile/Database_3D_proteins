@@ -5,8 +5,10 @@ This is done using the [BppAlnScore program from the BppSuite](https://github.co
 
 We iterate over the gene families that were aligned previously and take the consensus of two alignment methods. For most gene families, we will take the consensus of Muscle and Prank alignment methods, but for some files for which Prank did not work, we will take the Mafft alignment instead.
 
+The `Consensus.sh` script takes as arguments the path to the database and a threshold value to know which proportion of coverage per sites to conserve in the consensus file.
+
 To run this script, place your working directory in this folder and run the bash script:
 ```
 cd Database_3D_proteins/11-Take_consensus/
-bash Consensus.sh ../Database/
+bash Consensus.sh ../Database/ 0.8
 ```
