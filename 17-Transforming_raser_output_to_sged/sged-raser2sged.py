@@ -46,7 +46,6 @@ df.replace(to_replace=[None], value="", inplace=True)
 for counter, param in enumerate(zip(df["probability"], df["Proba > 0.95"])):
     df["probability"][counter] = param[0].replace("\n", "")
     df["Proba > 0.95"][counter] = param[1].replace("\n", "")
-print(df)
 
 # Export to csv
 df.to_csv(output_file, index=False)

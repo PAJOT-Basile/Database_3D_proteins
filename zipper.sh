@@ -32,7 +32,7 @@ cat $LIST_ORDERS | while read order; do
     # The two following variables are used to define and use the progress bar
     data_length=$(ls $DATA_PATH$order | wc -l)
     counter=1
-    mkdir Database${order}08/
+    mkdir Database${order}10/
 
     for fam in $list_fam; do
 
@@ -42,10 +42,13 @@ cat $LIST_ORDERS | while read order; do
             continue
         fi
         
-        if [ -d "$DATA_PATH$order/$fam/08-Phylip_file" ]; then
+        if [ -d "$DATA_PATH$order/$fam/10-Tree_without_bootstrap" ]; then
 
-            mkdir -p Database${order}08/$fam/08-Phylip_file/
-            cp $DATA_PATH${order}/${fam}/08-Phylip_file/* Database${order}08/$fam/08-Phylip_file/
+            mkdir -p Database${order}10/$fam/10-Tree_without_bootstrap/
+            mkdir -p Database${order}10/$fam/07-Consensus/
+
+            cp $DATA_PATH${order}/${fam}/10-Tree_without_bootstrap/* Database${order}10/$fam/10-Tree_without_bootstrap/
+            cp $DATA_PATH${order}/${fam}/07-Consensus/* Database${order}10/$fam/07-Consensus/
 
         fi
         ((counter+=1))

@@ -27,9 +27,10 @@
 09-Optimising_alignment_to_reduce_number_of_sequences/csvs/*
 
 10-First_alignment_of_sequences/logs*
+10-First_alignment_of_sequences/*csv
 10-First_alignment_of_sequences/.Rhistory
 
-
+13-Tree_making/logs*
 
 16-Getting_pdb_info_Acnuc/*csv
 16-Getting_pdb_info_Acnuc/*dat

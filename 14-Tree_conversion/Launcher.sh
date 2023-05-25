@@ -9,7 +9,7 @@ for ORDER in $(ls ${DATA_PATH}); do
                 mkdir "${DATA_PATH}${ORDER}/${FAMILY}/10-Tree_without_bootstrap/"
             fi
 
-            Rscript Converter.R ${DATA_PATH}${ORDER}/${FAMILY}/09-PhyML_tree/${FAMILY}.phylip_phyml_tree.txt
+            sem --jobs -0 Rscript Converter.R ${DATA_PATH}${ORDER}/${FAMILY}/09-PhyML_tree/${FAMILY}.phylip_phyml_tree.txt
         fi
     done
 done
