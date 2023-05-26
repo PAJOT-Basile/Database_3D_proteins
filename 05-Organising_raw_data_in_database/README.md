@@ -9,7 +9,7 @@ First, we have to store the raw data. To do this, we create a `01-Raw_data` fold
 
 The `Raw-data_organiser.sh` script may also runs the `csv_maker.sh` script if needed, but it takes more time. This script converts the fasta file containing the sequences into a csv file containig more informations (sequence name, sequence, sequence length).
 
-To execute this organisation, you simply have to place your working directory in this folder and run the script: 
+To execute this organisation, you simply have to set your working directory in this folder and run the script: 
 ```
 cd Database_3D_proteins/05-Organising_raw_data_in_database
 bash ./Raw-data_organiser.sh ../04-Filtering_on_number_of_sequences_per_family

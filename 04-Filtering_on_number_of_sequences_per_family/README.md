@@ -12,7 +12,7 @@ The `Stats.sh` script counts the number of sequences and families for each Super
 
 The `Stats.R` script makes a plot with the number of families and sequences in each Super-Kingdom, taking in account the csv files.
 
-To start all these cascade scripts, place your working directory in this folder and run the script:
+To start all these cascade scripts, set your working directory in this folder and run the script:
 ```
 cd Database_3D_proteins/04-Filtering_on_number_of_sequences_per_family
 bash filter.sh ../03-Filtering_gene_families_per_kingdom/ 3

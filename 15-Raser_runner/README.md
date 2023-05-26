@@ -8,7 +8,7 @@ The only input variable needed to run the `Raser_runner.sh` script is the relati
 
 This step is a very time consuming one. Therefore, it was run on a cluster. Thus, to be able to iterate over all the files in a slurm array, a list of the gene family folders to run Raser on was made using the `List_maker.sh` script.
 
-To run these scripts, place your working directory in this folder and execute the `Raser_runner.sh` script as follows:
+To run these scripts, set your working directory in this folder and execute the `Raser_runner.sh` script as follows:
 ```
 cd Database_3D_proteins/15-Raser_runner/
 sbatch Raser_runner.sh ../Database/

@@ -6,7 +6,7 @@ To do this, we use the [BppSeqMan program](https://github.com/BioPP/bppsuite) fr
 For this project, we placed the program in the folder `~/Downloads`. Thus, the path to the program that is specified in the `Gap_remover.sh` script is to be changed if the installation is done somewhere else.
 
 The `Gap_remover.sh` script iterates over each gene family folder in every Super-Kingdom. It takes the corresponding file in the `01-Raw_data` folder in the database as input of the program and creates a matching-named output file containing the sequences without the gaps in a newly created folder (`02-Gaps_removed`).
-To run this script, place your working directory in this folder (`cd Database_3D_proteins/06-Taking_out_gaps_in_sequences`) and run the script:`bash ./Gap_remover.sh ../Database`
+To run this script, set your working directory in this folder (`cd Database_3D_proteins/06-Taking_out_gaps_in_sequences`) and run the script:`bash ./Gap_remover.sh ../Database`
 
 This steps lasts for 1h45 with the considered dataset.
 

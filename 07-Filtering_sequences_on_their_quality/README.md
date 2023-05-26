@@ -26,7 +26,7 @@ The `Quality_evaluator.py` script is a python script caluclating the gap score o
 
 The `distribution.R` script is a Rscript run at the end of the evaluation phase for each order taking into account the name of the order and the method used and plots the graphs showing the distribution of the gap score in the gene family files or considering the sequence length and the number of sequences per file.
 
-To run the script, place your working directory in this folder and run the script : 
+To run the script, set your working directory in this folder and run the script : 
 ```
 cd Database_3D_proteins/07-Filtering_sequences_on_their_quality
 bash ./launcher.sh ../5-Taking_out_gaps_in_sequences/ "simple"

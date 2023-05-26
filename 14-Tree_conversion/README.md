@@ -4,7 +4,7 @@ This folder is made to transform the output file from the PhyML program into a f
 
 To do this, we iterate over the gene families that have a PhyML tree and use the `Converter.R` script that allows to remove the bootstraps from the tree file. We create a new directory to save the output in the database.
 
-To run this, place your working directory in this folder and run the laucher like so:
+To run this, set your working directory in this folder and run the laucher like so:
 ```
 cd Database_3D_proteins/14-Tree_conversion/
 bash Launcher.sh ../Database/

@@ -7,7 +7,7 @@ Another parameter that can be added when the script is called is the wanted prop
 
 Once this is done, several scripts are run to do some statistical analyses. As for the previous step ([08-Filtering_similar_sequences](../08-Filtering_similar_sequences/README.md)), the scripts used here produce the same outputs as the ones that have the same names in the previous folders, but are modified to this folder.
 
-To start all this cascade of scripts, place your working directory in this folder and write: 
+To start all this cascade of scripts, set your working directory in this folder and write: 
 ```
 cd Database_3D_proteins/09-Optimising_alignment_to_reduce_number_of_sequences/
 bash ./Optimiser.sh ../Database SEQ_THRESHOLD COVERAGE_PROPORTION

@@ -39,7 +39,7 @@ The `General_PDB_extractor.sh` program iterates over the lines in the `.dat` fil
 
 The `Filter_on_Pdb.py` script iterates over the gene families in each Super-Kingdom to extract the pdb information of said gene family from the csv that was built. It runs the `Copier.sh` script that saves these informations in a newly created folder in the database.
 
-To run these scripts, first place your working directory in this folder then run them by doing:
+To run these scripts, first set your working directory in this folder then run them by doing:
 ```
 cd Database_3D_proteins/16-Getting_pdb_info_Acnuc
 # First run the General_PDB_extractor.sh script

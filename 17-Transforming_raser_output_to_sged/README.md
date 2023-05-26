@@ -6,7 +6,7 @@ The `launcher.sh` script iterates over each gene family in each Super-Kingdom to
 
 The `sged-raser2sged.py` script is the converter. It takes as input variables a raser output file, the alignment on which the raser program was run, the alignment format and an output path. You can also chose the output format using the `-c` option. The `-c` options sets the ouptut format to csv. The default value is tsv.
 
-To run this step, place your working directory in this folder and run the launcher as follows:
+To run this step, set your working directory in this folder and run the launcher as follows:
 ```
 cd Database_3D_proteins/17-Transforming_raser_output_to_sged/
 bash launcher.sh ../Database/

@@ -7,7 +7,7 @@ We iterate over the gene families that were aligned previously and take the cons
 
 The `Consensus.sh` script takes as arguments the path to the database and a threshold value to know which proportion of coverage per sites to conserve in the consensus file.
 
-To run this script, place your working directory in this folder and run the bash script:
+To run this script, set your working directory in this folder and run the bash script:
 ```
 cd Database_3D_proteins/11-Take_consensus/
 bash Consensus.sh ../Database/ 0.8

@@ -6,7 +6,7 @@ The `PDB_obtainer.sh` script iterates over the gene families in each Super-Kingd
 The `PDB_obtainer.sh` script takes as input variables the path to the database and the format of the PDB reference files to get.
 The format can be one of "pdb" or "mmCif".
 
-So, to run the script, place your working directory in this folder and run the script by typing:
+So, to run the script, set your working directory in this folder and run the script by typing:
 ```
 cd Database_3D_proteins/18-Get_pdb_file_and_create_index/
 bash PDB_obtainer.sh ../Database/ mmCif
