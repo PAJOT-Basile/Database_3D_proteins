@@ -36,7 +36,7 @@ for order in $(ls $DATA_PATH); do
         if [ $fam = "Exam"* ]; then
             continue
         else
-            cp -r $DATA_PATH$order/${fam}/09-* Database/${order}/${fam}/
+            cp -r $DATA_PATH$order/${fam}/11-* Database/${order}/${fam}/
         fi
         ((counter+=1))
     done

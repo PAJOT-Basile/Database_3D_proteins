@@ -33,16 +33,18 @@ rm ${FAMILY}_*txt
 # we take out the structures that have a too high resolution. We iterate over the lines in the newly created csv file in the gene family folder
 # If one resolution is greater than the wanted threshold, this line is not copied to the temporary file, therefore, removing it from the end 
 # file.
+counter=0
 cat ${DATA_PATH}${ORDER}/${FAMILY}/12-Pdb_information/Pdb_info.csv | while read LINE; do
     if [[ "${LINE}" = "Gene_family"* ]]; then
         echo ${LINE} >> ${DATA_PATH}${ORDER}/${FAMILY}/12-Pdb_information/temp.csv
         continue
     else
         RESOLUTION=$(echo ${LINE} | cut -d";" -f4)
-        if [[ 1 -eq $(echo "${RESOLUTION} <= 3" | bc) ]]; then
+        if [[ "${RESOLUTION}" != "-" ]] && [[ $(echo "${RESOLUTION} <= 3" | bc) -eq 1 ]]; then
             echo ${LINE} >> ${DATA_PATH}${ORDER}/${FAMILY}/12-Pdb_information/temp.csv
         fi
     fi
+    ((counter+=1))
 done
 mv ${DATA_PATH}${ORDER}/${FAMILY}/12-Pdb_information/temp.csv ${DATA_PATH}${ORDER}/${FAMILY}/12-Pdb_information/Pdb_info.csv
 

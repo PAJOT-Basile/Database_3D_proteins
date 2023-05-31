@@ -14,7 +14,7 @@ def Convert(lst):
     return(res_dct)
 
 # This file contains the list of all the Super-Kingdoms to analyse here
-list_orders = open("../01-AcnucFamilies/List_superkingdoms.txt", "r")
+list_orders = open("../01-AcnucFamilies/List_Archaea.txt", "r")
 
 # We iterate over the Super-Kingdoms
 for ORDER in list_orders:

@@ -1,9 +1,8 @@
 #! /bin/sh
 
-# We take into account the path to the database and the format of the files to load to get structural information. It should be one 
-# of pdb or mmCif
+# We take into account the path to the database
 DATA_PATH=$1
-FORMAT=$2
+LIST_ORDERS="../01-AcnucFamilies/List_Archaea.txt"
 
 # We make a Presentation function to see at which gene family we are each time we start a new one
 Presentation(){
@@ -27,10 +26,10 @@ Presentation(){
         _part_line=$(echo "$_part_line_d / 2" | bc)
         # We transform this into a machine-comprehensible format
         _part_fill=$(printf "%${_part_line}s")
-        # We print the output
+        # We print the output.
         printf "\n${_ref_fill// /${_fill_char}}\n${_part_fill// /${_fill_char}}${_space_fill// / }${family}${_space_fill// / }${_part_fill// /${_fill_char}}\n${_ref_fill// /${_fill_char}}\n"
     else
-        # For the odd part, we separate the left and right parts of the frame to simplify this.
+        # For the odd part, we separate the left and right parts of the frame to simplify this
         _part_line_d=$((${_ref_len} - ${len_fam} - 2*${_space_len}-1))
         _part_line_left=$(echo "($_part_line_d / 2) + 1" | bc)
         _part_fill_left=$(printf "%${_part_line_left}s")
@@ -42,7 +41,8 @@ Presentation(){
 
 # We iterate over the gene families in the database and check if the considered gene family has a 12-Pdb_information folder. If they do,
 # we translate the coordinates of the raser output sged file using the previously created index
-for ORDER in $(ls ${DATA_PATH}); do
+cat ${LIST_ORDERS} | while read ORDER; do
+#for ORDER in $(ls ${DATA_PATH}); do
     for FAMILY in $(ls ${DATA_PATH}${ORDER}); do
         if [[ -f "${DATA_PATH}${ORDER}/${FAMILY}/12-Pdb_information/${FAMILY}_sged.csv" ]]; then
 
@@ -56,7 +56,8 @@ for ORDER in $(ls ${DATA_PATH}); do
             # We extract the chain reference used for the index and the name of PDB reference file used for the index file
             CHAIN=$(head -n5 ${DATA_PATH}${ORDER}/${FAMILY}/12-Pdb_information/${FAMILY}_index.txt | tail -n1 | cut -d" " -f7)
             TMPPDB=$(head -n4 ${DATA_PATH}${ORDER}/${FAMILY}/12-Pdb_information/${FAMILY}_index.txt | tail -n1 | cut -d" " -f6)
-            PDB_REF="${TMPPDB#./}"
+            PDB_REF=$(echo $(echo "${TMPPDB#./pdb}" | sed "s/\.ent//g").pdb)
+
 
             # We run the sged-translate-coords.py script that modifies the coordinates of the sged file according to the alignment index 
             # positions 
@@ -73,10 +74,10 @@ for ORDER in $(ls ${DATA_PATH}); do
             python3 ~/Downloads/sgedtools/src/sged-structure-infos.py \
                 -s ${DATA_PATH}${ORDER}/${FAMILY}/13-Structure_info/${FAMILY}_translated_coords.csv \
                 -p ${DATA_PATH}${ORDER}/${FAMILY}/12-Pdb_information/${PDB_REF} \
-                -f ${FORMAT} \
+                -f PDB \
                 -g PDB \
                 -a ${CHAIN} \
-                -m ContactMap,SecondaryStructureLabel \
+                -m DSSP \
                 -o ${DATA_PATH}${ORDER}/${FAMILY}/13-Structure_info/${FAMILY}_structinfos.csv
 
         fi

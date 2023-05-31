@@ -11,31 +11,44 @@
 03-Filtering_gene_families_per_kingdom/Archaea/*
 03-Filtering_gene_families_per_kingdom/Bacteria/*
 03-Filtering_gene_families_per_kingdom/Eukaryota/*
+03-Filtering_gene_families_per_kingdom/Stats/*csv
+03-Filtering_gene_families_per_kingdom/Stats/Stats.Rproj
+03-Filtering_gene_families_per_kingdom/Stats/.Rhistory
 
 04-Filtering_on_number_of_sequences_per_family/Archaea/*
 04-Filtering_on_number_of_sequences_per_family/Bacteria/*
 04-Filtering_on_number_of_sequences_per_family/Eukaryota/*
+04-Filtering_on_number_of_sequences_per_family/Stats/*csv
+04-Filtering_on_number_of_sequences_per_family/Stats/Stats.Rproj
+04-Filtering_on_number_of_sequences_per_family/Stats/.Rhistory
 
 07-Filtering_sequences_on_their_quality/csvs/*
 
-08-Filtering_similar_sequences/List_gene_families.txt
+08-Filtering_similar_sequences/List_gene_families.xtxt
 08-Filtering_similar_sequences/Stats/*csv
 08-Filtering_similar_sequences/csvs/*
 08-Filtering_similar_sequences/logs/*
+08-Filtering_similar_sequences/.Rhistory
 
 09-Optimising_alignment_to_reduce_number_of_sequences/Stats/*csv
 09-Optimising_alignment_to_reduce_number_of_sequences/csvs/*
+09-Optimising_alignment_to_reduce_number_of_sequences/.Rhistory
 
 10-First_alignment_of_sequences/logs*
+10-First_alignment_of_sequences/List_gene_families.xtxt
+10-First_alignment_of_sequences/List_gene_families_for_mafft.xtxt
 10-First_alignment_of_sequences/*csv
 10-First_alignment_of_sequences/.Rhistory
+10-First_alignment_of_sequences/Alignment_speeds.csv
 
 13-Tree_making/logs*
+13-Tree_making/List_gene_families.xtxt
+
+15-Raser_runner/logs*
+15-Raser_runner/List_gene_families.xtxt
 
 16-Getting_pdb_info_Acnuc/*csv
 16-Getting_pdb_info_Acnuc/*dat
-
-0-tests/*
 
 Database*
 
@@ -45,3 +58,4 @@ Database*
 rename.sh
 code_tree_readme.txt
 Cluster_Got/*
+test.csv

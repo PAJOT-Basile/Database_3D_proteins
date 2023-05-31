@@ -1,12 +1,12 @@
 #! /bin/sh
 
-# We take into account the path to the database and the format of the files to load to get structural information. It should be one 
-# of pdb or mmCif
+# We take into account the path to the database
 DATA_PATH=$1
-FORMAT=$2
+LIST_ORDERS="../01-AcnucFamilies/List_Archaea.txt"
 
 # We iterate over each gene family in every Super-Kingdom
-for ORDER in $(ls ${DATA_PATH}); do
+cat ${LIST_ORDERS} | while read ORDER; do
+#for ORDER in $(ls ${DATA_PATH}); do
     for FAMILY in $(ls ${DATA_PATH}${ORDER}); do
 
         # We check if the file has a 12-Pdb_information folder. If not, the loop continues to the next gene family
@@ -31,37 +31,32 @@ for ORDER in $(ls ${DATA_PATH}); do
             # from the selected chain in the pdb reference file
             python3 ~/Downloads/sgedtools/src/sged-create-structure-index.py \
                             ${PDB} \
-                            -f remote:${FORMAT} \
+                            -f remote:pdb \
                             -a ${DATA_PATH}${ORDER}/${FAMILY}/07-Consensus/${FAMILY}.mase \
                             -g ig \
                             -o ${DATA_PATH}${ORDER}/${FAMILY}/12-Pdb_information/${FAMILY}_index.txt \
                             -x
 
-            # Finaly, we move the reference files to the 12-Pdb_information folder in the database
+            # Finaly, we move the reference files to the 12-Pdb_information folder in the database.
             for pdb in ${PDB}; do 
                 x=$(echo ${pdb} | sed "s/ //g")
                 if [[ "${x}" = "-p" ]]; then
                     continue
                 else
                     p=$(echo ${x} | tr "[:upper:]" "[:lower:]")
-
-                    if [[ "${FORMAT}" = "mmCif" ]]; then
-                        mv ${p}.cif ${DATA_PATH}${ORDER}/${FAMILY}/12-Pdb_information/
-                    else
-                        mv pdb${p}.ent ${DATA_PATH}${ORDER}/${FAMILY}/12-Pdb_information/
-                    fi
+                    mv pdb${p}.ent ${DATA_PATH}${ORDER}/${FAMILY}/12-Pdb_information/${p}.pdb
                 fi
             done
         fi
     done
 done
 
-# The sged-create-structure-index.py creates a folder called obsolete in which it stores the obsolete files. If it is empty,.
+# The sged-create-structure-index.py creates a folder called obsolete in which it stores the obsolete files. If it is empty,
 # we remove it. If not, we take a look at it
 if [[ -d "obsolete/" ]]; then
-    if [[ "$(ls -A obsolete)" ]]; then
+    if [[ "$(ls -A obsolete/)" ]]; then
         echo "Check the obsolete folder for info"
     else
-        rmdir obsolete
+        rmdir obsolete/
     fi
 fi
