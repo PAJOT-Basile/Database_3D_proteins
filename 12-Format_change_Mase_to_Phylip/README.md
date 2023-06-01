@@ -6,5 +6,7 @@ The `Phylip_maker.sh` script takes as an argument the path to the database and i
 To run this step, simply set your working directory to this file and run the script:
 ```
 cd Database_3D_proteins/12-Format_change_Mase_to_Phylip/
-bash Phylip_maker.sh ../Database/ 0.8
+bash Phylip_maker.sh ../Database/
 ```
+
+This step creates the `08-Phylip_file` folder in the database.

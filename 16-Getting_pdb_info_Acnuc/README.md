@@ -48,4 +48,4 @@ bash General_PDB_extractor.sh ../Database/
 # Then run the python script
 python3 Filter_on_Pdb.py ../Database/
 ```
-
+This step creates the `12-Pdb_information` folder in the database.

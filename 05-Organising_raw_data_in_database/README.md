@@ -14,5 +14,4 @@ To execute this organisation, you simply have to set your working directory in t
 cd Database_3D_proteins/05-Organising_raw_data_in_database
 bash ./Raw-data_organiser.sh ../04-Filtering_on_number_of_sequences_per_family
 ```
-
-This step lasts for :warning: :warning: with the considered database.
+To use the `csv_maker.sh` script, uncomment line 80 in the `Raw_data_organiser.sh` script.

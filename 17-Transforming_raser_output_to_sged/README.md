@@ -11,3 +11,4 @@ To run this step, set your working directory in this folder and run the launcher
 cd Database_3D_proteins/17-Transforming_raser_output_to_sged/
 bash launcher.sh ../Database/
 ```
+This step does not create any new folder in the database but adds the output of the `sged-raser2sged.py` script in the `12-Pdb_information` folder in the database.

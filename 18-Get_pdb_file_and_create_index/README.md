@@ -10,3 +10,5 @@ So, to run the script, set your working directory in this folder and run the scr
 cd Database_3D_proteins/18-Get_pdb_file_and_create_index/
 bash PDB_obtainer.sh ../Database/
 ```
+
+This step does not create any new folder but adds the PDB files and the index to the `12-Pdb_information` folder in the database.

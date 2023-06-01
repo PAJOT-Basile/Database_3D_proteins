@@ -12,3 +12,5 @@ To run this script, set your working directory in this folder and run the bash s
 cd Database_3D_proteins/11-Take_consensus/
 bash Consensus.sh ../Database/ 0.8
 ```
+
+This step creates the `07-Consensus` folder in the database.

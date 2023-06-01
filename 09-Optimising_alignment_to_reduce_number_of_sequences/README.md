@@ -14,3 +14,5 @@ bash ./Optimiser.sh ../Database SEQ_THRESHOLD COVERAGE_PROPORTION
 ```
 > With SEQ_THRESHOLD being the user-defined threshold to use for the filtration on the number of sequences per file (400 here)
 >  and COVERAGE_PROPORTION being the proportion of covered spots to conserve in the optimised fasta file (0.9 here). 
+
+This step creates the `05-Optimised_alignment` in the database.

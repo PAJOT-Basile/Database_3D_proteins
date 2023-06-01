@@ -2,7 +2,6 @@
 
 # We take into account the path to the database
 DATA_PATH=$1
-LIST_ORDERS="../01-AcnucFamilies/List_Archaea.txt"
 
 # We make a Presentation function to see at which gene family we are each time we start a new one
 Presentation(){
@@ -26,7 +25,7 @@ Presentation(){
         _part_line=$(echo "$_part_line_d / 2" | bc)
         # We transform this into a machine-comprehensible format
         _part_fill=$(printf "%${_part_line}s")
-        # We print the output.
+        # We print the output
         printf "\n${_ref_fill// /${_fill_char}}\n${_part_fill// /${_fill_char}}${_space_fill// / }${family}${_space_fill// / }${_part_fill// /${_fill_char}}\n${_ref_fill// /${_fill_char}}\n"
     else
         # For the odd part, we separate the left and right parts of the frame to simplify this
@@ -39,13 +38,21 @@ Presentation(){
     fi
 }
 
-# We iterate over the gene families in the database and check if the considered gene family has a 12-Pdb_information folder. If they do,
-# we translate the coordinates of the raser output sged file using the previously created index
-cat ${LIST_ORDERS} | while read ORDER; do
-#for ORDER in $(ls ${DATA_PATH}); do
-    for FAMILY in $(ls ${DATA_PATH}${ORDER}); do
-        if [[ -f "${DATA_PATH}${ORDER}/${FAMILY}/12-Pdb_information/${FAMILY}_sged.csv" ]]; then
+# We export the Presentation function to be able to parallelise the work
+export -f Presentation
 
+# We define a Translate function to parallelise the work for several gene families at once
+Translate(){
+
+    # Variable input
+    DATA_PATH=$1
+    ORDER=$2
+    FAMILY=$3
+
+    # If the considered gene family has an index file and a SGED file comming fromthe raser conversion, we can run this step
+    if [[ -f "${DATA_PATH}${ORDER}/${FAMILY}/12-Pdb_information/${FAMILY}_sged.csv" ]] &&  [[ -f "${DATA_PATH}${ORDER}/${FAMILY}/12-Pdb_information/${FAMILY}_index.txt" ]]; then
+
+            # We implement the Presentation function
             Presentation ${FAMILY}
 
             # If the folder 13-Structure_info does not exist, we create it
@@ -69,7 +76,7 @@ cat ${LIST_ORDERS} | while read ORDER; do
                 -n PDB
 
             # We run the sged-structure-infos.py script that allows us to get some 3D information from the PDB reference file and to add it to
-            # the sged file
+            # the sged file.
             echo "Getting 3D structure information ..."
             python3 ~/Downloads/sgedtools/src/sged-structure-infos.py \
                 -s ${DATA_PATH}${ORDER}/${FAMILY}/13-Structure_info/${FAMILY}_translated_coords.csv \
@@ -79,7 +86,15 @@ cat ${LIST_ORDERS} | while read ORDER; do
                 -a ${CHAIN} \
                 -m DSSP \
                 -o ${DATA_PATH}${ORDER}/${FAMILY}/13-Structure_info/${FAMILY}_structinfos.csv
+    fi
+}
 
-        fi
+# We export the Translate function to be able to paralellise the jobs
+export -f Translate
+
+# We iterate over the gene families in the database and run the Translate function
+for ORDER in $(ls ${DATA_PATH}); do
+    for FAMILY in $(ls ${DATA_PATH}${ORDER}); do
+        sem --jobs -0 Translate ${DATA_PATH} ${ORDER} ${FAMILY}
     done
 done

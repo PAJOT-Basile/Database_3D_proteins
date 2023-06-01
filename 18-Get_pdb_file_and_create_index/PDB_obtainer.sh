@@ -2,7 +2,7 @@
 
 # We take into account the path to the database
 DATA_PATH=$1
-LIST_ORDERS="../01-AcnucFamilies/List_Archaea.txt"
+LIST_ORDERS="../01-AcnucFamilies/List_superkingdoms.txt"
 
 # We iterate over each gene family in every Super-Kingdom
 cat ${LIST_ORDERS} | while read ORDER; do
@@ -21,32 +21,40 @@ cat ${LIST_ORDERS} | while read ORDER; do
                     continue
                 else
                     LINE_PDB=$(echo ${LINE} | cut -d";" -f3)
-                    PDB="${PDB} -p ${LINE_PDB}"
+                    if [[ "$LINE_PDB" = "4V9F" ]] || [[ "$LINE_PDB" = "5AFI" ]] || [[ "$LINE_PDB" = "4V7O" ]] || [[ "$LINE_PDB" = "4YFC" ]]; then
+                        continue
+                    else
+                        PDB="${PDB} -p ${LINE_PDB}"
+                    fi
 
                 fi
             done < ${DATA_PATH}${ORDER}/${FAMILY}/12-Pdb_information/Pdb_info.csv
 
-            # Once we have all the pdb references, we run the sged-create-structure-index script that downloads the pdb reference files, 
-            # choses the best one depending on the alignment and writes an index file containing the alignment position of the residues
-            # from the selected chain in the pdb reference file
-            python3 ~/Downloads/sgedtools/src/sged-create-structure-index.py \
-                            ${PDB} \
-                            -f remote:pdb \
-                            -a ${DATA_PATH}${ORDER}/${FAMILY}/07-Consensus/${FAMILY}.mase \
-                            -g ig \
-                            -o ${DATA_PATH}${ORDER}/${FAMILY}/12-Pdb_information/${FAMILY}_index.txt \
-                            -x
+            if [[ "$PDB" = " -p "]]; then
+                continue
+            else
+                # Once we have all the pdb references, we run the sged-create-structure-index script that downloads the pdb reference files, 
+                # choses the best one depending on the alignment and writes an index file containing the alignment position of the residues
+                # from the selected chain in the pdb reference file
+                python3 ./sged-create-structure-index.py \
+                                ${PDB} \
+                                -f remote:pdb \
+                                -a ${DATA_PATH}${ORDER}/${FAMILY}/07-Consensus/${FAMILY}.mase \
+                                -g ig \
+                                -o ${DATA_PATH}${ORDER}/${FAMILY}/12-Pdb_information/${FAMILY}_index.txt \
+                                -x
 
-            # Finaly, we move the reference files to the 12-Pdb_information folder in the database.
-            for pdb in ${PDB}; do 
-                x=$(echo ${pdb} | sed "s/ //g")
-                if [[ "${x}" = "-p" ]]; then
-                    continue
-                else
-                    p=$(echo ${x} | tr "[:upper:]" "[:lower:]")
-                    mv pdb${p}.ent ${DATA_PATH}${ORDER}/${FAMILY}/12-Pdb_information/${p}.pdb
-                fi
-            done
+                # Finaly, we move the reference files to the 12-Pdb_information folder in the database.
+                for pdb in ${PDB}; do 
+                    x=$(echo ${pdb} | sed "s/ //g")
+                    if [[ "${x}" = "-p" ]]; then
+                        continue
+                    else
+                        p=$(echo ${x} | tr "[:upper:]" "[:lower:]")
+                        mv pdb${p}.ent ${DATA_PATH}${ORDER}/${FAMILY}/12-Pdb_information/${p}.pdb
+                    fi
+                done
+            fi
         fi
     done
 done

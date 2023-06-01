@@ -2,12 +2,9 @@
 
 # We take into account the path to the database
 DATA_PATH=$1
-LIST_ORDERS="../01-AcnucFamilies/List_Archaea.txt"
-
 
 # We iterate over each gene family in each Super-Kingdom in the database and if the raser results file exists, we run the converter.
-cat ${LIST_FAMILIES} | zhile read ORDER; do
-#for ORDER in $(ls ${DATA_PATH}); do
+for ORDER in $(ls ${DATA_PATH}); do
     for FAMILY in $(ls ${DATA_PATH}${ORDER}); do
         if [[ -d "${DATA_PATH}${ORDER}/${FAMILY}/12-Pdb_information/" ]]; then
             python3 ./sged-raser2sged.py \

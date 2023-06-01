@@ -55,7 +55,6 @@ Database*
 *.pdf
 .Rproj.user
 
-rename.sh
 code_tree_readme.txt
 Cluster_Got/*
 test.csv

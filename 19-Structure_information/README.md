@@ -11,3 +11,5 @@ To run `Coordinate_translator_and_structure_info_extractor.sh`, set your working
 cd Database_3D_proteins/19-Structure_information/
 bash Coordinate_translator_and_structure_info_extractor.sh ../Database/
 ``` 
+
+This step creates the `13-Structure_info` folder in the database.
