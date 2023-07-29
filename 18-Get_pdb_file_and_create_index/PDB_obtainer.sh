@@ -30,7 +30,7 @@ cat ${LIST_ORDERS} | while read ORDER; do
                 fi
             done < ${DATA_PATH}${ORDER}/${FAMILY}/12-Pdb_information/Pdb_info.csv
 
-            if [[ "$PDB" = " -p "]]; then
+            if [[ "$PDB" = " -p " ]]; then
                 continue
             else
                 # Once we have all the pdb references, we run the sged-create-structure-index script that downloads the pdb reference files, 
